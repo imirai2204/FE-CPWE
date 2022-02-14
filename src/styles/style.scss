@@ -1,0 +1,19 @@
+//Abstracts
+@import './Abstracts/variable';
+//Base
+@import './Base/animations';
+@import './Base/base';
+@import './Base/typography';
+//Components
+@import './Components/button';
+@import './Components/lable';
+@import './Components/card';
+@import './Components/form';
+//Layouts
+@import './Layout/nav';
+@import './Layout/header';
+@import './Layout/footer';
+//Pages
+@import './Pages/home';
+@import './Pages/login';
+@import './Pages/register';

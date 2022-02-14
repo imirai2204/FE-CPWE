@@ -1,0 +1,16 @@
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 10%;
+    background: $color-blue-D2;
+    color: $color-white;
+}
+
+.nav-link {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}

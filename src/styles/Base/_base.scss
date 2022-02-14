@@ -1,0 +1,67 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+    max-width: 100%;
+}
+
+body {
+    box-sizing: border-box;
+    min-height: 100%;
+    max-width: 100%;
+}
+
+h1 {
+    color: $color-blue-7C;
+    font-size: 45px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+}
+
+h2 {
+    color: $color-blue-7C;
+    font-size: 32px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+}
+
+p {
+    color: $color-black-40;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 400;
+    white-space: normal;
+}
+
+a {
+    text-decoration: none;
+    color: $color-black-40;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
+    line-height: 28px;
+    font-weight: 400;
+    white-space: normal;
+}
+
+.container {
+    margin: 0 141px;
+}
+
+img {
+    max-width: 100%;
+}
+
+dl, ol, ul {
+    margin-bottom: 0;
+}
+
+#root {
+    min-height: 100%;
+}

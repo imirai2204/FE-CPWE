@@ -1,0 +1,29 @@
+.input-section {
+    margin-bottom: 13px;
+}
+
+.form-control {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid $color-black-70;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding-top: 5px;
+    padding-left: 0;
+    padding-bottom: 5px;
+    font-size: 15px;
+    color: $color-black-70;
+
+    &:hover {
+        border-bottom: 1px solid $color-blue-B8;
+    }
+}
+
+.error {
+    color: $color-red;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 22px;
+}
+
