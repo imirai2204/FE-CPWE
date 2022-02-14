@@ -46,7 +46,7 @@ function Login() {
                         alt="University of Greenwich"
                     />
                 </div>
-                <h1 className="login-title">Sign in</h1>
+                <h1 className="login-title">Sign In</h1>
                 <Formik
                     initialValues={{
                         email: "",
@@ -76,7 +76,7 @@ function Login() {
                                     className="btn btn__blue-B8" 
                                     type="submit"
                                     style={style}
-                                >Sign in</button>
+                                >Sign In</button>
                             </div>
                         </Form>
                     )}
