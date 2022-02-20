@@ -84,7 +84,7 @@ dl, ol, ul {
   min-height: 100%; }
 
 :root {
-  --primary: #ff1c60; }
+  --primary: rgba(252, 53, 146, 0.68); }
 
 .btn {
   padding: 8px 20px;
@@ -96,8 +96,9 @@ dl, ol, ul {
 .btn:hover {
   padding: 8px 20px;
   transition: all 0.3s ease-out;
-  background: rgba(252, 124, 50, 0.562);
-  color: #5036c4; }
+  background: rgba(247, 159, 200, 0.65);
+  color: #ff2c84;
+  font-weight: 600; }
 
 .btn--primary {
   background-color: var(--primary); }
@@ -154,39 +155,38 @@ lable {
   line-height: 22px; }
 
 .NavbarItems {
-  background: linear-gradient(90deg, #f54497 0%, #f3117a 40%, #ac1059 100%);
+  background: linear-gradient(90deg, #f54497 0%, #f3117a 60%);
   height: 80px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   font-size: 1.2rem; }
 
 .navbar-logo {
-  color: #5bc7e7;
+  color: #78dcfa;
   justify-self: start;
-  margin-left: 10px;
+  margin-left: 15px;
   cursor: pointer; }
 
 .fa-react {
   margin-left: 0.1rem;
-  font-size: 3.5rem; }
+  font-size: 4rem; }
 
 .fa-times,
 .fa-bars {
-  font-size: 4rem; }
-
-.fa-bars {
-  color: #fff; }
+  padding-top: 15%;
+  font-size: 3rem;
+  color: #ffb0de; }
 
 .nav-menu {
   display: grid;
   grid-template-columns: repeat(6, auto);
-  grid-gap: 10px;
+  grid-gap: 15px;
   list-style: none;
   text-align: center;
-  width: 70vw;
-  justify-content: center;
-  margin: 2rem; }
+  width: 75vw;
+  justify-content: flex-start;
+  margin: 1.5rem; }
 
 .nav-link {
   color: #fafafa;
@@ -194,7 +194,10 @@ lable {
   padding: 0.5rem 1rem; }
 
 .nav-link:hover {
-  background-color: rgba(163, 154, 243, 0.6);
+  background-color: rgba(247, 140, 190, 0.35);
+  color: #ffcadb;
+  font-weight: 600;
+  text-decoration: none;
   border-radius: 6px;
   transition: all 0.15s ease-out; }
 
@@ -247,9 +250,6 @@ lable {
     transform: translate(-100%, 60%);
     font-size: 1.8rem;
     cursor: pointer; }
-  .fa-times {
-    color: #fff;
-    font-size: 4rem; }
   .nav-link-mobile {
     display: block;
     text-align: center;
@@ -257,14 +257,15 @@ lable {
     margin: 2rem auto;
     border-radius: 4px;
     width: 80%;
-    background: #fd1ecd;
+    background: rgba(252, 53, 146, 0.68);
     text-decoration: none;
     color: #fff;
     font-size: 1.5rem; }
   .nav-link-mobile:hover {
-    background: #fff;
-    color: #6468f4;
-    transition: 250ms; }
+    background: rgba(247, 159, 200, 0.65);
+    color: #ff2c84;
+    transition: 250ms;
+    font-weight: 700; }
   .btn.btn--primary {
     display: none; } }
 

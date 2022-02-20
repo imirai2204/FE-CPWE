@@ -1,5 +1,5 @@
 :root {
-    --primary: #ff1c60;
+    --primary: rgba(252, 53, 146, 0.68);
 }
 
 .btn {
@@ -13,8 +13,9 @@
 .btn:hover {
     padding: 8px 20px;
     transition: all 0.3s ease-out;
-    background: rgba(252, 124, 50, 0.562);
-    color: #5036c4;
+    background: rgba(247, 159, 200, 0.65);
+    color: #ff2c84;
+    font-weight: 600;
 }
 
 .btn--primary {
