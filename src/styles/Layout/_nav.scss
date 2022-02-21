@@ -2,46 +2,43 @@
     background: linear-gradient(
         90deg,
         rgb(245, 68, 151) 0%,
-        rgb(243, 17, 122) 40%,
-        rgb(172, 16, 89) 100%
+        rgb(243, 17, 122) 60%
     );
     height: 80px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     font-size: 1.2rem;
 }
 
 .navbar-logo {
-    color: rgb(91, 199, 231);
+    color: rgb(120, 220, 250);
     justify-self: start;
-    margin-left: 10px;
+    margin-left: 15px;
     cursor: pointer;
 }
 
 .fa-react {
     margin-left: 0.1rem;
-    font-size: 3.5rem;
+    font-size: 4rem;
 }
 
 .fa-times,
 .fa-bars {
-    font-size: 4rem;
-}
-
-.fa-bars {
-    color: #fff;
+    padding-top: 15%;
+    font-size: 3rem;
+    color: rgb(255, 176, 222)
 }
 
 .nav-menu {
     display: grid;
     grid-template-columns: repeat(6, auto);
-    grid-gap: 10px;
+    grid-gap: 15px;
     list-style: none;
     text-align: center;
-    width: 70vw;
-    justify-content: center;
-    margin: 2rem;
+    width: 75vw;
+    justify-content: flex-start;
+    margin: 1.5rem;
 }
 
 .nav-link {
@@ -51,7 +48,10 @@
 }
 
 .nav-link:hover {
-    background-color: rgba(163, 154, 243, 0.6);
+    background-color: rgba(247, 140, 190, 0.35);
+    color: #ffcadb;
+    font-weight: 600;
+    text-decoration: none;
     border-radius: 6px;
     transition: all 0.15s ease-out;
 }
@@ -121,11 +121,6 @@
         cursor: pointer;
     }
 
-    .fa-times {
-        color: #fff;
-        font-size: 4rem;
-    }
-
     .nav-link-mobile {
         display: block;
         text-align: center;
@@ -133,16 +128,17 @@
         margin: 2rem auto;
         border-radius: 4px;
         width: 80%;
-        background: #fd1ecd;
+        background: rgba(252, 53, 146, 0.68);
         text-decoration: none;
         color: #fff;
         font-size: 1.5rem;
     }
 
     .nav-link-mobile:hover {
-        background: #fff;
-        color: #6468f4;
+        background: rgba(247, 159, 200, 0.65);
+        color:#ff2c84;
         transition: 250ms;
+        font-weight: 700;
     }
 
     .btn.btn--primary {
