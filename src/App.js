@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import AcademicYear from "./pages/AcademicYear";
+import Department from "./pages/Department";
 import Dashboard from "./pages/Dashboard";
 import ManageUser from "./pages/ManageUser";
 import Tags from "./pages/Tags";
@@ -29,7 +30,7 @@ function App() {
                 <Route path='/manage-user' exact element={<ManageUser />} />
                 <Route path='/category' exact element={<Category />} />
                 <Route path='/category/academic-year' exact element={<AcademicYear />} />
-                <Route path='/category/department' exact element={<AcademicYear />} />
+                <Route path='/category/department' exact element={<Department />} />
                 <Route path='/category/tags' exact element={<Tags />} />
                 <Route path='/category/topic' exact element={<Topic />} />
                 <Route path='/create-idea' exact element={<CreateIdea />} />
