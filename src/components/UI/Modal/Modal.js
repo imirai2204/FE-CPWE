@@ -2,7 +2,7 @@ import React from "react";
 import ReactDom from "react-dom";
 
 const Backdrop = (props) => {
-    return <div className='backdrop' onClick={props.onClose} />;
+    return <div className='backdrop' onClick={props.onClick} />;
 };
 
 const ModalOverlay = (props) => {
@@ -13,13 +13,13 @@ const ModalOverlay = (props) => {
     );
 };
 
-const Modal = (props) => {
-    const portalElement = document.getElementById(props.portalElemId);
+const Modal = ({ children, portalElemId, onClick, className }) => {
+    const portalElement = document.getElementById(portalElemId);
     return (
         <>
-            {ReactDom.createPortal(<Backdrop onClose={props.onClose} />, portalElement)}
+            {ReactDom.createPortal(<Backdrop onClick={onClick} />, portalElement)}
             {ReactDom.createPortal(
-                <ModalOverlay className={props.className}>{props.children}</ModalOverlay>,
+                <ModalOverlay className={className}>{children}</ModalOverlay>,
                 portalElement
             )}
         </>

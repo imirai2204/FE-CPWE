@@ -39,7 +39,7 @@ function App() {
                 <Modal
                     portalElemId='create-idea-modal'
                     className='idea-submission'
-                    onClose={closeModalHandler}>
+                    onClick={closeModalHandler}>
                     <Button onClick={closeModalHandler} buttonStyle='btn--modal'>
                         Close Modal
                     </Button>
