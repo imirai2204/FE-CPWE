@@ -2,9 +2,9 @@ import React from "react";
 import '../styles/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Formik, Form } from 'formik';
-import { TextField } from "../components/TextField";
+import { Input } from "../components/UI/input/Input";
 import { SignInSchema } from "../validation";
-import axios from 'axios';
+import axios from "axios";
 
 function handleSubmit(values) {
     const body = {
@@ -33,28 +33,27 @@ function Login() {
     const style = {
         display: "block",
         marginLeft: "auto",
-        marginTop: "45px"
-    }
+        marginTop: "45px",
+    };
     return (
-        <div className="login-layout">
-            <div className="login-background"></div>
-            <div className="login-panel">
-                <div className="login-panel_header">
+        <div className='login-layout'>
+            <div className='login-background'></div>
+            <div className='login-panel'>
+                <div className='login-panel_header'>
                     <img
-                        src="https://login.gre.ac.uk/adfs/portal/logo/logo.png?…538EB3FABAABC3793D0C5F3536FC0544363DE7FA844246655"
-                        className="logoImage"
-                        alt="University of Greenwich"
+                        src='https://login.gre.ac.uk/adfs/portal/logo/logo.png?…538EB3FABAABC3793D0C5F3536FC0544363DE7FA844246655'
+                        className='logoImage'
+                        alt='University of Greenwich'
                     />
                 </div>
-                <h1 className="login-title">Sign In</h1>
+                <h1 className='login-title'>Sign In</h1>
                 <Formik
                     initialValues={{
                         email: "",
-                        password: ""
+                        password: "",
                     }}
                     validationSchema={SignInSchema}
-                    onSubmit={(values, { setSubmitting }) => handleSubmit(values)}
-                >
+                    onSubmit={(values, { setSubmitting }) => handleSubmit(values)}>
                     {({
                         isSubmiting,
                         handleChange,
@@ -64,26 +63,37 @@ function Login() {
                         errors,
                         touched,
                     }) => (
-                        <Form className="login-form">
-                            <div className="input-section">
-                                <TextField lable="Email" name="email" type="email" placeholder="Username@gre.ac.uk" />
+                        <Form className='login-form'>
+                            <div className='input-section'>
+                                <Input
+                                    lable='Email'
+                                    name='email'
+                                    type='email'
+                                    placeholder='Username@gre.ac.uk'
+                                />
                             </div>
-                            <div className="input-section">
-                                <TextField lable="Password" name="password" type="password" placeholder="Password" />
+                            <div className='input-section'>
+                                <Input
+                                    lable='Password'
+                                    name='password'
+                                    type='password'
+                                    placeholder='Password'
+                                />
                             </div>
-                            <div className="text-right">
-                                <button 
-                                    className="btn btn__blue-B8" 
-                                    type="submit"
-                                    style={style}
-                                >Sign In</button>
+                            <div className='text-right'>
+                                <button
+                                    className='btn btn__blue-B8'
+                                    type='submit'
+                                    style={style}>
+                                    Sign In
+                                </button>
                             </div>
                         </Form>
                     )}
                 </Formik>
             </div>
         </div>
-    )
+    );
 }
 
 export default Login
