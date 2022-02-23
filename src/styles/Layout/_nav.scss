@@ -1,9 +1,5 @@
 .NavbarItems {
-    background: linear-gradient(
-        90deg,
-        rgb(245, 68, 151) 0%,
-        rgb(243, 17, 122) 60%
-    );
+    background: linear-gradient(90deg, rgb(248, 67, 67) 0%, rgb(248, 21, 59) 60%);
     height: 80px;
     display: flex;
     justify-content: flex-start;
@@ -14,7 +10,7 @@
 .navbar-logo {
     color: rgb(120, 220, 250);
     justify-self: start;
-    margin-left: 15px;
+    margin-left: 12px;
     cursor: pointer;
 }
 
@@ -27,18 +23,28 @@
 .fa-bars {
     padding-top: 15%;
     font-size: 3rem;
-    color: rgb(255, 176, 222)
+    color: $color-white-DF;
 }
 
 .nav-menu {
     display: grid;
-    grid-template-columns: repeat(6, auto);
-    grid-gap: 15px;
+    grid-template-columns: repeat(8, auto);
+    grid-gap: 4rem;
     list-style: none;
     text-align: center;
     width: 75vw;
     justify-content: flex-start;
-    margin: 1.5rem;
+    padding-left: 2.5rem;
+
+    & li.nav-items {
+        height: 80px;
+        padding-top: 2rem;
+    }
+
+    .btn--create--idea {
+        padding-top: 2rem;
+        padding-left: 4rem;
+    }
 }
 
 .nav-link {
@@ -48,12 +54,11 @@
 }
 
 .nav-link:hover {
-    background-color: rgba(247, 140, 190, 0.35);
+    background-color: $color-red-background-hover;
     color: #ffcadb;
-    font-weight: 600;
     text-decoration: none;
     border-radius: 6px;
-    transition: all 0.15s ease-out;
+    transition: all 0.2s ease-out;
 }
 
 .nav-link-mobile {
@@ -64,18 +69,19 @@
     display: none;
 }
 
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 1095px) {
     .NavbarItems {
         position: relative;
     }
 
     .nav-menu {
+        grid-gap: 1.2rem;
         display: flex;
         flex-direction: column;
         width: 100vw;
-        height: 600px;
+        height: 95vh;
         position: absolute;
-        top: 78px;
+        top: 80px;
         left: -100%;
         margin: 0;
         opacity: 1;
@@ -83,7 +89,7 @@
     }
 
     .nav-menu.active {
-        background: #f5257c;
+        background: $color-red-2C;
         padding: 0;
         left: 0;
         opacity: 1;
@@ -128,17 +134,17 @@
         margin: 2rem auto;
         border-radius: 4px;
         width: 80%;
-        background: rgba(252, 53, 146, 0.68);
+        background: $color-red-mobile-btn;
         text-decoration: none;
-        color: #fff;
+        color: $color-white;
         font-size: 1.5rem;
     }
 
     .nav-link-mobile:hover {
-        background: rgba(247, 159, 200, 0.65);
-        color:#ff2c84;
-        transition: 250ms;
-        font-weight: 700;
+        background: transparent;
+        border: 0.15rem solid $color-red-mobile-btn;
+        color: $color-white-F9;
+        transition: 150ms;
     }
 
     .btn.btn--primary {

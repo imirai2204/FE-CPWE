@@ -1,27 +1,36 @@
 .btn {
-    padding: 8px 20px;
+    padding: 6px 18px;
     border-radius: 4px;
     outline: none;
     border: none;
     cursor: pointer;
     text-decoration: none;
 
-    &:hover{
-        transition: all 0.3s ease-out;
-        background: rgba(252, 124, 50, 0.562);
-        color: $color-pink-84;
-        font-weight: 600;
+    &:hover {
+        transition: all 0.2s ease-out;
+        background-color: $color-purple-C2CE;
+        color: $color-black-40;
     }
 
     &--primary {
-        background-color: $color-pink-60;
+        background-color: transparent;
     }
 
     &--outline {
-        background-color: transparent;
+        background-color: $color-white;
         color: $color-white;
         border: 1px solid var(--primary);
         transition: all 0.3s ease-out;
+    }
+
+    &--modal {
+        background-color: $color-black-40;
+
+        &:hover {
+            transition: all 0.2s ease-out;
+            background-color: $color-red-background-hover;
+            color: $color-black-40;
+        }
     }
 
     &--medium {

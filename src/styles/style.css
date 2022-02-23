@@ -84,24 +84,29 @@ dl, ol, ul {
   min-height: 100%; }
 
 .btn {
-  padding: 8px 20px;
+  padding: 6px 18px;
   border-radius: 4px;
   outline: none;
   border: none;
   cursor: pointer;
   text-decoration: none; }
   .btn:hover {
-    transition: all 0.3s ease-out;
-    background: rgba(252, 124, 50, 0.562);
-    color: #ff2c84;
-    font-weight: 600; }
+    transition: all 0.2s ease-out;
+    background-color: #da74829d;
+    color: #404040; }
   .btn--primary {
-    background-color: #FF1C60; }
+    background-color: transparent; }
   .btn--outline {
-    background-color: transparent;
+    background-color: #FFFFFF;
     color: #FFFFFF;
     border: 1px solid var(--primary);
     transition: all 0.3s ease-out; }
+  .btn--modal {
+    background-color: #404040; }
+    .btn--modal:hover {
+      transition: all 0.2s ease-out;
+      background-color: #e69a9ac0;
+      color: #404040; }
   .btn--medium {
     font-size: 18px;
     color: #FFFFFF; }
@@ -148,8 +153,55 @@ lable {
   font-weight: 500;
   line-height: 22px; }
 
+.dropdown-menu {
+  width: 180px;
+  position: absolute;
+  top: 80px;
+  display: block;
+  list-style: none;
+  text-align: start;
+  border: none;
+  padding: 0; }
+  .dropdown-menu li {
+    height: 60px;
+    background: #f02c2c;
+    cursor: pointer;
+    padding-top: 0.8rem; }
+  .dropdown-menu li:hover {
+    background: #d47f7f; }
+  .dropdown-menu.clicked {
+    display: none; }
+  .dropdown-menu .dropdown-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #FFFFFF;
+    padding: 1rem; }
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  background-color: rgba(31, 30, 30, 0.486); }
+
+.modal-overlay {
+  position: fixed;
+  top: 20vh;
+  left: 5%;
+  width: 90%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  animation: slide-down 300ms ease-out forwards; }
+
 .NavbarItems {
-  background: linear-gradient(90deg, #f54497 0%, #f3117a 60%);
+  background: linear-gradient(90deg, #f84343 0%, #f8153b 60%);
   height: 80px;
   display: flex;
   justify-content: flex-start;
@@ -159,7 +211,7 @@ lable {
 .navbar-logo {
   color: #78dcfa;
   justify-self: start;
-  margin-left: 15px;
+  margin-left: 12px;
   cursor: pointer; }
 
 .fa-react {
@@ -170,17 +222,23 @@ lable {
 .fa-bars {
   padding-top: 15%;
   font-size: 3rem;
-  color: #ffb0de; }
+  color: #DFDFDF; }
 
 .nav-menu {
   display: grid;
-  grid-template-columns: repeat(6, auto);
-  grid-gap: 15px;
+  grid-template-columns: repeat(8, auto);
+  grid-gap: 4rem;
   list-style: none;
   text-align: center;
   width: 75vw;
   justify-content: flex-start;
-  margin: 1.5rem; }
+  padding-left: 2.5rem; }
+  .nav-menu li.nav-items {
+    height: 80px;
+    padding-top: 2rem; }
+  .nav-menu .btn--create--idea {
+    padding-top: 2rem;
+    padding-left: 4rem; }
 
 .nav-link {
   color: #fafafa;
@@ -188,12 +246,11 @@ lable {
   padding: 0.5rem 1rem; }
 
 .nav-link:hover {
-  background-color: rgba(247, 140, 190, 0.35);
+  background-color: #e69a9ac0;
   color: #ffcadb;
-  font-weight: 600;
   text-decoration: none;
   border-radius: 6px;
-  transition: all 0.15s ease-out; }
+  transition: all 0.2s ease-out; }
 
 .nav-link-mobile {
   display: none; }
@@ -201,22 +258,23 @@ lable {
 .menu-icon {
   display: none; }
 
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 1095px) {
   .NavbarItems {
     position: relative; }
   .nav-menu {
+    grid-gap: 1.2rem;
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 600px;
+    height: 95vh;
     position: absolute;
-    top: 78px;
+    top: 80px;
     left: -100%;
     margin: 0;
     opacity: 1;
     transition: all 0.5s ease; }
   .nav-menu.active {
-    background: #f5257c;
+    background: #f02c2c;
     padding: 0;
     left: 0;
     opacity: 1;
@@ -251,15 +309,15 @@ lable {
     margin: 2rem auto;
     border-radius: 4px;
     width: 80%;
-    background: rgba(252, 53, 146, 0.68);
+    background: #f8b21b;
     text-decoration: none;
-    color: #fff;
+    color: #FFFFFF;
     font-size: 1.5rem; }
   .nav-link-mobile:hover {
-    background: rgba(247, 159, 200, 0.65);
-    color: #ff2c84;
-    transition: 250ms;
-    font-weight: 700; }
+    background: transparent;
+    border: 0.15rem solid #f8b21b;
+    color: #F9F9F9;
+    transition: 150ms; }
   .btn.btn--primary {
     display: none; } }
 

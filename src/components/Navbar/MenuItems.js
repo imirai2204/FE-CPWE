@@ -1,32 +1,38 @@
 export const MenuItems = [
     {
         title: "Home",
-        url: "#",
+        path: "/",
         cName: "nav-link",
+        hasMenu: false,
     },
     {
         title: "Dashboard",
-        url: "#",
+        path: "/dashboard",
         cName: "nav-link",
+        hasMenu: false,
     },
     {
         title: "Manage User",
-        url: "#",
+        path: "/manage-user",
         cName: "nav-link",
+        hasMenu: false,
     },
     {
         title: "Category",
-        url: "#",
+        path: "/category",
         cName: "nav-link",
+        hasMenu: true,
     },
     {
         title: "CREATE",
-        url: "#",
-        cName: "nav-link",
+        path: "/create-idea",
+        cName: "nav-link-mobile",
+        hasMenu: false,
     },
     {
         title: "LOGIN",
-        url: "#",
+        path: "/login",
         cName: "nav-link-mobile",
+        hasMenu: false,
     },
 ];
