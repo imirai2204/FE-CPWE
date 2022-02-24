@@ -209,10 +209,14 @@ lable {
   font-size: 1.2rem; }
 
 .navbar-logo {
-  color: #78dcfa;
-  justify-self: start;
-  margin-left: 12px;
-  cursor: pointer; }
+  padding: 35px 90px;
+  overflow: hidden;
+  background-image: url("../../asset/logo.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 0px;
+  margin-left: 5px; }
 
 .fa-react {
   margin-left: 0.1rem;
@@ -322,7 +326,7 @@ lable {
     display: none; } }
 
 .login-layout {
-  background: url(https://login.gre.ac.uk/adfs/portal/illustration/illustration.jpg?id=E59222772F7DA10A27598E8B24D23319BF6C4E5B715402648EA5FFA75EE1C337);
+  background: url(../../asset/login-bg.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

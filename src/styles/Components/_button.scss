@@ -44,12 +44,15 @@
         color: $color-white;
     }
 
-    &__blue-B8 {
-        background-color: $color-blue-B8;
-        font-weight: 700;
-        border-radius: 0;
-        line-height: 25px;
-        font-size: 15px;
-        font-weight: 500;
+    &--linear {
+        background: linear-gradient(180deg, #FFF13C 0%, #FBC50C 51.04%, #F18F3F 100%);
+        border-radius: 4px;
+        justify-content: center;
+        align-items: center;
+        padding: 13px 38px;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 24px;
+        color: $color-black;
     }
 }

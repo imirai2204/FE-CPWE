@@ -8,10 +8,14 @@
 }
 
 .navbar-logo {
-    color: rgb(120, 220, 250);
-    justify-self: start;
-    margin-left: 12px;
-    cursor: pointer;
+    padding: 35px 90px;
+    overflow: hidden;
+    background-image: url("../../asset/logo.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 0px;
+    margin-left: 5px;
 }
 
 .fa-react {

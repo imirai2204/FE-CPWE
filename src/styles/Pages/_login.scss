@@ -1,45 +1,37 @@
 .login{
     &-layout {
-        background: url(https://login.gre.ac.uk/adfs/portal/illustration/illustration.jpg?id=E59222772F7DA10A27598E8B24D23319BF6C4E5B715402648EA5FFA75EE1C337);
+        white-space: nowrap;
+    }
+
+    &-background {
+        background: url(../../asset/login-bg.jpg);
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
         position: absolute;
-        width: 100%;
+        width: 70%;
         height: 100%;
-        left: 0;
+        left: 30%;
         top: 0;
         -webkit-background-size: cover;
     }
 
-    &-background {
-        background-color: rgba(0,0,0,0.4);
-        height: 100%;
-        width: 100%;
-        background-size: cover;
-        -webkit-background-size: cover;
-    }
-
     &-panel {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        margin-bottom: 28px;
-        margin-left: auto;
-        margin-right: auto;
-        min-height: 235px;
-        min-width: 320px;
-        max-width: 486px;
-        width: 412px;
-        height: auto;
+        left: 0;
+        top: 0;
+        position: absolute;
+        height: 100%;
+        width: 30%;
+        background-color: $color-white;
         padding: 36px;
-        box-shadow: 0 2px 3px rgba(0,0,0,0.55);
-        border: 1px solid rgba(0,0,0,0.4);
 
         &_header {
             margin-bottom: 27px;
+            background: url(../../asset/logo.jpg);
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 162px;
         }
     }
 
@@ -48,6 +40,18 @@
         color: $color-black-26;
         font-weight: 600;
         line-height: 28px;
-        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 1095px) {
+    .login {
+        &-background {
+            display: none;
+        }
+    
+        &-panel {
+            width: 100%;
+            min-height: 100%;
+        }
     }
 }

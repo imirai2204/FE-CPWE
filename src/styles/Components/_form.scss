@@ -1,11 +1,13 @@
 .input-section {
     margin-bottom: 13px;
+    margin-top: 40px;
+    position: relative;
 }
 
 .form-control {
     margin-top: 5px;
     margin-bottom: 5px;
-    border-bottom: 1px solid $color-black-70;
+    border-bottom: 3px solid $color-black-70;
     border-left: none;
     border-right: none;
     border-top: none;
@@ -14,10 +16,43 @@
     padding-bottom: 5px;
     font-size: 15px;
     color: $color-black-70;
+    padding-right: 30px;
 
     &:hover {
-        border-bottom: 1px solid $color-blue-B8;
+        border-bottom: 3px solid $color-blue-B8;
     }
+}
+
+.checkbox{
+    font-size: 15px;
+
+    input {
+        display: none; 
+    }
+}
+
+
+.checkbox span {
+    height: 24px;
+    width: 24px;
+    border: 2px solid grey;
+    display: inline-block;
+    position: relative;
+    bottom: -5px;
+    margin-right: 10px;
+}
+
+[type=checkbox]:checked + span:before {
+    content: '\2714';
+    position: absolute;
+    top: -1px;
+    left: 0;
+}
+
+.password-icon {
+    position: absolute;
+    top: 18px;
+    right: 9px;
 }
 
 .error {
@@ -25,5 +60,9 @@
     font-size: 13px;
     font-weight: 500;
     line-height: 22px;
+}
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    background-image: none !important;
 }
 

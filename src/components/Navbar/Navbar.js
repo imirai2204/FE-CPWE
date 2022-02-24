@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "../UI/button/Button";
+import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
@@ -44,7 +44,7 @@ const Navbar = (props) => {
         <nav className='NavbarItems'>
             <Link to='/' onClick={closeMobileMenu}>
                 <h1 className='navbar-logo'>
-                    <i className='fa-brands fa-react'></i>
+                    <i className='logo'></i>
                 </h1>
             </Link>
             <div className='menu-icon' onClick={clickIconHandler}>
