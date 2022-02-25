@@ -36,6 +36,10 @@
     &--medium {
         font-size: 18px;
         color: $color-white;
+
+        &:hover {
+            color: $color-yellow-btn-hover;
+        }
     }
 
     &--large {
@@ -51,5 +55,27 @@
         line-height: 25px;
         font-size: 15px;
         font-weight: 500;
+    }
+}
+
+.btn--user--info {
+    padding-left: 2rem;
+
+    & div {
+        & button {
+            text-align: left;
+
+            & .greeting-message {
+                font-size: 12px;
+                line-height: 22px;
+                color: $color-user-card;
+                padding-top: 0.8rem;
+            }
+
+            div {
+                color: $color-black-40;
+                font-weight: 600;
+            }
+        }
     }
 }

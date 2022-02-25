@@ -3,10 +3,14 @@ import { Button } from "../UI/button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
+import User from "./greeting/User";
+import Greeting from "./greeting/Greeting";
+import Demo from "./greeting/Demo";
 
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
 
     const clickIconHandler = () => setIsClicked(!isClicked);
     const closeMobileMenu = () => setIsClicked(false);
@@ -37,6 +41,13 @@ const Navbar = (props) => {
         );
     });
 
+    /* Logic to check if user login
+        const userLoginHandler = () => {
+            ...logic here
+            setIsLogin(true)
+        }
+    */
+
     const menuIconClasses = isClicked ? "fas fa-times" : "fas fa-bars";
     const navMenuClasses = !isClicked ? "nav-menu" : "nav-menu active";
 
@@ -56,11 +67,20 @@ const Navbar = (props) => {
                     <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                 </div>
             </ul>
-            <Link to='/login' onClick={closeMobileMenu} className='btn--login'>
-                <Button>LOGIN</Button>
-            </Link>
+            <Demo data='Cody' />
         </nav>
     );
 };
-
+/**            {isLogin ? (
+                <div className='btn--user--info'>
+                    <User userName='Cody' src='/image.jpeg' />
+                </div>
+            ) : (
+                <>
+                    <Greeting />
+                    <Link to='/login' onClick={closeMobileMenu} className='btn--login'>
+                        <Button>LOGIN</Button>
+                    </Link>
+                </>
+            )} */
 export default Navbar;

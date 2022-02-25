@@ -5,10 +5,20 @@
     justify-content: flex-start;
     align-items: center;
     font-size: 1.2rem;
+
+    & .greeting-message.no-user {
+        margin-bottom: 0;
+        margin-top: 0.2rem;
+        color: $color-white;
+    }
+
+    & .btn--login {
+        padding-left: 0.5rem;
+    }
 }
 
 .navbar-logo {
-    color: rgb(120, 220, 250);
+    color: $color-blue-D2;
     justify-self: start;
     margin-left: 12px;
     cursor: pointer;
@@ -54,8 +64,8 @@
 }
 
 .nav-link:hover {
-    background-color: $color-red-background-hover;
-    color: #ffcadb;
+    background-color: $color-purple-DD6E;
+    color: $color-yellow-nav-link;
     text-decoration: none;
     border-radius: 6px;
     transition: all 0.2s ease-out;
@@ -99,13 +109,13 @@
 
     .nav-link {
         text-align: center;
-        padding: 2rem;
+        padding: 1.2rem;
         width: 100%;
         display: table;
     }
 
     .nav-link:hover {
-        background-color: #fd6acc62;
+        background-color: $color-purple-DD6E;
         border-radius: 0;
     }
 
@@ -147,7 +157,9 @@
         transition: 150ms;
     }
 
-    .btn.btn--primary {
+    .btn.btn--primary,
+    .btn--user--info,
+    .greeting-message {
         display: none;
     }
 }
