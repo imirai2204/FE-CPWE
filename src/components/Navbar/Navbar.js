@@ -3,10 +3,12 @@ import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
+import UserCard from "./greeting/UserCard";
 
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
 
     const clickIconHandler = () => setIsClicked(!isClicked);
     const closeMobileMenu = () => setIsClicked(false);
@@ -37,6 +39,13 @@ const Navbar = (props) => {
         );
     });
 
+    /* Logic to check if user login
+        const userLoginHandler = () => {
+            ...logic here
+            setIsLogin(true)
+        }
+    */
+
     const menuIconClasses = isClicked ? "fas fa-times" : "fas fa-bars";
     const navMenuClasses = !isClicked ? "nav-menu" : "nav-menu active";
 
@@ -56,11 +65,8 @@ const Navbar = (props) => {
                     <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                 </div>
             </ul>
-            <Link to='/login' onClick={closeMobileMenu} className='btn--login'>
-                <Button>LOGIN</Button>
-            </Link>
+            <UserCard data='Cody' />
         </nav>
     );
 };
-
 export default Navbar;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import '../styles/style.scss';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Formik, Form } from 'formik';
+import "../styles/style.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Formik, Form } from "formik";
 import { TextField } from "../components/Form/TextField";
 import { SignInSchema } from "../validation";
-import axios from 'axios';
+import axios from "axios";
 
 function handleSubmit(values) {
     const body = {
@@ -34,8 +34,8 @@ function Login() {
         display: "block",
         marginLeft: "auto",
         marginRight: "auto",
-        marginTop: "45px"
-    }
+        marginTop: "45px",
+    };
 
     const [passwordShown, setPasswordShown] = useState(false);
 
@@ -45,22 +45,20 @@ function Login() {
 
     const handleCheckBox = () => {
         console.log("test");
-    }
+    };
 
     return (
-        <div className="login-layout">
-            <div className="login-panel">
-                <div className="login-panel_header">
-                </div>
-                <h2 className="login-title">Login</h2>
+        <div className='login-layout'>
+            <div className='login-panel'>
+                <div className='login-panel_header'></div>
+                <h2 className='login-title'>Login</h2>
                 <Formik
                     initialValues={{
                         email: "",
-                        password: ""
+                        password: "",
                     }}
                     validationSchema={SignInSchema}
-                    onSubmit={(values, { setSubmitting }) => handleSubmit(values)}
-                >
+                    onSubmit={(values, { setSubmitting }) => handleSubmit(values)}>
                     {({
                         isSubmiting,
                         handleChange,
@@ -70,37 +68,47 @@ function Login() {
                         errors,
                         touched,
                     }) => (
-                        <Form className="login-form">
-                            <div className="input-section">
-                                <TextField name="email" type="email" placeholder="Email" />
-                            </div>
-                            <div className="input-section">
+                        <Form className='login-form'>
+                            <div className='input-section'>
                                 <TextField
-                                    name="password"
-                                    type={passwordShown ? "text" : "password"}
-                                    placeholder="Password" />
-                                <i className={`fa ${passwordShown ? "fa-eye-slash" : "fa-eye"} fa-lg password-icon`}
-                                    onClick={togglePassword} />
+                                    name='email'
+                                    type='email'
+                                    placeholder='Email'
+                                />
                             </div>
-                            <label className="checkbox">
-                                <input type='checkbox' onChange={handleCheckBox}/>
+                            <div className='input-section'>
+                                <TextField
+                                    name='password'
+                                    type={passwordShown ? "text" : "password"}
+                                    placeholder='Password'
+                                />
+                                <i
+                                    className={`fa ${
+                                        passwordShown ? "fa-eye-slash" : "fa-eye"
+                                    } fa-lg password-icon`}
+                                    onClick={togglePassword}
+                                />
+                            </div>
+                            <label className='checkbox'>
+                                <input type='checkbox' onChange={handleCheckBox} />
                                 <span></span>
                                 Remember login
                             </label>
-                            <div className="text-right">
+                            <div className='text-right'>
                                 <button
-                                    className="btn btn--linear"
-                                    type="submit"
-                                    style={style}
-                                >LOGIN</button>
+                                    className='btn btn--linear'
+                                    type='submit'
+                                    style={style}>
+                                    LOGIN
+                                </button>
                             </div>
                         </Form>
                     )}
                 </Formik>
             </div>
-            <div className="login-background"></div>
+            <div className='login-background'></div>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;

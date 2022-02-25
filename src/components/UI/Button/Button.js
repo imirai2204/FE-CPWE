@@ -11,7 +11,8 @@ export const Button = ({ children, type, onClick, buttonStyle, buttonSize }) => 
     return (
         <button
             className={`btn ${checkButtonStyle} ${checkButtonSizes}`}
-            onClick={onClick}>
+            onClick={onClick}
+            type={type}>
             {children}
         </button>
     );

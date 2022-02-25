@@ -15,6 +15,8 @@ import Category from "./pages/Category";
 import CreateIdea from "./pages/CreateIdea";
 import Modal from "./components/UI/Modal/Modal";
 import { Button } from "./components/UI/Button/Button";
+import AccountSetting from "./pages/AccountSetting";
+import Profile from "./pages/Profile";
 
 function App() {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -34,12 +36,14 @@ function App() {
                 <Route path='/category/tags' exact element={<Tags />} />
                 <Route path='/category/topic' exact element={<Topic />} />
                 <Route path='/create-idea' exact element={<CreateIdea />} />
+                <Route path='/account-settings' exact element={<AccountSetting />} />
+                <Route path='/profile' exact element={<Profile />} />
             </Routes>
             {isOpenModal && (
                 <Modal
                     portalElemId='create-idea-modal'
                     className='idea-submission'
-                    onClose={closeModalHandler}>
+                    onClick={closeModalHandler}>
                     <Button onClick={closeModalHandler} buttonStyle='btn--modal'>
                         Close Modal
                     </Button>
