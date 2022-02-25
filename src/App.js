@@ -13,6 +13,8 @@ import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import Category from "./pages/Category";
 import CreateIdea from "./pages/CreateIdea";
+import AccountSetting from "./pages/AccountSetting";
+import Profile from "./pages/Profile";
 import Modal from "./components/UI/Modal/Modal";
 import { Button } from "./components/UI/Button/Button";
 
@@ -34,6 +36,8 @@ function App() {
                 <Route path='/category/tags' exact element={<Tags />} />
                 <Route path='/category/topic' exact element={<Topic />} />
                 <Route path='/create-idea' exact element={<CreateIdea />} />
+                <Route path='/account-settings' exact element={<AccountSetting />} />
+                <Route path='/profile' exact element={<Profile />} />
             </Routes>
             {isOpenModal && (
                 <Modal

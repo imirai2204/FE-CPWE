@@ -3,14 +3,12 @@ import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
-import User from "./greeting/User";
-import Greeting from "./greeting/Greeting";
-import Demo from "./greeting/Demo";
+import UserCard from "./greeting/UserCard";
 
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLogin, setIsLogin] = useState(false);
 
     const clickIconHandler = () => setIsClicked(!isClicked);
     const closeMobileMenu = () => setIsClicked(false);
@@ -67,20 +65,8 @@ const Navbar = (props) => {
                     <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                 </div>
             </ul>
-            <Demo data='Cody' />
+            <UserCard data='Cody' />
         </nav>
     );
 };
-/**            {isLogin ? (
-                <div className='btn--user--info'>
-                    <User userName='Cody' src='/image.jpeg' />
-                </div>
-            ) : (
-                <>
-                    <Greeting />
-                    <Link to='/login' onClick={closeMobileMenu} className='btn--login'>
-                        <Button>LOGIN</Button>
-                    </Link>
-                </>
-            )} */
 export default Navbar;

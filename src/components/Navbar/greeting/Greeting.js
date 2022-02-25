@@ -1,5 +1,4 @@
 import React from "react";
-import LoginIcon from "@mui/icons-material/Login";
 
 const date = new Date();
 
@@ -17,22 +16,13 @@ const Greeting = (props) => {
         greetingMessage = "Good evening";
     }
 
-    const hasUserLogin = props.data !== undefined;
-
     return (
         <>
-            {hasUserLogin ? (
-                <p className='greeting-message'>
-                    {`${greetingMessage} ${props.data}!`}
-                    <br />
-                    <span className='greeting-message'>Nice to see you back.</span>
-                </p>
-            ) : (
-                <p className='greeting-message no-user'>
-                    {`${greetingMessage}! Please login `}
-                    <LoginIcon />
-                </p>
-            )}
+            <p className='greeting-message'>
+                {`${greetingMessage} ${props.data}!`}
+                <br />
+                <span className='greeting-message'>Nice to see you back</span>
+            </p>
         </>
     );
 };

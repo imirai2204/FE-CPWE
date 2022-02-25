@@ -29,10 +29,4 @@ export const MenuItems = [
         cName: "nav-link-mobile",
         hasMenu: false,
     },
-    {
-        title: "LOGIN",
-        path: "/login",
-        cName: "nav-link-mobile",
-        hasMenu: false,
-    },
 ];

@@ -131,7 +131,7 @@ dl, ol, ul {
     .btn--user--info div button .greeting-message {
       font-size: 12px;
       line-height: 22px;
-      color: #f7cd81;
+      color: #ffcd6f;
       padding-top: 0.8rem; }
     .btn--user--info div button div {
       color: #404040;
@@ -217,12 +217,37 @@ lable {
   z-index: 30;
   animation: slide-down 300ms ease-out forwards; }
 
+.MuiButton-root {
+  height: 55px !important; }
+  .MuiButton-root:hover {
+    background-color: #fcd2dd6e !important;
+    transition: all 0.5s ease; }
+  .MuiButton-root .greeting-message {
+    text-align: left;
+    font-size: 12px;
+    padding-top: 1.4rem;
+    line-height: 16px;
+    color: #F3F3F3; }
+  .MuiButton-root .MuiAvatar-root {
+    width: 35px;
+    height: 35px;
+    left: 5px; }
+
 .MuiPaper-root {
-  top: 80px !important;
-  left: 1500px !important; }
+  top: 65px !important;
+  left: 1500px !important;
+  background-color: #ffcd6f !important;
+  border-radius: 0 !important;
+  width: 18.5rem; }
   .MuiPaper-root .MuiList-root {
     padding-top: 0 !important;
     padding-bottom: 0 !important; }
+    .MuiPaper-root .MuiList-root .MuiMenuItem-root {
+      font-size: 15px !important;
+      text-align: center !important; }
+    .MuiPaper-root .MuiList-root .logout {
+      margin-left: 1rem !important;
+      align-items: center !important; }
 
 .NavbarItems {
   background: linear-gradient(90deg, #f84343 0%, #f8153b 60%);
@@ -350,7 +375,8 @@ lable {
     transition: 150ms; }
   .btn.btn--primary,
   .btn--user--info,
-  .greeting-message {
+  .greeting-message,
+  #user-avatar-navbar {
     display: none; } }
 
 .login-layout {
