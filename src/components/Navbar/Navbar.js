@@ -53,7 +53,7 @@ const Navbar = (props) => {
         <nav className='NavbarItems'>
             <Link to='/' onClick={closeMobileMenu}>
                 <h1 className='navbar-logo'>
-                    <i className='fa-brands fa-react'></i>
+                    <i className='logo'></i>
                 </h1>
             </Link>
             <div className='menu-icon' onClick={clickIconHandler}>
