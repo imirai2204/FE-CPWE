@@ -13,8 +13,8 @@ import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import Category from "./pages/Category";
 import CreateIdea from "./pages/CreateIdea";
-import Modal from "./components/UI/modal/Modal";
-import { Button } from "./components/UI/button/Button";
+import Modal from "./components/UI/Modal/Modal";
+import { Button } from "./components/UI/Button/Button";
 
 function App() {
     const [isOpenModal, setIsOpenModal] = useState(false);
