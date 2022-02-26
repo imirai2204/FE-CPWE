@@ -5,6 +5,7 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import axios from "axios";
+import Message from '../components/UI/Modal/Message'
 
 function handleSubmit(values) {
     const body = {
@@ -39,6 +40,8 @@ function Login() {
 
     const [passwordShown, setPasswordShown] = useState(false);
 
+    const [openMess, setOpenMess] = useState(false);
+
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
     };
@@ -46,6 +49,12 @@ function Login() {
     const handleCheckBox = () => {
         console.log("test");
     };
+
+    if(openMess) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
 
     return (
         <div className='login-layout'>
@@ -98,7 +107,10 @@ function Login() {
                                 <button
                                     className='btn btn--linear'
                                     type='submit'
-                                    style={style}>
+                                    style={style}
+                                    onClick={ () => {
+                                        setOpenMess(true);
+                                    }}>
                                     LOGIN
                                 </button>
                             </div>
@@ -107,6 +119,7 @@ function Login() {
                 </Formik>
             </div>
             <div className='login-background'></div>
+            {openMess && <Message closebtn={setOpenMess}/>}
         </div>
     );
 }

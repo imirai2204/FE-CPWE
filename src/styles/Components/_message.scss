@@ -1,0 +1,73 @@
+body.active-modal {
+    overflow-y: hidden;
+}
+
+.titlecloseBtn {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        background-color: transparent;
+        border: none;
+        font-size: 25px;
+        top: 20px;
+        left: 40px;
+        cursor: pointer;
+    }
+}
+
+.mess-background, .overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+}
+
+.overlay {
+    background: rgba(49,49,49,0.8);
+}
+
+.mess-container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.4;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 12px;
+    max-width: 600px;
+    min-width: 300px;
+    box-shadow: rgba(0, 0, 0, 0.35);
+
+    .body{
+        flex: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.7em;
+        text-align: center;
+    }
+
+    .mess-footer {
+        flex: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            width: 150px;
+            height: 45px;
+            margin: 10px;
+            border: none;
+            background-color: lightcoral;
+            color: white;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
+}
