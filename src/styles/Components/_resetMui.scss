@@ -1,0 +1,45 @@
+.MuiButton-root {
+    height: 55px !important;
+
+    &:hover {
+        background-color: $color-purple-DD6E !important;
+        transition: all 0.5s ease;
+    }
+
+    .greeting-message {
+        text-align: left;
+        font-size: 12px;
+        padding-top: 1.4rem;
+        line-height: 16px;
+        color: $color-white-F3;
+    }
+
+    .MuiAvatar-root {
+        width: 35px;
+        height: 35px;
+        left: 5px;
+    }
+}
+
+.MuiPaper-root {
+    top: 65px !important;
+    left: 1500px !important;
+    background-color: $color-user-card !important;
+    border-radius: 0 !important;
+    width: 18.5rem;
+
+    .MuiList-root {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+
+        .MuiMenuItem-root {
+            font-size: 15px !important;
+            text-align: center !important;
+        }
+
+        .logout {
+            margin-left: 1rem !important;
+            align-items: center !important;
+        }
+    }
+}
