@@ -5,18 +5,27 @@
     width: 100%;
     height: 100vh;
     z-index: 20;
-    background-color: rgba(31, 30, 30, 0.486);
+    background-color: rgba(82, 72, 72, 0.623);
 }
 
 .modal-overlay {
     position: fixed;
-    top: 20vh;
-    left: 5%;
-    width: 90%;
+    top: 10vh;
+    margin-left: 25%;
+    width: 45%;
+    height: 75vh;
     background-color: white;
     padding: 1rem;
-    border-radius: 14px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     z-index: 30;
     animation: slide-down 300ms ease-out forwards;
+    overflow-y: scroll;
+}
+
+.check-submit{
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-gap: 12px;
+    align-items: center;
+    align-content: center;
 }

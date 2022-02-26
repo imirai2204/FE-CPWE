@@ -12,16 +12,16 @@ import ManageUser from "./pages/ManageUser";
 import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import Category from "./pages/Category";
-import CreateIdea from "./pages/CreateIdea";
+import SubmitPage from "./pages/SubmitPage";
 import AccountSetting from "./pages/AccountSetting";
 import Profile from "./pages/Profile";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
-import SubmitPage from "./pages/SubmitPage";
 
 function App() {
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const openModalHandler = () => setIsOpenModal(true);
-    const closeModalHandler = () => setIsOpenModal(false);
+    const openModalHandler = () => {
+        setIsOpenModal((prevIsOpenModal) => !prevIsOpenModal);
+    };
     return (
         <>
             <Navbar onClickCreateBtn={openModalHandler} />
@@ -35,12 +35,11 @@ function App() {
                 <Route path='/category/department' exact element={<Department />} />
                 <Route path='/category/tags' exact element={<Tags />} />
                 <Route path='/category/topic' exact element={<Topic />} />
-                <Route path='/create-idea' exact element={<CreateIdea />} />
+                <Route path='/submit-page' exact element={<SubmitPage />} />
                 <Route path='/account-settings' exact element={<AccountSetting />} />
                 <Route path='/profile' exact element={<Profile />} />
-                <Route path='/submitpage' exact element={<SubmitPage />} />
             </Routes>
-            {isOpenModal && <SubmitIdea closeModalHandler={closeModalHandler} />}
+            <SubmitIdea isShowForm={isOpenModal} closeModalHandler={openModalHandler} />
         </>
     );
 }

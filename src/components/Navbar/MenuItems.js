@@ -25,7 +25,7 @@ export const MenuItems = [
     },
     {
         title: "CREATE",
-        path: "/create-idea",
+        path: "/submit-page",
         cName: "nav-link-mobile",
         hasMenu: false,
     },

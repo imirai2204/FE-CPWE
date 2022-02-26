@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @keyframes moveInLeft {
   0% {
     opacity: 0;
@@ -109,19 +110,21 @@ dl, ol, ul {
       color: #404040; }
   .btn--medium {
     font-size: 18px;
-    color: #FFFFFF; }
+    color: #FFFFFF;
+    background-color: #0052CC; }
     .btn--medium:hover {
-      color: #fdcc63; }
+      color: #fdcc63;
+      background-color: #0052CC; }
   .btn--large {
     padding: 12px 26px;
     font-size: 20px;
     color: #FFFFFF; }
   .btn--linear {
     background: linear-gradient(180deg, #FFF13C 0%, #FBC50C 51.04%, #F18F3F 100%);
-    border-radius: 4px;
+    border-radius: 8px;
     justify-content: center;
     align-items: center;
-    padding: 13px 38px;
+    padding: 12px 20px;
     font-weight: bold;
     font-size: 16px;
     line-height: 24px;
@@ -183,10 +186,15 @@ lable {
   margin-right: 10px; }
 
 [type=checkbox]:checked + span:before {
-  content: '\2714';
+  content: '✔';
   position: absolute;
   top: -1px;
-  left: 0; }
+  left: 0;
+  color: #4FA800; }
+  @media screen and (max-width: 1095px) {
+    [type=checkbox]:checked + span:before {
+      left: 3px;
+      color: #4FA800; } }
 
 .password-icon {
   position: absolute;
@@ -201,6 +209,9 @@ lable {
 
 .form-control.is-invalid, .was-validated .form-control:invalid {
   background-image: none !important; }
+
+.submit-panel {
+  padding: 0 20px; }
 
 .dropdown-menu {
   width: 180px;
@@ -237,35 +248,48 @@ lable {
   width: 100%;
   height: 100vh;
   z-index: 20;
-  background-color: rgba(31, 30, 30, 0.486); }
+  background-color: rgba(82, 72, 72, 0.623); }
 
 .modal-overlay {
   position: fixed;
-  top: 20vh;
-  left: 5%;
-  width: 90%;
+  top: 10vh;
+  margin-left: 25%;
+  width: 45%;
+  height: 75vh;
   background-color: white;
   padding: 1rem;
-  border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 30;
-  animation: slide-down 300ms ease-out forwards; }
+  animation: slide-down 300ms ease-out forwards;
+  overflow-y: scroll; }
+
+.check-submit {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 12px;
+  align-items: center;
+  align-content: center; }
 
 .MuiButton-root {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  width: 22rem;
   height: 55px !important; }
   .MuiButton-root:hover {
     background-color: #fcd2dd6e !important;
     transition: all 0.5s ease; }
   .MuiButton-root .greeting-message {
     text-align: left;
-    font-size: 12px;
-    padding-top: 1.4rem;
-    line-height: 16px;
+    font-size: 10px;
+    font-weight: bold;
+    padding-top: 1.2rem;
+    line-height: 18px;
+    right: 10px;
     color: #F3F3F3; }
   .MuiButton-root .MuiAvatar-root {
     width: 35px;
     height: 35px;
-    left: 5px; }
+    right: 12px; }
 
 .MuiPaper-root {
   top: 65px !important;
@@ -282,6 +306,67 @@ lable {
     .MuiPaper-root .MuiList-root .logout {
       margin-left: 1rem !important;
       align-items: center !important; }
+
+body.active-modal {
+  overflow-y: hidden; }
+
+.titlecloseBtn {
+  display: flex;
+  justify-content: flex-end; }
+  .titlecloseBtn button {
+    background-color: transparent;
+    border: none;
+    font-size: 25px;
+    top: 20px;
+    left: 40px;
+    cursor: pointer; }
+
+.mess-background, .overlay {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed; }
+
+.overlay {
+  background: rgba(49, 49, 49, 0.8); }
+
+.mess-container {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 14px 28px;
+  border-radius: 12px;
+  max-width: 600px;
+  min-width: 300px;
+  box-shadow: rgba(0, 0, 0, 0.35); }
+  .mess-container .body {
+    flex: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7em;
+    text-align: center; }
+  .mess-container .mess-footer {
+    flex: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .mess-container .mess-footer button {
+      width: 150px;
+      height: 45px;
+      margin: 10px;
+      border: none;
+      background-color: lightcoral;
+      color: white;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer; }
 
 .NavbarItems {
   background: linear-gradient(90deg, #f84343 0%, #f8153b 60%);
@@ -334,7 +419,7 @@ lable {
     padding-left: 4rem; }
 
 .nav-link {
-  color: #fafafa;
+  color: #FAFAFA;
   text-decoration: none;
   padding: 0.5rem 1rem; }
 
@@ -351,7 +436,7 @@ lable {
 .menu-icon {
   display: none; }
 
-@media screen and (max-width: 1095px) {
+@media screen and (max-width: 1149px) {
   .NavbarItems {
     position: relative; }
   .nav-menu {
@@ -359,7 +444,7 @@ lable {
     display: flex;
     flex-direction: column;
     width: 100vw;
-    height: 95vh;
+    height: 100vh;
     position: absolute;
     top: 80px;
     left: -100%;
@@ -383,10 +468,9 @@ lable {
     border-radius: 0; }
   .navbar-logo {
     position: absolute;
-    top: 0;
+    top: 5px;
     left: 15px;
-    margin: 0;
-    transform: translate(8%, 22%); }
+    margin: 0; }
   .menu-icon {
     display: block;
     position: absolute;
@@ -402,15 +486,15 @@ lable {
     margin: 2rem auto;
     border-radius: 4px;
     width: 80%;
-    background: #f8b21b;
+    background: #0052CC;
     text-decoration: none;
     color: #FFFFFF;
     font-size: 1.5rem; }
-  .nav-link-mobile:hover {
-    background: transparent;
-    border: 0.15rem solid #f8b21b;
-    color: #F9F9F9;
-    transition: 150ms; }
+    .nav-link-mobile:hover {
+      background: transparent;
+      border: 0.15rem solid #0052CC;
+      color: #F9F9F9;
+      transition: 150ms; }
   .btn.btn--primary,
   .btn--user--info,
   .greeting-message,
