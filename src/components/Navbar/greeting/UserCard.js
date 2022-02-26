@@ -24,10 +24,10 @@ export default function BasicMenu(props) {
 
     const hasImageSource = props.src !== undefined;
 
-    const userMenu = UserMenu.map((item) => {
+    const userMenu = UserMenu.map((item, index) => {
         return (
             <Link to={item.path}>
-                <MenuItem onClick={closeMenuHandler}>
+                <MenuItem key={index} onClick={closeMenuHandler}>
                     {item.title}{" "}
                     {item.path === "/login" && (
                         <div className='logout'>
@@ -47,12 +47,12 @@ export default function BasicMenu(props) {
                 aria-haspopup='true'
                 aria-expanded={open ? "true" : undefined}
                 onClick={openMenuHandler}>
-                <Greeting data={props.data} />
                 {hasImageSource ? (
                     <Avatar id='user-avatar-navbar' src={props.src} />
                 ) : (
                     <Avatar id='user-avatar-navbar' src={defaultAvatar} />
                 )}
+                <Greeting data={props.data} />
             </Button>
             <Menu
                 id='basic-menu'
