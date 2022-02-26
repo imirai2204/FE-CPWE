@@ -80,7 +80,7 @@ function Login() {
                         <Form className='login-form'>
                             <div className='input-section'>
                                 <TextField
-                                    name='mail'
+                                    name='email'
                                     type='email'
                                     placeholder='Email'
                                 />
