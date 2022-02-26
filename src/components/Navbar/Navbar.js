@@ -62,6 +62,7 @@ const Navbar = (props) => {
             <ul className={navMenuClasses}>
                 {mapMenuItems}
                 <div className='btn--create--idea'>
+                    {/* <Button onClick={props.onClickCreateBtn}>CREATE</Button> */}
                     <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                 </div>
             </ul>

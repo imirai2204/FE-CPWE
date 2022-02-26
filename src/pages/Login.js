@@ -71,7 +71,7 @@ function Login() {
                         <Form className='login-form'>
                             <div className='input-section'>
                                 <TextField
-                                    name='email'
+                                    name='mail'
                                     type='email'
                                     placeholder='Email'
                                 />

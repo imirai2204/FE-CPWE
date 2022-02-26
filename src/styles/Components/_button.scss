@@ -36,9 +36,11 @@
     &--medium {
         font-size: 18px;
         color: $color-white;
+        background-color: $color-blue-CC;
 
         &:hover {
             color: $color-yellow-btn-hover;
+            background-color: $color-blue-CC;
         }
     }
 

@@ -116,13 +116,16 @@ dl, ol, ul {
     padding: 12px 26px;
     font-size: 20px;
     color: #FFFFFF; }
-  .btn__blue-B8 {
-    background-color: #0067B8;
-    font-weight: 700;
-    border-radius: 0;
-    line-height: 25px;
-    font-size: 15px;
-    font-weight: 500; }
+  .btn--linear {
+    background: linear-gradient(180deg, #FFF13C 0%, #FBC50C 51.04%, #F18F3F 100%);
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    padding: 13px 38px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000; }
 
 .btn--user--info {
   padding-left: 2rem; }
@@ -145,12 +148,14 @@ lable {
   line-height: 22px; }
 
 .input-section {
-  margin-bottom: 13px; }
+  margin-bottom: 13px;
+  margin-top: 40px;
+  position: relative; }
 
 .form-control {
   margin-top: 5px;
   margin-bottom: 5px;
-  border-bottom: 1px solid #707070;
+  border-bottom: 3px solid #707070;
   border-left: none;
   border-right: none;
   border-top: none;
@@ -158,15 +163,44 @@ lable {
   padding-left: 0;
   padding-bottom: 5px;
   font-size: 15px;
-  color: #707070; }
+  color: #707070;
+  padding-right: 30px; }
   .form-control:hover {
-    border-bottom: 1px solid #0067B8; }
+    border-bottom: 3px solid #0067B8; }
+
+.checkbox {
+  font-size: 15px; }
+  .checkbox input {
+    display: none; }
+
+.checkbox span {
+  height: 24px;
+  width: 24px;
+  border: 2px solid grey;
+  display: inline-block;
+  position: relative;
+  bottom: -5px;
+  margin-right: 10px; }
+
+[type=checkbox]:checked + span:before {
+  content: '\2714';
+  position: absolute;
+  top: -1px;
+  left: 0; }
+
+.password-icon {
+  position: absolute;
+  top: 18px;
+  right: 9px; }
 
 .error {
   color: #F73C3D;
   font-size: 13px;
   font-weight: 500;
   line-height: 22px; }
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+  background-image: none !important; }
 
 .dropdown-menu {
   width: 180px;
@@ -271,7 +305,7 @@ lable {
   background-repeat: no-repeat;
   background-position: center;
   margin-bottom: 0px;
-  margin-left: 5px; }
+  margin-left: 15px; }
 
 .fa-react {
   margin-left: 0.1rem;
@@ -384,47 +418,45 @@ lable {
     display: none; } }
 
 .login-layout {
+  white-space: nowrap; }
+
+.login-background {
   background: url(../../asset/login-bg.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
-  width: 100%;
+  width: 70%;
   height: 100%;
-  left: 0;
+  left: 30%;
   top: 0;
   -webkit-background-size: cover; }
 
-.login-background {
-  background-color: rgba(0, 0, 0, 0.4);
-  height: 100%;
-  width: 100%;
-  background-size: cover;
-  -webkit-background-size: cover; }
-
 .login-panel {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  margin-bottom: 28px;
-  margin-left: auto;
-  margin-right: auto;
-  min-height: 235px;
-  min-width: 320px;
-  max-width: 486px;
-  width: 412px;
-  height: auto;
-  padding: 36px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(0, 0, 0, 0.4); }
+  left: 0;
+  top: 0;
+  position: absolute;
+  height: 100%;
+  width: 30%;
+  background-color: #FFFFFF;
+  padding: 36px; }
   .login-panel_header {
-    margin-bottom: 27px; }
+    margin-bottom: 27px;
+    background: url(../../asset/logo.jpg);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 162px; }
 
 .login-title {
   font-size: 24px;
   color: #262626;
   font-weight: 600;
-  line-height: 28px;
-  margin-bottom: 20px; }
+  line-height: 28px; }
+
+@media screen and (max-width: 1095px) {
+  .login-background {
+    display: none; }
+  .login-panel {
+    width: 100%;
+    min-height: 100%; } }

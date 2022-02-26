@@ -16,6 +16,7 @@ import CreateIdea from "./pages/CreateIdea";
 import AccountSetting from "./pages/AccountSetting";
 import Profile from "./pages/Profile";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
+import SubmitPage from "./pages/SubmitPage";
 
 function App() {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -37,6 +38,7 @@ function App() {
                 <Route path='/create-idea' exact element={<CreateIdea />} />
                 <Route path='/account-settings' exact element={<AccountSetting />} />
                 <Route path='/profile' exact element={<Profile />} />
+                <Route path='/submitpage' exact element={<SubmitPage />} />
             </Routes>
             {isOpenModal && <SubmitIdea closeModalHandler={closeModalHandler} />}
         </>

@@ -25,7 +25,7 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-bottom: 0px;
-    margin-left: 5px;
+    margin-left: 15px;
 }
 
 .fa-react {
@@ -62,7 +62,7 @@
 }
 
 .nav-link {
-    color: rgb(250, 250, 250);
+    color: $color-white-FA;
     text-decoration: none;
     padding: 0.5rem 1rem;
 }
@@ -125,10 +125,9 @@
 
     .navbar-logo {
         position: absolute;
-        top: 0;
+        top: 5px;
         left: 15px;
         margin: 0;
-        transform: translate(8%, 22%);
     }
 
     .menu-icon {
@@ -148,17 +147,17 @@
         margin: 2rem auto;
         border-radius: 4px;
         width: 80%;
-        background: $color-red-mobile-btn;
+        background: $color-blue-CC;
         text-decoration: none;
         color: $color-white;
         font-size: 1.5rem;
-    }
 
-    .nav-link-mobile:hover {
-        background: transparent;
-        border: 0.15rem solid $color-red-mobile-btn;
-        color: $color-white-F9;
-        transition: 150ms;
+        &:hover {
+            background: transparent;
+            border: 0.15rem solid $color-blue-CC;
+            color: $color-white-F9;
+            transition: 150ms;
+        }
     }
 
     .btn.btn--primary,
