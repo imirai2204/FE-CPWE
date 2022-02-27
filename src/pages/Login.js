@@ -118,8 +118,9 @@ function Login() {
             </div>
             <div className='login-background'></div>
             {hasError && <ErrorMessage closebtn={setHasError} />}
+
         </div>
     );
-}
+};
 
 export default Login;
