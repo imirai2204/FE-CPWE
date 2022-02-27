@@ -2,7 +2,7 @@ import React from "react";
 //import "./message.css";
 import "../../../styles/style.scss";
 
-function Message({ closebtn }) {
+function ErrorMessage({ closebtn }) {
     return (
         <div className='mess-background'>
             <div className='overlay'></div>
@@ -24,4 +24,4 @@ function Message({ closebtn }) {
     );
 }
 
-export default Message;
+export default ErrorMessage;

@@ -8,7 +8,6 @@ import User from "./greeting/User";
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
 
     const clickIconHandler = () => setIsClicked(!isClicked);
     const closeMobileMenu = () => setIsClicked(false);

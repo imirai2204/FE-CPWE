@@ -5,42 +5,24 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import axios from "axios";
-import Message from '../components/UI/Modal/Message'
+import ErrorMessage from "../components/UI/Modal/ErrorMessage";
 
-function handleSubmit(values) {
-    const body = {
-        email: values.email,
-        password: values.password,
-    };
+const style = {
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "45px",
+};
 
-    axios
-        .post(`http://localhost:3000/login`, body)
-        .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            setTimeout(() => {
-                alert("Login success");
-            }, 400);
-        })
-        .catch((error) => {
-            console.log(error);
-            setTimeout(() => {
-                alert(error);
-            }, 400);
-        });
-}
+const initialValues = {
+    email: "",
+    password: "",
+};
 
 function Login() {
-    const style = {
-        display: "block",
-        marginLeft: "auto",
-        marginRight: "auto",
-        marginTop: "45px",
-    };
-
     const [passwordShown, setPasswordShown] = useState(false);
-
-    const [openMess, setOpenMess] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [isSuccessLogin, setIsSuccessLogin] = useState(false);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
@@ -50,11 +32,31 @@ function Login() {
         console.log("test");
     };
 
-    if(openMess) {
-        document.body.classList.add('active-modal')
+    if (hasError) {
+        document.body.classList.add("active-modal");
     } else {
-        document.body.classList.remove('active-modal')
+        document.body.classList.remove("active-modal");
     }
+
+    const clickLoginButtonHandler = () => {
+        setHasError(true);
+    };
+
+    const handleSubmit = async (values) => {
+        const { ...data } = values;
+
+        const response = await axios.post(`/login`, data).catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+                setHasError(true);
+            }
+        });
+
+        if (response && response.data) {
+            setIsSuccessLogin(true);
+            console.log(response.data.data);
+        }
+    };
 
     return (
         <div className='login-layout'>
@@ -62,10 +64,7 @@ function Login() {
                 <div className='login-panel_header'></div>
                 <h2 className='login-title'>Login</h2>
                 <Formik
-                    initialValues={{
-                        email: "",
-                        password: "",
-                    }}
+                    initialValues={initialValues}
                     validationSchema={SignInSchema}
                     onSubmit={(values, { setSubmitting }) => handleSubmit(values)}>
                     {({
@@ -108,18 +107,17 @@ function Login() {
                                     className='btn btn--linear'
                                     type='submit'
                                     style={style}
-                                    onClick={ () => {
-                                        setOpenMess(true);
-                                    }}>
+                                    onClick={clickLoginButtonHandler}>
                                     LOGIN
                                 </button>
                             </div>
+                            {isSuccessLogin && <p>Login Success!</p>}
                         </Form>
                     )}
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {openMess && <Message closebtn={setOpenMess}/>}
+            {hasError && <ErrorMessage closebtn={setHasError} />}
         </div>
     );
 }
