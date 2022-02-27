@@ -5,19 +5,19 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import axios from "axios";
-import Message from '../components/UI/Modal/Message'
+import Message from "../components/UI/Modal/Message";
 
-function handleSubmit(values) {
+const handleSubmit = async (values) => {
     const body = {
         email: values.email,
         password: values.password,
     };
 
-    axios
-        .post(`http://localhost:3000/login`, body)
+    const response = await axios
+        .post(`/authen/signin`, body)
         .then((res) => {
-            console.log(res);
-            console.log(res.data);
+            console.log(res.data.data);
+            console.log(res.data.data["token"]);
             setTimeout(() => {
                 alert("Login success");
             }, 400);
@@ -28,9 +28,9 @@ function handleSubmit(values) {
                 alert(error);
             }, 400);
         });
-}
+};
 
-function Login() {
+const Login = () => {
     const style = {
         display: "block",
         marginLeft: "auto",
@@ -39,7 +39,6 @@ function Login() {
     };
 
     const [passwordShown, setPasswordShown] = useState(false);
-
     const [openMess, setOpenMess] = useState(false);
 
     const togglePassword = () => {
@@ -50,10 +49,10 @@ function Login() {
         console.log("test");
     };
 
-    if(openMess) {
-        document.body.classList.add('active-modal')
+    if (openMess) {
+        document.body.classList.add("active-modal");
     } else {
-        document.body.classList.remove('active-modal')
+        document.body.classList.remove("active-modal");
     }
 
     return (
@@ -108,7 +107,7 @@ function Login() {
                                     className='btn btn--linear'
                                     type='submit'
                                     style={style}
-                                    onClick={ () => {
+                                    onClick={() => {
                                         setOpenMess(true);
                                     }}>
                                     LOGIN
@@ -119,9 +118,9 @@ function Login() {
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {openMess && <Message closebtn={setOpenMess}/>}
+            {openMess && <Message closebtn={setOpenMess} />}
         </div>
     );
-}
+};
 
 export default Login;
