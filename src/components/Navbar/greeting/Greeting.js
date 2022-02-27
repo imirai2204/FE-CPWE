@@ -19,9 +19,9 @@ const Greeting = (props) => {
     return (
         <>
             <p className='greeting-message'>
-                {`${greetingMessage} ${props.data}!`}
+                {`${greetingMessage},`}
                 <br />
-                <span className='greeting-message'>Nice to see you back</span>
+                <span className='greeting-message'>{props.data}</span>
             </p>
         </>
     );

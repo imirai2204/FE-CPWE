@@ -1,7 +1,7 @@
 .MuiButton-root {
     display: grid;
     grid-template-columns: repeat(2, auto);
-    width: 22rem;
+    width: 18rem;
     height: 55px !important;
 
     &:hover {
@@ -10,19 +10,18 @@
     }
 
     .greeting-message {
-        text-align: left;
+        text-align: right;
         font-size: 10px;
         font-weight: bold;
         padding-top: 1.2rem;
         line-height: 18px;
-        right: 10px;
         color: $color-white-F3;
     }
 
     .MuiAvatar-root {
         width: 35px;
         height: 35px;
-        right: 12px;
+        margin-left: 1.2rem;
     }
 }
 

@@ -3,7 +3,7 @@ import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
-import UserCard from "./greeting/UserCard";
+import User from "./greeting/User";
 
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
@@ -66,7 +66,7 @@ const Navbar = (props) => {
                     <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                 </div>
             </ul>
-            <UserCard data='Cody' />
+            <User data='Cody' />
         </nav>
     );
 };

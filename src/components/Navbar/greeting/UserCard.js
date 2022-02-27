@@ -1,69 +1,43 @@
-import React from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Greeting from "./Greeting";
-import Avatar from "@mui/material/Avatar";
-import { Link } from "react-router-dom";
-import { UserMenu } from "./UserMenu";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import Typography from "@mui/material/Typography";
 
-const defaultAvatar = "/default-avatar.png";
+const bull = (
+    <Box
+        component='span'
+        sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}>
+        •
+    </Box>
+);
 
-export default function BasicMenu(props) {
-    const [showMenu, setShowMenu] = React.useState(null);
-    const open = Boolean(showMenu);
-
-    const openMenuHandler = (event) => {
-        setShowMenu(event.currentTarget);
-    };
-
-    const closeMenuHandler = () => {
-        setShowMenu(null);
-    };
-
-    const hasImageSource = props.src !== undefined;
-
-    const userMenu = UserMenu.map((item, index) => {
-        return (
-            <Link to={item.path}>
-                <MenuItem key={index} onClick={closeMenuHandler}>
-                    {item.title}{" "}
-                    {item.path === "/login" && (
-                        <div className='logout'>
-                            <LogoutRoundedIcon />
-                        </div>
-                    )}
-                </MenuItem>
-            </Link>
-        );
-    });
-
+const UserCard = (props) => {
     return (
-        <>
-            <Button
-                id='basic-button'
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup='true'
-                aria-expanded={open ? "true" : undefined}
-                onClick={openMenuHandler}>
-                {hasImageSource ? (
-                    <Avatar id='user-avatar-navbar' src={props.src} />
-                ) : (
-                    <Avatar id='user-avatar-navbar' src={defaultAvatar} />
-                )}
-                <Greeting data={props.data} />
-            </Button>
-            <Menu
-                id='basic-menu'
-                anchorEl={showMenu}
-                open={open}
-                onClose={closeMenuHandler}
-                MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                }}>
-                {userMenu}
-            </Menu>
-        </>
+        <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+                <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
+                    Word of the Day
+                </Typography>
+                <Typography variant='h5' component='div'>
+                    be{bull}nev{bull}o{bull}lent
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color='text.secondary'>
+                    adjective
+                </Typography>
+                <Typography variant='body2'>
+                    well meaning and kindly.
+                    <br />
+                    {'"a benevolent smile"'}
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button size='small'>Learn More</Button>
+            </CardActions>
+        </Card>
     );
-}
+};
+
+export default UserCard;
