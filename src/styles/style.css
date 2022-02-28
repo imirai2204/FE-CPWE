@@ -58,16 +58,17 @@ h2 {
 p {
   color: #404040;
   font-family: 'Montserrat', sans-serif;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 28px;
   font-weight: 400;
-  white-space: normal; }
+  white-space: normal;
+  margin-bottom: 0; }
 
 a {
   text-decoration: none;
   color: #404040;
   font-family: 'Montserrat', sans-serif;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 28px;
   font-weight: 400;
   white-space: normal; }
@@ -80,6 +81,10 @@ img {
 
 dl, ol, ul {
   margin-bottom: 0; }
+
+hr {
+  background-color: #707070;
+  opacity: 1; }
 
 #root {
   min-height: 100%; }
@@ -97,11 +102,15 @@ dl, ol, ul {
     color: #404040; }
   .btn--primary {
     background-color: transparent; }
-  .btn--outline {
+  .btn--noline {
     background-color: #FFFFFF;
-    color: #FFFFFF;
-    border: 1px solid var(--primary);
+    color: #404040;
+    font-size: 15px;
+    border: none;
     transition: all 0.3s ease-out; }
+    .btn--noline:hover {
+      background-color: #FFFFFF;
+      color: #404040; }
   .btn--modal {
     background-color: #404040; }
     .btn--modal:hover {
@@ -143,7 +152,7 @@ dl, ol, ul {
       color: #404040;
       font-weight: 600; }
 
-lable {
+label {
   color: #404040;
   font-family: 'Raleway', sans-serif;
   font-size: 15px;
@@ -152,7 +161,7 @@ lable {
 
 .input-section {
   margin-bottom: 13px;
-  margin-top: 40px;
+  margin-top: 25px;
   position: relative; }
 
 .form-control {
@@ -185,21 +194,21 @@ lable {
   bottom: -5px;
   margin-right: 10px; }
 
-[type=checkbox]:checked + span:before {
-  content: '✔';
+[type="checkbox"]:checked + span:before {
+  content: "✔";
   position: absolute;
   top: -1px;
   left: 0;
   color: #4FA800; }
   @media screen and (max-width: 1095px) {
-    [type=checkbox]:checked + span:before {
+    [type="checkbox"]:checked + span:before {
       left: 3px;
       color: #4FA800; } }
 
 .password-icon {
   position: absolute;
-  top: 18px;
-  right: 9px; }
+  top: 20px;
+  right: 5px; }
 
 .error {
   color: #F73C3D;
@@ -207,11 +216,51 @@ lable {
   font-weight: 500;
   line-height: 22px; }
 
-.form-control.is-invalid, .was-validated .form-control:invalid {
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
   background-image: none !important; }
 
-.submit-panel {
-  padding: 0 20px; }
+.select {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: 4px solid #707070;
+  font-size: 15px;
+  color: #707070; }
+  .select:hover {
+    border: 4px solid #0067B8; }
+
+.textarea {
+  border: 3px solid #707070;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  font-size: 15px;
+  color: #707070;
+  text-align: justify; }
+  .textarea:hover {
+    border: 3px solid #0067B8; }
+
+.label-mark .label:after {
+  content: "*";
+  color: #F73C3D;
+  font-size: 25px; }
+  @media screen and (max-width: 1095px) {
+    .label-mark .label:after {
+      font-size: 17px; } }
+
+.css-1s2u09g-control {
+  border: none !important;
+  border-radius: 0 !important; }
+
+.css-1insrsq-control {
+  border: none !important;
+  border-radius: 0 !important; }
+
+.css-1pahdxg-control:hover {
+  border: none !important; }
+
+.css-1pahdxg-control {
+  box-shadow: none !important; }
 
 .dropdown-menu {
   width: 180px;
@@ -255,7 +304,7 @@ lable {
   top: 10vh;
   margin-left: 25%;
   width: 45%;
-  height: 75vh;
+  height: 80vh;
   background-color: white;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -269,27 +318,29 @@ lable {
   grid-gap: 12px;
   align-items: center;
   align-content: center; }
+  @media screen and (max-width: 1095px) {
+    .check-submit {
+      display: block; } }
 
 .MuiButton-root {
   display: grid;
   grid-template-columns: repeat(2, auto);
-  width: 22rem;
+  width: 18rem;
   height: 55px !important; }
   .MuiButton-root:hover {
     background-color: #fcd2dd6e !important;
     transition: all 0.5s ease; }
   .MuiButton-root .greeting-message {
-    text-align: left;
+    text-align: right;
     font-size: 10px;
     font-weight: bold;
     padding-top: 1.2rem;
     line-height: 18px;
-    right: 10px;
     color: #F3F3F3; }
   .MuiButton-root .MuiAvatar-root {
     width: 35px;
     height: 35px;
-    right: 12px; }
+    margin-left: 1.2rem; }
 
 .MuiPaper-root {
   top: 65px !important;
@@ -396,10 +447,15 @@ body.active-modal {
   margin-left: 0.1rem;
   font-size: 4rem; }
 
-.fa-times,
 .fa-bars {
   padding-top: 15%;
   font-size: 3rem;
+  color: #DFDFDF; }
+
+.fa-times {
+  padding-top: 0%;
+  font-size: 35px;
+  padding-right: 3px;
   color: #DFDFDF; }
 
 .nav-menu {
@@ -505,7 +561,7 @@ body.active-modal {
   white-space: nowrap; }
 
 .login-background {
-  background: url(../../asset/login-bg.jpg);
+  background: url("../../asset/login-bg.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -526,7 +582,7 @@ body.active-modal {
   padding: 36px; }
   .login-panel_header {
     margin-bottom: 27px;
-    background: url(../../asset/logo.jpg);
+    background: url("../../asset/logo.jpg");
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -538,9 +594,109 @@ body.active-modal {
   font-weight: 600;
   line-height: 28px; }
 
+.login-form .input-section label {
+  display: none; }
+
 @media screen and (max-width: 1095px) {
   .login-background {
     display: none; }
   .login-panel {
     width: 100%;
-    min-height: 100%; } }
+    min-height: 100%; }
+  .login-form .input-section label {
+    display: inline-block; }
+  .login-form .input-section .password-icon {
+    top: 40px; } }
+
+.submit-panel {
+  padding: 10px 20px; }
+  .submit-panel .layout-1 {
+    display: flex; }
+    .submit-panel .layout-1--left {
+      flex: 50%; }
+    .submit-panel .layout-1--right {
+      flex: 50%;
+      padding-top: 25px;
+      padding-left: 50px; }
+      .submit-panel .layout-1--right .time {
+        display: flex; }
+        .submit-panel .layout-1--right .time label {
+          font-weight: 600;
+          line-height: 28px;
+          margin-right: 10px;
+          width: 75px; }
+        .submit-panel .layout-1--right .time-line {
+          width: 27%; }
+  .submit-panel .contributor {
+    width: 50%; }
+  .submit-panel [type="checkbox"]:checked + span:before {
+    left: 5px; }
+  .submit-panel .attachment {
+    margin-bottom: 20px; }
+  .submit-panel .btn--medium {
+    font-size: 15px; }
+
+.submit-title {
+  text-align: center; }
+
+@media screen and (max-width: 1095px) {
+  .submit-panel .layout-1 {
+    display: block; }
+    .submit-panel .layout-1--right {
+      padding-left: 0; }
+      .submit-panel .layout-1--right .time-line {
+        display: none; }
+  .submit-panel .contributor {
+    width: 100%; }
+  .submit-panel .btn--noline {
+    display: none; }
+  .submit-panel .btn--medium {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 15px 18px; }
+  .check-submit {
+    display: block; } }
+
+.terms {
+  padding: 10px 20px; }
+  .terms h2 {
+    text-align: center; }
+  .terms i {
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    line-height: 28px;
+    color: #F73C3D;
+    font-weight: 600;
+    text-align: justify; }
+  .terms ol {
+    list-style-type: lower-alpha; }
+    .terms ol li {
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      line-height: 28px;
+      color: #000000;
+      font-weight: 600;
+      text-align: justify; }
+    .terms ol ul {
+      list-style-type: disc; }
+      .terms ol ul li {
+        font-family: "Montserrat", sans-serif;
+        font-size: 15px;
+        line-height: 28px;
+        color: #000000;
+        font-weight: 400;
+        text-align: justify; }
+  .terms p {
+    color: #F73C3D;
+    font-weight: 600;
+    text-align: justify; }
+  .terms span {
+    color: #F73C3D;
+    font-weight: 600;
+    text-align: justify;
+    font-family: "Montserrat", sans-serif;
+    font-size: 15px;
+    line-height: 28px; }
+  .terms .mail {
+    text-decoration: underline; }

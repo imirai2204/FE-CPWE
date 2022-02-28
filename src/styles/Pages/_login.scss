@@ -4,7 +4,7 @@
     }
 
     &-background {
-        background: url(../../asset/login-bg.jpg);
+        background: url("../../asset/login-bg.jpg");
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
@@ -27,7 +27,7 @@
 
         &_header {
             margin-bottom: 27px;
-            background: url(../../asset/logo.jpg);
+            background: url("../../asset/logo.jpg");
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;

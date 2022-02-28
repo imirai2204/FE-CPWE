@@ -1,30 +1,88 @@
-.submit-panel {
-    .layout-1 {
-        display: flex;
+.submit {
+    &-panel {
+        padding: 10px 20px;
 
-        &--left {
-            flex: 50%;
+        .layout-1 {
+            display: flex;
+
+            &--left {
+                flex: 50%;
+            }
+            &--right {
+                flex: 50%;
+                padding-top: 25px;
+                padding-left: 50px;
+
+                .time {
+                    display: flex;
+                    label {
+                        font-weight: 600;
+                        line-height: 28px;
+                        margin-right: 10px;
+                        width: 75px;
+                    }
+
+                    &-line {
+                        width: 27%;
+                    }
+                }
+            }
         }
-        &--right {
-            flex: 50%;
+
+        .contributor {
+            width: 50%;
+        }
+
+        [type="checkbox"]:checked + span:before {
+            left: 5px;
+        }
+
+        .attachment {
+            margin-bottom: 20px;
+        }
+
+        .btn--medium {
+            font-size: 15px;
         }
     }
 
-    .contributor {
-        width: 50%;
+    &-title {
+        text-align: center;
     }
 }
 
 @media screen and (max-width: 1095px) {
     .submit-panel {
         .layout-1 {
-            &--left {
-                width: 100%;
+            display: block;
+            &--right {
+                padding-left: 0;
+
+                .time-line {
+                    display: none;
+                }
             }
         }
 
         .contributor {
             width: 100%;
         }
+
+        .btn--noline {
+            display: none;
+        }
+
+        .btn--medium {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            padding: 15px 18px;
+        }
     }
+
+    .check-submit {
+        display: block;
+    }
+
+
 }

@@ -16,6 +16,7 @@ import SubmitPage from "./pages/SubmitPage";
 import AccountSetting from "./pages/AccountSetting";
 import Profile from "./pages/Profile";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
+import Terms from "./pages/Terms";
 
 function App() {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -38,6 +39,7 @@ function App() {
                 <Route path='/submit-page' exact element={<SubmitPage />} />
                 <Route path='/account-settings' exact element={<AccountSetting />} />
                 <Route path='/profile' exact element={<Profile />} />
+                <Route path='/terms-conditions' exact element={<Terms />} />
             </Routes>
             <SubmitIdea isShowForm={isOpenModal} closeModalHandler={openModalHandler} />
         </>

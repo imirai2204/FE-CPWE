@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -37,6 +37,12 @@ function handleSubmit(values) {
 }
 
 const SubmitPage = (props) => {
+    const [buttonShown, setButtonShown] = useState(false);
+
+    const clickTerms = () => {
+        setButtonShown(!buttonShown);
+    };
+
     return (
         <div className='submit-panel'>
             <h2 className='submit-title'>Create idea</h2>
@@ -59,8 +65,8 @@ const SubmitPage = (props) => {
                     <Form className='submit-form'>
                         <div className="layout-1">
                             <div className="layout-1--left">
-                                <div className='input-section'>
-                                    <label htmlFor='department'>Department</label>
+                                <div className='input-section label-mark'>
+                                    <label className='label' htmlFor='department'>Department</label>
                                     <Select
                                         className='select'
                                         options={Departments}
@@ -70,8 +76,8 @@ const SubmitPage = (props) => {
                                         isDisabled={true}
                                     />
                                 </div>
-                                <div className='input-section'>
-                                    <label htmlFor='topic'>Topic</label>
+                                <div className='input-section label-mark'>
+                                    <label className='label' htmlFor='topic'>Topic</label>
                                     <Select
                                         className='select'
                                         options={Topics}
@@ -79,8 +85,8 @@ const SubmitPage = (props) => {
                                         placeholder={"Select topic"}
                                     />
                                 </div>
-                                <div className='input-section'>
-                                    <label htmlFor='tag'>Tag</label>
+                                <div className='input-section label-mark'>
+                                    <label className='label' htmlFor='tag'>Tag</label>
                                     <Select
                                         className='select'
                                         options={Tags}
@@ -90,11 +96,19 @@ const SubmitPage = (props) => {
                                 </div>
                             </div>
                             <div className="layout-1--right">
-
+                                <div className="time">
+                                    <label>Start date: </label>
+                                    <p>01/03/2022</p>
+                                </div>
+                                <hr className="time-line" />
+                                <div className="time">
+                                    <label>End date: </label>
+                                    <p>31/03/2022</p>
+                                </div>
                             </div>
                         </div>
                         <hr />
-                        <div className='input-section'>
+                        <div className='input-section label-mark'>
                             <TextField
                                 label={"Title"}
                                 name='title'
@@ -110,27 +124,33 @@ const SubmitPage = (props) => {
                                 rows={8}
                                 style={{ width: "100%", resize: "none" }}></textarea>
                         </div>
-                        <div className='input-section contributor'>
-                            <label htmlFor='contributor'>Contributor</label>
+                        <div className='input-section contributor label-mark'>
+                            <label className="label" htmlFor='contributor'>Contributor</label>
                             <Select className='select' options={Contributor} defaultValue={Contributor[0]} />
                         </div>
-                        <div className='input-section'>
-                            <TextField name='attachment' type='file' multiple />
+                        <div className='input-section attachment'>
+                            <TextField
+                                label={"Attachment"}
+                                name='attachment'
+                                type='file'
+                                multiple />
                         </div>
                         <div className='container--idea--submit check-submit'>
-                            <Link className='checkbox' to="/terms">
-                                <input type='checkbox' />
+                            <label className='checkbox'>
+                                <input type='checkbox' onClick={clickTerms} />
                                 <span></span>
-                                Terms & Conditions
-                            </Link>
+                                <Link to="/terms-conditions" target="_blank">
+                                    Terms & Conditions
+                                </Link>
+                            </label>
                             <div></div>
                             <button
-                                className='btn btn--linear'
+                                className='btn btn--noline'
                                 type='submit'
                                 onClick={props.onClose}>
                                 Cancel
                             </button>
-                            <button className='btn btn--linear' type='submit'>
+                            <button className={`btn btn--medium ${buttonShown ? "" : "disabled"}`} type='submit'>
                                 Submit
                             </button>
                         </div>

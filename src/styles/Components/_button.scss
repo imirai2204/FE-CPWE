@@ -16,11 +16,17 @@
         background-color: transparent;
     }
 
-    &--outline {
+    &--noline {
         background-color: $color-white;
-        color: $color-white;
-        border: 1px solid var(--primary);
+        color: $color-black-40;
+        font-size: 15px;
+        border: none;
         transition: all 0.3s ease-out;
+        
+        &:hover {
+            background-color: $color-white;
+            color: $color-black-40;
+        }
     }
 
     &--modal {
