@@ -5,6 +5,7 @@ import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
+import { Link } from "react-router-dom";
 import {
     Departments,
     Topics,
@@ -56,11 +57,12 @@ const SubmitPage = (props) => {
                     touched,
                 }) => (
                     <Form className='submit-form'>
-                        <div>
-                            <div>
+                        <div className="layout-1">
+                            <div className="layout-1--left">
                                 <div className='input-section'>
-                                    <lable htmlFor='department'>Department</lable>
+                                    <label htmlFor='department'>Department</label>
                                     <Select
+                                        className='select'
                                         options={Departments}
                                         isClearable={true}
                                         defaultValue={Departments[0]}
@@ -69,62 +71,67 @@ const SubmitPage = (props) => {
                                     />
                                 </div>
                                 <div className='input-section'>
-                                    <lable htmlFor='topic'>Topic</lable>
+                                    <label htmlFor='topic'>Topic</label>
                                     <Select
+                                        className='select'
                                         options={Topics}
                                         isClearable={true}
                                         placeholder={"Select topic"}
                                     />
                                 </div>
                                 <div className='input-section'>
-                                    <lable htmlFor='tag'>Tag</lable>
+                                    <label htmlFor='tag'>Tag</label>
                                     <Select
+                                        className='select'
                                         options={Tags}
                                         isClearable={true}
                                         placeholder={"Select tag"}
                                     />
                                 </div>
                             </div>
-                            <div></div>
+                            <div className="layout-1--right">
+
+                            </div>
                         </div>
                         <hr />
                         <div className='input-section'>
                             <TextField
-                                lable={"Title"}
+                                label={"Title"}
                                 name='title'
                                 type='title'
                                 placeholder='Title'
                             />
                         </div>
                         <div className='input-section'>
-                            <lable htmlFor='description'>Description</lable>
+                            <label htmlFor='description'>Description</label>
                             <textarea
+                                className='textarea'
                                 name='description'
                                 rows={8}
                                 style={{ width: "100%", resize: "none" }}></textarea>
                         </div>
-                        <div className='input-section'>
-                            <lable htmlFor='contributor'>Contributor</lable>
-                            <Select options={Contributor} defaultValue={Contributor[0]} />
+                        <div className='input-section contributor'>
+                            <label htmlFor='contributor'>Contributor</label>
+                            <Select className='select' options={Contributor} defaultValue={Contributor[0]} />
                         </div>
                         <div className='input-section'>
                             <TextField name='attachment' type='file' multiple />
                         </div>
                         <div className='container--idea--submit check-submit'>
-                            <label className='checkbox'>
+                            <Link className='checkbox' to="/terms">
                                 <input type='checkbox' />
                                 <span></span>
                                 Terms & Conditions
-                            </label>
+                            </Link>
                             <div></div>
-                            <button className='btn btn--linear' type='submit'>
-                                Submit
-                            </button>
                             <button
                                 className='btn btn--linear'
                                 type='submit'
                                 onClick={props.onClose}>
                                 Cancel
+                            </button>
+                            <button className='btn btn--linear' type='submit'>
+                                Submit
                             </button>
                         </div>
                     </Form>

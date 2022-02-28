@@ -1,0 +1,30 @@
+.submit-panel {
+    .layout-1 {
+        display: flex;
+
+        &--left {
+            flex: 50%;
+        }
+        &--right {
+            flex: 50%;
+        }
+    }
+
+    .contributor {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 1095px) {
+    .submit-panel {
+        .layout-1 {
+            &--left {
+                width: 100%;
+            }
+        }
+
+        .contributor {
+            width: 100%;
+        }
+    }
+}

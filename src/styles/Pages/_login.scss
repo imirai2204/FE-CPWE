@@ -1,4 +1,4 @@
-.login{
+.login {
     &-layout {
         white-space: nowrap;
     }
@@ -41,6 +41,14 @@
         font-weight: 600;
         line-height: 28px;
     }
+
+    &-form {
+        .input-section {
+            label {
+                display: none;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 1095px) {
@@ -48,10 +56,22 @@
         &-background {
             display: none;
         }
-    
+
         &-panel {
             width: 100%;
             min-height: 100%;
+        }
+
+        &-form {
+            .input-section {
+                label {
+                    display: inline-block;
+                }
+
+                .password-icon {
+                    top: 40px;
+                }
+            }
         }
     }
 }

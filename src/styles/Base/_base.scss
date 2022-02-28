@@ -62,6 +62,11 @@ dl, ol, ul {
     margin-bottom: 0;
 }
 
+hr {
+    background-color: $color-black-70;
+    opacity: 1;
+}
+
 #root {
     min-height: 100%;
 }

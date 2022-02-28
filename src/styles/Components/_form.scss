@@ -1,6 +1,6 @@
 .input-section {
     margin-bottom: 13px;
-    margin-top: 40px;
+    margin-top: 25px;
     position: relative;
 }
 
@@ -31,7 +31,6 @@
     }
 }
 
-
 .checkbox span {
     height: 24px;
     width: 24px;
@@ -57,8 +56,8 @@
 
 .password-icon {
     position: absolute;
-    top: 18px;
-    right: 9px;
+    top: 20px;
+    right: 5px;
 }
 
 .error {
@@ -74,5 +73,31 @@
 
 .submit-panel {
     padding: 0 20px;
+}
+
+.select {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 3px solid $color-black-70;
+    font-size: 15px;
+    color: $color-black-70;
+
+    &:hover {
+        border: 3px solid $color-blue-B8;
+    }
+}
+
+.textarea {
+    border: 3px solid $color-black-70;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    font-size: 15px;
+    color: $color-black-70;
+    text-align: justify;
+
+    &:hover {
+        border: 3px solid $color-blue-B8;
+    }
 }
 
