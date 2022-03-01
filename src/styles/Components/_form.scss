@@ -129,3 +129,54 @@
 .css-1pahdxg-control {
     box-shadow: none !important;
 }
+
+.MuiDropzoneArea-root {
+    min-height: 140px !important;
+    border: 3px dotted !important;
+    border-color: $color-black-70 !important;
+
+    &:hover {
+        border-color: $color-blue-B8 !important;
+    }
+
+    .MuiDropzonePreviewList-root {
+        display: none !important;
+    }
+}
+
+.MuiDropzonePreviewList-removeButton {
+    top: 15px !important;
+    right: 20px !important;
+}
+
+.MuiTypography-subtitle1,
+.MuiTypography-body1 {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 28px !important;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.MuiGrid-container {
+    width: 100% !important;
+    margin: 0 !important;
+
+    .MuiDropzonePreviewList-image {
+        width: 50% !important;
+        height: 100% !important;
+    }
+}
+
+@media screen and (max-width: 1095px) {
+    .MuiGrid-container {
+        .MuiDropzonePreviewList-image {
+            width: 100% !important;
+            height: 50% !important;
+        }
+    }
+
+    .MuiGrid-spacing-xs-8 .MuiGrid-item {
+        padding: 16px !important;
+    }
+}

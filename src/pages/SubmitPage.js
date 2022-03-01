@@ -13,6 +13,7 @@ import {
     Tags,
     Contributor,
 } from "../components/Navbar/dropdown/DropdownItems";
+import { DropzoneArea } from 'material-ui-dropzone';
 
 function handleSubmit(values) {
     const body = {
@@ -164,18 +165,15 @@ const SubmitPage = (props) => {
                             />
                         </div>
                         <div className='input-section attachment'>
-                            <TextField
-                                label={"Attachment"}
-                                name='attachment'
-                                type='file'
-                                multiple
-                                onChange={(event) => {
-                                    setFieldValue("files", event.currentTarget.files);
-                                    setFileList(event.currentTarget.files);
-                                    setIsFileUploaded(true);
-                                }}
+                            <DropzoneArea
+                                acceptedFiles={['.xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf']}
+                                showPreviews={true}
+                                maxFileSize={5000000}
+                                fullWidth={true}
+                                dropzoneText="Drop files to attach or browse"
+                                filesLimit={6}
+                                showFileNamesInPreview={true}
                             />
-                            {displayFilesUpdate}
                         </div>
                         <div className='container--idea--submit check-submit'>
                             <label className='checkbox'>
@@ -193,9 +191,8 @@ const SubmitPage = (props) => {
                                 Cancel
                             </button>
                             <button
-                                className={`btn btn--medium ${
-                                    buttonShown ? "" : "disabled"
-                                }`}
+                                className={`btn btn--medium ${buttonShown ? "" : "disabled"
+                                    }`}
                                 type='submit'
                                 onClick={() => setIsFileUploaded(false)}>
                                 Submit
