@@ -91,8 +91,9 @@ function Login() {
                                     placeholder='Password'
                                 />
                                 <i
-                                    className={`fa ${passwordShown ? "fa-eye-slash" : "fa-eye"
-                                        } fa-lg password-icon`}
+                                    className={`fa ${
+                                        passwordShown ? "fa-eye-slash" : "fa-eye"
+                                    } fa-lg password-icon`}
                                     onClick={togglePassword}
                                 />
                             </div>
@@ -119,6 +120,6 @@ function Login() {
             {hasError && <ErrorMessage closebtn={setHasError} />}
         </div>
     );
-};
+}
 
 export default Login;

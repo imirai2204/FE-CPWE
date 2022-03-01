@@ -1,17 +1,23 @@
-import React from 'react';
-import { ErrorMessage, useField } from 'formik';
+import React from "react";
+import { ErrorMessage, useField } from "formik";
 
-export const TextField = ({ label, ...props}) => {
+export const TextField = ({ label, onChange, ...props }) => {
     const [field, meta] = useField(props);
     return (
-        <div className="mb-2">
-            <label className='label' htmlFor={field.name}>{label}</label>
-            <input 
-                className={`form-control shadow-none ${meta.touched && meta.error && 'is-invalid'}`}
-                {...field} {...props} 
-                autoComplete="off"
+        <div className='mb-2'>
+            <label className='label' htmlFor={field.name}>
+                {label}
+            </label>
+            <input
+                className={`form-control shadow-none ${
+                    meta.touched && meta.error && "is-invalid"
+                }`}
+                {...field}
+                {...props}
+                autoComplete='off'
+                onChange={onChange}
             />
-            <ErrorMessage component="div" name={field.name} className="error" />
+            <ErrorMessage component='div' name={field.name} className='error' />
         </div>
-    )
-}
+    );
+};
