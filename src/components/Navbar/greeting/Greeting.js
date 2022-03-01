@@ -12,7 +12,7 @@ const Greeting = (props) => {
         greetingMessage = "Good morning";
     } else if (hour < 15) {
         greetingMessage = "Good afternoon";
-    } else if (hour < 19) {
+    } else if (hour <= 19) {
         greetingMessage = "Good evening";
     }
 

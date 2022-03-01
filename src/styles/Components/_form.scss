@@ -7,7 +7,7 @@
 .form-control {
     margin-top: 5px;
     margin-bottom: 5px;
-    border-bottom: 3px solid $color-black-70;
+    border-bottom: 2px solid $color-black-70;
     border-left: none;
     border-right: none;
     border-top: none;
@@ -19,7 +19,7 @@
     padding-right: 30px;
 
     &:hover {
-        border-bottom: 3px solid $color-blue-B8;
+        border-bottom: 2px solid $color-blue-B8;
     }
 }
 
@@ -75,17 +75,17 @@
 .select {
     margin-top: 4px;
     margin-bottom: 4px;
-    border: 4px solid $color-black-70;
+    border: 2px solid $color-black-70;
     font-size: 15px;
     color: $color-black-70;
 
     &:hover {
-        border: 4px solid $color-blue-B8;
+        border: 2px solid $color-blue-B8;
     }
 }
 
 .textarea {
-    border: 3px solid $color-black-70;
+    border: 2px solid $color-black-70;
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 5px 10px;
@@ -94,7 +94,7 @@
     text-align: justify;
 
     &:hover {
-        border: 3px solid $color-blue-B8;
+        border: 2px solid $color-blue-B8;
     }
 }
 
@@ -132,16 +132,12 @@
 
 .MuiDropzoneArea-root {
     min-height: 140px !important;
-    border: 3px dotted !important;
+    border: 2px dotted !important;
     border-color: $color-black-70 !important;
 
     &:hover {
         border-color: $color-blue-B8 !important;
     }
-
-    // .MuiDropzonePreviewList-root {
-    //     display: none !important;
-    // }
 }
 
 .MuiDropzonePreviewList-removeButton {

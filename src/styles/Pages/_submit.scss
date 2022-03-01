@@ -47,6 +47,11 @@
     }
 }
 
+.terms-link {
+    text-decoration: underline;
+    color: $color-blue-B8;
+}
+
 @media screen and (max-width: 1095px) {
     .submit-panel {
         .layout-1 {

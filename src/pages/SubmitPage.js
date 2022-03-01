@@ -163,7 +163,7 @@ const SubmitPage = (props) => {
                             <label className='checkbox'>
                                 <input type='checkbox' onClick={clickTerms} />
                                 <span></span>
-                                <Link to='/terms-conditions' target='_blank'>
+                                <Link to='/terms-conditions' className="terms-link" target='_blank'>
                                     Terms & Conditions
                                 </Link>
                             </label>
