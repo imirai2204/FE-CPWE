@@ -6,7 +6,6 @@ import { SignInSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
 import { Link } from "react-router-dom";
-import ImageIcon from "@mui/icons-material/Image";
 import {
     Departments,
     Topics,
@@ -40,8 +39,6 @@ function handleSubmit(values) {
 
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
-    const [isFileUploaded, setIsFileUploaded] = useState(false);
-    const [fileList, setFileList] = useState([]);
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -52,19 +49,6 @@ const SubmitPage = (props) => {
         password: "",
         files: null,
     };
-
-    const displayFilesUpdate = [...fileList].map((file) => {
-        if (isFileUploaded) {
-            return (
-                <h4>
-                    <ImageIcon />
-                    {` ${file.name}`}
-                </h4>
-            );
-        } else {
-            return "";
-        }
-    });
 
     return (
         <div className='submit-panel'>
@@ -129,7 +113,6 @@ const SubmitPage = (props) => {
                                     <label>Start date: </label>
                                     <p>01/03/2022</p>
                                 </div>
-                                <hr className='time-line' />
                                 <div className='time'>
                                     <label>End date: </label>
                                     <p>31/03/2022</p>
@@ -173,6 +156,7 @@ const SubmitPage = (props) => {
                                 dropzoneText="Drop files to attach or browse"
                                 filesLimit={6}
                                 showFileNamesInPreview={true}
+                                showPreviewsInDropzone={false}
                             />
                         </div>
                         <div className='container--idea--submit check-submit'>
@@ -193,8 +177,7 @@ const SubmitPage = (props) => {
                             <button
                                 className={`btn btn--medium ${buttonShown ? "" : "disabled"
                                     }`}
-                                type='submit'
-                                onClick={() => setIsFileUploaded(false)}>
+                                type='submit'>
                                 Submit
                             </button>
                         </div>
