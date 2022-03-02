@@ -167,7 +167,7 @@ label {
 .form-control {
   margin-top: 5px;
   margin-bottom: 5px;
-  border-bottom: 3px solid #707070;
+  border-bottom: 2px solid #707070;
   border-left: none;
   border-right: none;
   border-top: none;
@@ -178,7 +178,7 @@ label {
   color: #707070;
   padding-right: 30px; }
   .form-control:hover {
-    border-bottom: 3px solid #0067B8; }
+    border-bottom: 2px solid #0067B8; }
 
 .checkbox {
   font-size: 15px; }
@@ -223,14 +223,14 @@ label {
 .select {
   margin-top: 4px;
   margin-bottom: 4px;
-  border: 4px solid #707070;
+  border: 2px solid #707070;
   font-size: 15px;
   color: #707070; }
   .select:hover {
-    border: 4px solid #0067B8; }
+    border: 2px solid #0067B8; }
 
 .textarea {
-  border: 3px solid #707070;
+  border: 2px solid #707070;
   margin-top: 5px;
   margin-bottom: 5px;
   padding: 5px 10px;
@@ -238,7 +238,7 @@ label {
   color: #707070;
   text-align: justify; }
   .textarea:hover {
-    border: 3px solid #0067B8; }
+    border: 2px solid #0067B8; }
 
 .label-mark .label:after {
   content: "*";
@@ -261,6 +261,35 @@ label {
 
 .css-1pahdxg-control {
   box-shadow: none !important; }
+
+.MuiDropzoneArea-root {
+  min-height: 140px !important;
+  border: 2px dotted !important;
+  border-color: #707070 !important; }
+  .MuiDropzoneArea-root:hover {
+    border-color: #0067B8 !important; }
+
+.MuiDropzonePreviewList-removeButton {
+  top: 15px !important;
+  right: 20px !important; }
+
+.MuiTypography-subtitle1,
+.MuiTypography-body1 {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 28px !important;
+  word-break: break-all;
+  white-space: normal; }
+
+.MuiGrid-container {
+  width: 100% !important;
+  margin: 0 !important; }
+  .MuiGrid-container .MuiDropzonePreviewList-image {
+    width: 100% !important;
+    height: 50% !important; }
+
+.MuiGrid-spacing-xs-8 .MuiGrid-item {
+  padding: 16px !important; }
 
 .dropdown-menu {
   width: 180px;
@@ -290,6 +319,34 @@ label {
     .dropdown-menu .dropdown-link:hover {
       color: #cee983; }
 
+.dropdown-menu-mobile {
+  width: 180px;
+  position: absolute;
+  top: 80px;
+  display: block;
+  list-style: none;
+  text-align: start;
+  border: none;
+  padding: 0; }
+  .dropdown-menu-mobile li {
+    height: 60px;
+    background: #f02c2c;
+    cursor: pointer;
+    padding-top: 0.8rem; }
+  .dropdown-menu-mobile li:hover {
+    background: #d47f7f; }
+  .dropdown-menu-mobile.clicked {
+    display: none; }
+  .dropdown-menu-mobile .dropdown-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #FFFFFF;
+    padding: 1rem; }
+    .dropdown-menu-mobile .dropdown-link:hover {
+      color: #cee983; }
+
 .backdrop {
   position: fixed;
   top: 0;
@@ -302,8 +359,8 @@ label {
 .modal-overlay {
   position: fixed;
   top: 10vh;
-  margin-left: 25%;
-  width: 45%;
+  margin-left: 20%;
+  width: 60%;
   height: 80vh;
   background-color: white;
   padding: 1rem;
@@ -554,8 +611,9 @@ body.active-modal {
   .btn.btn--primary,
   .btn--user--info,
   .greeting-message,
-  #user-avatar-navbar {
-    display: none; } }
+  #user-avatar-navbar,
+  .MuiButton-root {
+    display: none !important; } }
 
 .login-layout {
   white-space: nowrap; }
@@ -625,8 +683,6 @@ body.active-modal {
           line-height: 28px;
           margin-right: 10px;
           width: 75px; }
-        .submit-panel .layout-1--right .time-line {
-          width: 27%; }
   .submit-panel .contributor {
     width: 50%; }
   .submit-panel [type="checkbox"]:checked + span:before {
@@ -639,13 +695,15 @@ body.active-modal {
 .submit-title {
   text-align: center; }
 
+.terms-link {
+  text-decoration: underline;
+  color: #0067B8; }
+
 @media screen and (max-width: 1095px) {
   .submit-panel .layout-1 {
     display: block; }
     .submit-panel .layout-1--right {
       padding-left: 0; }
-      .submit-panel .layout-1--right .time-line {
-        display: none; }
   .submit-panel .contributor {
     width: 100%; }
   .submit-panel .btn--noline {

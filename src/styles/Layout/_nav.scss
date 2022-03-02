@@ -169,7 +169,8 @@
     .btn.btn--primary,
     .btn--user--info,
     .greeting-message,
-    #user-avatar-navbar {
-        display: none;
+    #user-avatar-navbar,
+    .MuiButton-root {
+        display: none !important;
     }
 }

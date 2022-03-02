@@ -19,9 +19,9 @@ export const MenuItems = [
     },
     {
         title: "Category",
-        path: "/category",
+        path: "#",
         cName: "nav-link",
-        hasMenu: true,
+        hasDropdown: true,
     },
     {
         title: "CREATE",

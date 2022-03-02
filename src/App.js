@@ -11,7 +11,6 @@ import Dashboard from "./pages/Dashboard";
 import ManageUser from "./pages/ManageUser";
 import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
-import Category from "./pages/Category";
 import SubmitPage from "./pages/SubmitPage";
 import AccountSetting from "./pages/AccountSetting";
 import Profile from "./pages/Profile";
@@ -31,7 +30,6 @@ function App() {
                 <Route path='/login' exact element={<Login />} />
                 <Route path='/dashboard' exact element={<Dashboard />} />
                 <Route path='/manage-user' exact element={<ManageUser />} />
-                <Route path='/category' exact element={<Category />} />
                 <Route path='/category/academic-year' exact element={<AcademicYear />} />
                 <Route path='/category/department' exact element={<Department />} />
                 <Route path='/category/tags' exact element={<Tags />} />
