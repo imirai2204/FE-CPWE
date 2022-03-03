@@ -1,27 +1,44 @@
 export const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-        id: 'population',
-        label: 'Population',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'size',
-        label: 'Size\u00a0(km\u00b2)',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-        id: 'density',
-        label: 'Density',
-        minWidth: 170,
-        align: 'right',
-        format: (value) => value.toFixed(2),
-    },
+    { id: 'firstName', label: 'FirstName', minWidth: 170 },
+    { id: 'lastName', label: 'LastName', minWidth: 170 },
+    { id: 'username', label: 'Username', minWidth: 100 },
+    { id: 'email', label: 'Email', minWidth: 100 },
+    { id: 'passsword', label: 'Passsword', minWidth: 100 },
+
+    // { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+    // {
+    //     id: 'population',
+    //     label: 'Population',
+    //     minWidth: 170,
+    //     align: 'right',
+    //     format: (value) => value.toLocaleString('en-US'),
+    // },
+    // {
+    //     id: 'size',
+    //     label: 'Size\u00a0(km\u00b2)',
+    //     minWidth: 170,
+    //     align: 'right',
+    //     format: (value) => value.toLocaleString('en-US'),
+    // },
+    // {
+    //     id: 'density',
+    //     label: 'Density',
+    //     minWidth: 170,
+    //     align: 'right',
+    //     format: (value) => value.toFixed(2),
+    // },
+    // {
+    //     id: 'edit',
+    //     label: 'Edit',
+    //     minWidth: 50,
+    //     align: 'center',
+    // },
+    // {
+    //     id: 'delete',
+    //     label: 'Delete',
+    //     minWidth: 50,
+    //     align: 'center',
+    // },
 ];
 
 function createData(name, code, population, size) {
