@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DropdownItems } from "./DropdownItems";
 import SideBarContext from "../../../store/side-bar-context";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 const DropdownSide = (props) => {
     const ctx = useContext(SideBarContext);
@@ -15,11 +16,11 @@ const DropdownSide = (props) => {
         return (
             <li key={index} className='dropdown-items-mobile'>
                 <Link
-                    className={`${item.cName}-mobile--side--bar`}
+                    className={`${item.cName} mobile--side--link`}
                     to={item.path}
-                    onClick={onClickHandler}>
-                    {item.title}
-                </Link>
+                    onClick={onClickHandler}
+                />
+                {item.title}
             </li>
         );
     });
@@ -33,6 +34,9 @@ const DropdownSide = (props) => {
             <ul onClick={onClickHandler} className='dropdown-side'>
                 {dropdownMenu}
             </ul>
+            <button className='return' onClick={ctx.onClose}>
+                <ArrowCircleLeftIcon />
+            </button>
         </div>
     );
 };

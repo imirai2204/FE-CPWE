@@ -10,8 +10,6 @@ import SideBarContext from "../../store/side-bar-context";
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    // const [showDropdownSideBar, setShowDropdownSideBar] = useState(false);
-
     const ctx = useContext(SideBarContext);
 
     const isMobileSize = window.innerWidth < 1100 ? true : false;
@@ -40,7 +38,7 @@ const Navbar = (props) => {
                         onClick={isMobileSize ? ctx.onShow : false}>
                         {item.title}
                     </Link>
-                    {showDropdown && !ctx.isShown && <Dropdown />}
+                    {showDropdown && <Dropdown />}
                 </li>
             );
         }
