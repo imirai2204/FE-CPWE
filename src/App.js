@@ -1,22 +1,48 @@
-import React from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Routes, Route} from 'react-router-dom';
-import Navigation from './components/Navigation';
-import Home from './pages/PageHome';
-import Login from './pages/PageLogin';
+import React, { useState } from "react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import AcademicYear from "./pages/AcademicYear";
+import Department from "./pages/Department";
+import Dashboard from "./pages/Dashboard";
+import ManageUser from "./pages/ManageUser";
+import Tags from "./pages/Tags";
+import Topic from "./pages/Topic";
+import SubmitPage from "./pages/SubmitPage";
+import AccountSetting from "./pages/AccountSetting";
+import Profile from "./pages/Profile";
+import SubmitIdea from "./components/CreateIdea/SubmitIdea";
+import Terms from "./pages/Terms";
 
 function App() {
-  return (
-    <>
-      <Navigation></Navigation>
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const openModalHandler = () => {
+        setIsOpenModal((prevIsOpenModal) => !prevIsOpenModal);
+    };
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </>
-  );
+    return (
+        <>
+            <Navbar onClickCreateBtn={openModalHandler} />
+            <Routes>
+                <Route path='/' exact element={<Home />} />
+                <Route path='/login' exact element={<Login />} />
+                <Route path='/dashboard' exact element={<Dashboard />} />
+                <Route path='/manage-user' exact element={<ManageUser />} />
+                <Route path='/category/academic-year' exact element={<AcademicYear />} />
+                <Route path='/category/department' exact element={<Department />} />
+                <Route path='/category/tags' exact element={<Tags />} />
+                <Route path='/category/topic' exact element={<Topic />} />
+                <Route path='/submit-page' exact element={<SubmitPage />} />
+                <Route path='/account-settings' exact element={<AccountSetting />} />
+                <Route path='/profile' exact element={<Profile />} />
+                <Route path='/terms-conditions' exact element={<Terms />} />
+            </Routes>
+            <SubmitIdea isShowForm={isOpenModal} closeModalHandler={openModalHandler} />
+        </>
+    );
 }
 
 export default App;
