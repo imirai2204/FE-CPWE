@@ -52,7 +52,7 @@
         left: -105%;
         margin: 0;
         opacity: 1;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease;
 
         &.active {
             padding: 0;
@@ -73,7 +73,6 @@
             margin-top: 30px;
 
             &:hover {
-                color: $color-yellow-nav-link;
                 background: $color-red-7F;
                 margin-right: 5px;
             }
@@ -85,6 +84,10 @@
             font-size: 1.5rem;
             line-height: 42px;
             display: table;
+
+            &:hover {
+                color: $color-yellow-nav-link;
+            }
         }
 
         & .return {
