@@ -22,6 +22,7 @@ function App() {
     const openModalHandler = () => {
         setIsOpenModal((prevIsOpenModal) => !prevIsOpenModal);
     };
+
     return (
         <>
             <Navbar onClickCreateBtn={openModalHandler} />

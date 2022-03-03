@@ -1,24 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { DropdownItems } from "./DropdownItems";
+import SideBarContext from "../../../store/side-bar-context";
 
 const DropdownSide = (props) => {
-    const [isClicked, setIsClicked] = useState(false);
-
-    const clickHandler = () => setIsClicked(!isClicked);
-
-    const dropdownMenuClasses = isClicked
-        ? "dropdown-menu-mobile clicked"
-        : "dropdown-menu-mobile";
+    const ctx = useContext(SideBarContext);
 
     const onClickHandler = () => {
-        setIsClicked(false);
+        ctx.onClose();
         props.onClick();
     };
 
     const dropdownMenu = DropdownItems.map((item, index) => {
         return (
-            <li key={index} className='dropdown-items'>
+            <li key={index} className='dropdown-items-mobile'>
                 <Link
                     className={`${item.cName}-mobile--side--bar`}
                     to={item.path}
@@ -29,10 +24,16 @@ const DropdownSide = (props) => {
         );
     });
 
+    const dropdownClassName = ctx.isShown
+        ? "dropdown-menu-mobile active"
+        : "dropdown-menu-mobile";
+
     return (
-        <ul onClick={clickHandler} className={dropdownMenuClasses}>
-            {dropdownMenu}
-        </ul>
+        <div className={dropdownClassName}>
+            <ul onClick={onClickHandler} className='dropdown-side'>
+                {dropdownMenu}
+            </ul>
+        </div>
     );
 };
 

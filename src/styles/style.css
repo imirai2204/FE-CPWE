@@ -320,32 +320,47 @@ label {
       color: #cee983; }
 
 .dropdown-menu-mobile {
-  width: 180px;
-  position: absolute;
-  top: 80px;
-  display: block;
-  list-style: none;
-  text-align: start;
-  border: none;
-  padding: 0; }
-  .dropdown-menu-mobile li {
-    height: 60px;
-    background: #f02c2c;
-    cursor: pointer;
-    padding-top: 0.8rem; }
-  .dropdown-menu-mobile li:hover {
-    background: #d47f7f; }
-  .dropdown-menu-mobile.clicked {
-    display: none; }
-  .dropdown-menu-mobile .dropdown-link {
+  display: none; }
+
+@media screen and (max-width: 1100px) {
+  .dropdown-menu-mobile {
     display: block;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-    color: #FFFFFF;
-    padding: 1rem; }
-    .dropdown-menu-mobile .dropdown-link:hover {
-      color: #cee983; }
+    background: #f02c2c;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 80px;
+    left: -102%;
+    margin: 0;
+    opacity: 1;
+    transition: all 0.5s ease; }
+    .dropdown-menu-mobile.active {
+      padding: 0;
+      left: 0;
+      opacity: 1;
+      transition: all 0.5s ease;
+      z-index: 3; }
+      .dropdown-menu-mobile.active li:hover {
+        background: #d47f7f; }
+      .dropdown-menu-mobile.active .dropdown-side {
+        list-style: none;
+        text-align: center; }
+      .dropdown-menu-mobile.active li {
+        height: 40px;
+        background: #f02c2c;
+        cursor: pointer; }
+      .dropdown-menu-mobile.active.clicked {
+        display: none; }
+      .dropdown-menu-mobile.active .dropdown-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        color: #fcd2dd6e;
+        padding: 1rem; }
+        .dropdown-menu-mobile.active .dropdown-link:hover {
+          color: #cee983; } }
 
 .backdrop {
   position: fixed;
@@ -518,7 +533,7 @@ body.active-modal {
 .nav-menu {
   display: grid;
   grid-template-columns: repeat(8, auto);
-  grid-gap: 4rem;
+  grid-gap: 3rem;
   list-style: none;
   text-align: center;
   width: 75vw;
@@ -549,7 +564,7 @@ body.active-modal {
 .menu-icon {
   display: none; }
 
-@media screen and (max-width: 1149px) {
+@media screen and (max-width: 1100px) {
   .NavbarItems {
     position: relative; }
   .nav-menu {

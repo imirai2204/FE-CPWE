@@ -1,44 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext, Fragment } from "react";
 import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
 import DropdownSide from "./dropdown/DropdownSide";
 import User from "./greeting/User";
+import SideBarContext from "../../store/side-bar-context";
 
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    const [showDropdownSideBar, setShowDropdownSideBar] = useState(false);
+    // const [showDropdownSideBar, setShowDropdownSideBar] = useState(false);
 
-    let isMobileSize = window.innerWidth < 1150 ? true : false;
+    const ctx = useContext(SideBarContext);
+
+    const isMobileSize = window.innerWidth < 1100 ? true : false;
     const clickIconHandler = () => {
-        setIsClicked(!isClicked);
-        if (showDropdownSideBar) {
-            setShowDropdownSideBar((prev) => {
-                return !prev;
-            });
+        if (ctx.isShown) {
+            ctx.onClose();
         }
+        setIsClicked(!isClicked);
     };
 
-    const closeMobileMenu = () => {
-        setIsClicked(false);
-    };
-
+    const closeMobileMenu = () => setIsClicked(false);
     const onMouseEnter = () => setShowDropdown(!isMobileSize);
     const onMouseLeave = () => setShowDropdown(false);
-
-    const clickCategoryHandler = () => {
-        console.log(isMobileSize);
-
-        if (isMobileSize) {
-            setShowDropdownSideBar((prev) => {
-                return !prev;
-            });
-        } else {
-            return false;
-        }
-    };
 
     const mapMenuItems = MenuItems.map((item, index) => {
         if (item.hasDropdown) {
@@ -51,13 +37,10 @@ const Navbar = (props) => {
                     <Link
                         className={item.cName}
                         to={item.path}
-                        onClick={clickCategoryHandler}>
+                        onClick={isMobileSize ? ctx.onShow : false}>
                         {item.title}
                     </Link>
-                    {showDropdown && !showDropdownSideBar && <Dropdown />}
-                    {!showDropdown && showDropdownSideBar && (
-                        <DropdownSide onClick={closeMobileMenu} />
-                    )}
+                    {showDropdown && !ctx.isShown && <Dropdown />}
                 </li>
             );
         }
@@ -70,35 +53,31 @@ const Navbar = (props) => {
         );
     });
 
-    /* Logic to check if user login
-            const userLoginHandler = () => {
-                ...logic here
-                setIsLogin(true)
-            }
-        */
-
     const menuIconClasses = isClicked ? "fas fa-times" : "fas fa-bars";
     const navMenuClasses = !isClicked ? "nav-menu" : "nav-menu active";
 
     return (
-        <nav className='NavbarItems'>
-            <Link to='/' onClick={closeMobileMenu}>
-                <h1 className='navbar-logo'>
-                    <i className='logo'></i>
-                </h1>
-            </Link>
-            <div className='menu-icon' onClick={clickIconHandler}>
-                <i className={menuIconClasses}></i>
-            </div>
-            <ul className={navMenuClasses}>
-                {mapMenuItems}
-                <div className='btn--create--idea'>
-                    {/* <Button onClick={props.onClickCreateBtn}>CREATE</Button> */}
-                    <Button onClick={props.onClickCreateBtn}>CREATE</Button>
+        <Fragment>
+            <nav className='NavbarItems'>
+                <Link to='/' onClick={closeMobileMenu}>
+                    <h1 className='navbar-logo'>
+                        <i className='logo'></i>
+                    </h1>
+                </Link>
+                <div className='menu-icon' onClick={clickIconHandler}>
+                    <i className={menuIconClasses}></i>
                 </div>
-            </ul>
-            <User data='Cody' />
-        </nav>
+                <ul className={navMenuClasses}>
+                    {mapMenuItems}
+                    <div className='btn--create--idea'>
+                        <Button onClick={props.onClickCreateBtn}>CREATE</Button>
+                    </div>
+                </ul>
+                <User data='Cody' />
+            </nav>
+            <DropdownSide onClick={closeMobileMenu} />
+        </Fragment>
     );
 };
+
 export default Navbar;
