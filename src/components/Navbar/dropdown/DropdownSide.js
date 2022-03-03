@@ -18,9 +18,9 @@ const DropdownSide = (props) => {
                 <Link
                     className={`${item.cName} mobile--side--link`}
                     to={item.path}
-                    onClick={onClickHandler}
-                />
-                {item.title}
+                    onClick={onClickHandler}>
+                    {item.title}
+                </Link>
             </li>
         );
     });
