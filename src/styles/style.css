@@ -333,10 +333,10 @@ label {
     left: -105%;
     margin: 0;
     opacity: 1;
-    transition: all 0.5s ease-in-out; }
+    transition: all 0.5s ease; }
     .dropdown-menu-mobile.active {
       padding: 0;
-      left: -1.6%;
+      left: 0;
       opacity: 1;
       transition: all 0.5s ease;
       z-index: 20; }
@@ -348,7 +348,6 @@ label {
       text-align: center;
       margin-top: 30px; }
       .dropdown-menu-mobile .dropdown-items-mobile:hover {
-        color: #cee983;
         background: #d47f7f;
         margin-right: 5px; }
     .dropdown-menu-mobile .mobile--side--link {
@@ -357,6 +356,8 @@ label {
       font-size: 1.5rem;
       line-height: 42px;
       display: table; }
+      .dropdown-menu-mobile .mobile--side--link:hover {
+        color: #cee983; }
     .dropdown-menu-mobile .return {
       width: 45px;
       height: 45px;
@@ -587,7 +588,7 @@ body.active-modal {
   .nav-menu.active {
     background: #f02c2c;
     padding: 0;
-    left: -1.6%;
+    left: 0;
     opacity: 1;
     transition: all 0.5s ease;
     z-index: 1; }
