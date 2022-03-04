@@ -29,7 +29,7 @@ function handleSubmit(values) {
 }
 
 const initialValues = {
-    title: "",
+    departmentName: "",
 };
 
 export const columns = [
@@ -84,13 +84,13 @@ function Department() {
                     }) => (
                         <Form className='submit-form'>
                             <div className="form-container">
-                                <div className='input-section'>
+                                <div className='input-section label-mark'>
                                     <TextField
-                                        label={"Title"}
-                                        name='title'
-                                        type='title'
+                                        label={"Department Name"}
+                                        name='departmentName'
+                                        type='text'
                                         multiple
-                                        placeholder='Title'
+                                        placeholder='Type...'
                                     />
                                 </div>
                             </div>

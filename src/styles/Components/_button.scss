@@ -26,6 +26,7 @@
         &:hover {
             background-color: $color-white;
             color: $color-black-40;
+            text-decoration: underline;
         }
     }
 
@@ -94,7 +95,7 @@
 .list-button {
     text-align: center;
     margin-top: 2rem;
-    
+
     .btn {
         margin: 0 0.5rem;
         color: $color-white;

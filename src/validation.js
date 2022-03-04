@@ -8,5 +8,5 @@ export const SignInSchema = Yup.object().shape({
 })
 
 export const DepartmentSchema = Yup.object().shape({
-    title: Yup.string().required('Required'),
+    departmentName: Yup.string().required('Required'),
 })
