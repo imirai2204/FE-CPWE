@@ -167,3 +167,18 @@
 .MuiGrid-spacing-xs-8 .MuiGrid-item {
     padding: 16px !important;
 }
+
+.MuiGrid-grid-xs-4 {
+    max-width: 25% !important;
+    flex-basis: 25% !important;
+    height: 20rem;
+}
+
+@media screen and (max-width: 1095px) {
+    .MuiTypography-subtitle1,
+    .MuiTypography-body1 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}

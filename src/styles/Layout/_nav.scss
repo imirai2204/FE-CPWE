@@ -1,10 +1,11 @@
 .NavbarItems {
-    background: linear-gradient(90deg, rgb(248, 67, 67) 0%, rgb(248, 21, 59) 60%);
-    height: 80px;
+    background: $color-red-24;
+    height: 60px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     font-size: 1.2rem;
+    box-shadow: 3px 0px 12px 0px $color-black-40;
 
     & .greeting-message.no-user {
         margin-bottom: 0;
@@ -18,14 +19,13 @@
 }
 
 .navbar-logo {
-    padding: 35px 90px;
+    padding: 30px 92px;
     overflow: hidden;
     background-image: url("../../asset/logo.jpg");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin-bottom: 0px;
-    margin-left: 15px;
+    margin-top: 4px;
 }
 
 .fa-react {
@@ -57,26 +57,31 @@
     padding-left: 2.5rem;
 
     & li.nav-items {
-        height: 80px;
-        padding-top: 2rem;
+        height: 60px;
+        padding-top: 1rem;
     }
 
     .btn--create--idea {
-        padding-top: 2rem;
-        padding-left: 4rem;
+        padding-top: 1rem;
+        padding-left: 3rem;
+
+        .btn--medium {
+            color: $color-black;
+            background: $color-yellow-00;
+            font-weight: 600;
+        }
     }
 }
 
 .nav-link {
     color: $color-white-FA;
-    text-decoration: none;
     padding: 0.5rem 1rem;
+    font-weight: 600;
 }
 
 .nav-link:hover {
-    background-color: $color-purple-DD6E;
-    color: $color-yellow-nav-link;
-    text-decoration: none;
+    background-color: $color-yellow-00;
+    color: $color-black;
     border-radius: 6px;
     transition: all 0.2s ease-out;
 }
@@ -109,9 +114,10 @@
     }
 
     .nav-menu.active {
-        background: $color-red-2C;
+        background: $color-red-24;
         padding: 0;
         left: 0;
+        top: 6rem;
         opacity: 1;
         transition: all 0.5s ease;
         z-index: 3;
@@ -119,27 +125,26 @@
 
     .nav-link {
         text-align: center;
-        padding: 1.2rem;
+        padding: 2rem;
         width: 100%;
         display: table;
     }
 
     .nav-link:hover {
-        background-color: $color-purple-DD6E;
-        border-radius: 0;
+        background-color: $color-yellow-00;
+        color: $color-black;
     }
 
     .navbar-logo {
         position: absolute;
-        top: 5px;
-        left: 15px;
+        top: 0px;
         margin: 0;
     }
 
     .menu-icon {
         display: block;
         position: absolute;
-        top: 0;
+        top: -1rem;
         right: 0;
         transform: translate(-100%, 60%);
         font-size: 1.8rem;
@@ -153,16 +158,13 @@
         margin: 2rem auto;
         border-radius: 4px;
         width: 80%;
-        background: $color-blue-CC;
-        text-decoration: none;
-        color: $color-white;
+        color: $color-black;
+        background: $color-yellow-00;
+        font-weight: 600;
         font-size: 1.5rem;
 
         &:hover {
-            background: transparent;
-            border: 0.15rem solid $color-blue-CC;
-            color: $color-white-F9;
-            transition: 150ms;
+            color: $color-black;
         }
     }
 

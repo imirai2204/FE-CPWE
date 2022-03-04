@@ -154,9 +154,10 @@ const SubmitPage = (props) => {
                                 maxFileSize={5000000}
                                 fullWidth={true}
                                 dropzoneText="Drop files to attach or browse"
-                                filesLimit={6}
+                                filesLimit={8}
                                 showFileNamesInPreview={true}
                                 showPreviewsInDropzone={false}
+                                showAlerts={false}
                             />
                         </div>
                         <div className='container--idea--submit check-submit'>
