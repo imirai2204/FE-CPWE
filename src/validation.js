@@ -6,3 +6,7 @@ export const SignInSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string().required('Required')
 })
+
+export const DepartmentSchema = Yup.object().shape({
+    title: Yup.string().required('Required'),
+})

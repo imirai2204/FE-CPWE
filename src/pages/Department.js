@@ -3,30 +3,34 @@ import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { StickyHeadTable } from "../components/UI/Table/Table"
-// import { SignInSchema } from "../validation";
+import { DepartmentSchema } from "../validation";
+import axios from "axios";
 
-// function handleSubmit(values) {
-//     const body = {
-//         email: values.email,
-//         password: values.password,
-//     };
+function handleSubmit(values) {
+    const body = {
+        title: values.title,
+    };
 
-//     axios
-//         .post(`http://localhost:3000/login`, body)
-//         .then((res) => {
-//             console.log(res);
-//             console.log(res.data);
-//             setTimeout(() => {
-//                 alert("Login success");
-//             }, 400);
-//         })
-//         .catch((error) => {
-//             console.log(error);
-//             setTimeout(() => {
-//                 alert(error);
-//             }, 400);
-//         });
-// }
+    axios
+        .post(`http://localhost:3000/login`, body)
+        .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            setTimeout(() => {
+                alert("Login success");
+            }, 400);
+        })
+        .catch((error) => {
+            console.log(error);
+            setTimeout(() => {
+                alert(error);
+            }, 400);
+        });
+}
+
+const initialValues = {
+    title: "",
+};
 
 export const columns = [
     { id: 'department', label: 'Department', minWidth: 170 },
@@ -58,15 +62,15 @@ const data = [
 
 function Department() {
     return (
-        <div className="department-page">
+        <div className="department-page container">
             <h2 className='page-title'>Department</h2>
             <div className="layout-form">
                 <Formik
-                // initialValues={initialValues}
-                // //validationSchema={SignInSchema}
-                // onSubmit={(values, { setSubmitting }) => {
-                //     handleSubmit(values);
-                // }}
+                initialValues={initialValues}
+                validationSchema={DepartmentSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    handleSubmit(values);
+                }}
                 >
                     {({
                         isSubmiting,
@@ -79,28 +83,31 @@ function Department() {
                         setFieldValue,
                     }) => (
                         <Form className='submit-form'>
-                            <div className='input-section'>
-                                <TextField
-                                    label={"Title"}
-                                    name='title'
-                                    type='title'
-                                    multiple
-                                    placeholder='Title'
-                                />
+                            <div className="form-container">
+                                <div className='input-section'>
+                                    <TextField
+                                        label={"Title"}
+                                        name='title'
+                                        type='title'
+                                        multiple
+                                        placeholder='Title'
+                                    />
+                                </div>
                             </div>
+                            <hr />
                             <div className='list-button'>
                                 <button
-                                    className='btn btn--noline'
+                                    className={'btn btn-warning'}
                                     type='submit'>
-                                    Cancel
+                                    Search
                                 </button>
                                 <button
-                                    className={'btn btn--medium'}
+                                    className={'btn btn-info'}
                                     type='submit'>
                                     Refresh
                                 </button>
                                 <button
-                                    className={'btn btn--medium'}
+                                    className={'btn btn-success'}
                                     type='submit'>
                                     Save
                                 </button>

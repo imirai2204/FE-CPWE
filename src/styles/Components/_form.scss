@@ -182,3 +182,18 @@
         text-overflow: ellipsis;
     }
 }
+
+.layout-form {
+    margin-bottom: 5rem;
+    .form-container {
+        margin: 0 20rem 2rem;
+    }
+
+    @media screen and (max-width: 1095px) {
+        margin-bottom: 3rem;
+
+        .form-container {
+            margin: 0 0 2rem;
+        }
+    }
+}

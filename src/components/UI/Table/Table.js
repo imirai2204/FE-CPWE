@@ -55,7 +55,9 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                                 >
                                     {column.label}
                                     <span onClick={toggleSort}>
-                                        {sortLable ? <DownArrow /> : <UpArrow />}
+                                        {sortLable ?
+                                            <DownArrow style={{ fontSize: "20px" }} /> :
+                                            <UpArrow style={{ fontSize: "20px" }} />}
                                     </span>
 
                                 </TableCell>
@@ -104,13 +106,13 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                                             key={row.id}
                                             align={"center"}
                                         >
-                                            <EditIcon onClick={() => handleGetName(row.id)} />
+                                            <EditIcon style={{fill: '#FFC20E', fontSize: '20px'}} onClick={() => handleGetName(row.id)} />
                                         </TableCell>
                                         <TableCell
                                             key={row.id}
                                             align={"center"}
                                         >
-                                            <TrashIcon onClick={() => handleGetName(row.id)} />
+                                            <TrashIcon style={{fill: '#EB1C24', fontSize: '20px'}} onClick={() => handleGetName(row.id)} />
                                         </TableCell>
                                     </TableRow>
                                 );
