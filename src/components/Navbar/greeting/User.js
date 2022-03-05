@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import Button from "@mui/material/Button";
 import Greeting from "./Greeting";
 import Avatar from "@mui/material/Avatar";
@@ -7,35 +7,21 @@ import UserCard from "./UserCard";
 const defaultAvatar = "/default-avatar.png";
 
 export default function BasicMenu(props) {
-    const [showMenu, setShowMenu] = React.useState(null);
-    const open = Boolean(showMenu);
+    const [showMenu, setShowMenu] = useState(false);
 
-    const openMenuHandler = (event) => {
-        setShowMenu(event.currentTarget);
+    const userCardHandler = () => {
+        setShowMenu((prev) => !prev);
     };
 
-    const closeMenuHandler = () => {
-        setShowMenu(null);
-    };
-
-    const hasImageSource = props.src !== undefined;
+    const imgSourcePath = props.src !== undefined ? props.src : defaultAvatar;
 
     return (
-        <>
-            <Button
-                id='basic-button'
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup='true'
-                aria-expanded={open ? "true" : undefined}
-                onClick={openMenuHandler}>
+        <Fragment>
+            <Button id='basic-button' onClick={userCardHandler}>
                 <Greeting data={props.data} />
-                {hasImageSource ? (
-                    <Avatar id='user-avatar-navbar' src={props.src} />
-                ) : (
-                    <Avatar id='user-avatar-navbar' src={defaultAvatar} />
-                )}
+                <Avatar id='user-avatar-navbar' src={imgSourcePath} />
             </Button>
-            {showMenu && <UserCard onClose={closeMenuHandler} />}
-        </>
+            {showMenu && <UserCard onClose={userCardHandler} imgSource={imgSourcePath} />}
+        </Fragment>
     );
 }
