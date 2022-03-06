@@ -491,7 +491,7 @@ label {
 
 .card-image {
   justify-content: center;
-  padding-top: 8px;
+  padding-top: 10px;
   padding-left: 38%; }
   .card-image .MuiAvatar-root {
     width: 80px;
@@ -693,7 +693,7 @@ body.active-modal {
     width: 100vw;
     height: 100vh;
     position: absolute;
-    top: 80px;
+    top: 60px;
     left: -100%;
     margin: 0;
     opacity: 1;

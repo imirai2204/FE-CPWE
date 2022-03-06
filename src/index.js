@@ -4,13 +4,16 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { SideBarContextProvider } from "./store/side-bar-context";
 import { UserCardContextProvider } from "./store/user-card-context";
+import { EditTableContextProvider } from "./store/edit-table-context";
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <SideBarContextProvider>
                 <UserCardContextProvider>
-                    <App />
+                    <EditTableContextProvider>
+                        <App />
+                    </EditTableContextProvider>
                 </UserCardContextProvider>
             </SideBarContextProvider>
         </BrowserRouter>

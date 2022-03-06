@@ -48,10 +48,6 @@ const User = (props) => {
 
     return (
         <Fragment>
-            <Button id="basic-button" type="button" onClick={onClickHandler}>
-                <Greeting data={props.data} />
-                <Avatar id="user-avatar-navbar" src={imgSourcePath} />
-            </Button>
             <Popper
                 id={id}
                 open={userCardCtx.isCardOpen}
