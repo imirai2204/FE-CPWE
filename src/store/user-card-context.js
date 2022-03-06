@@ -9,7 +9,7 @@ const UserCardContext = React.createContext({
         department: "",
         userRole: "",
     },
-    getUserInfo: () => {},
+    getUserInfo: (values) => {},
     showUserCard: () => {},
     closeUserCard: () => {},
 });
@@ -33,7 +33,7 @@ export const UserCardContextProvider = (props) => {
 
     const showUserCard = () => setIsCardOpen(true);
     const closeUserCard = () => setIsCardOpen(false);
-    const getUserInfo = () => setUserInfo(props.userInfo);
+    const getUserInfo = (values) => setUserInfo(values);
 
     return (
         <UserCardContext.Provider

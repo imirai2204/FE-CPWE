@@ -12,5 +12,10 @@ export const DepartmentSchema = Yup.object().shape({
 })
 
 export const IdeaSchema = Yup.object().shape({
-    title: Yup.string().required('Required'),
-})
+    title: Yup.string()
+        .required("Required")
+        .min(10, "Title should have at least 10 characters"),
+    description: Yup.string()
+        .required("Required")
+        .min(10, "Description should have at least 50 characters"),
+});
