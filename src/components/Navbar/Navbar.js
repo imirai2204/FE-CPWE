@@ -66,22 +66,22 @@ const Navbar = (props) => {
 
     return (
         <Fragment>
-            <nav className='NavbarItems'>
-                <Link to='/' onClick={closeMobileMenu}>
-                    <h1 className='navbar-logo'>
-                        <i className='logo'></i>
+            <nav className="NavbarItems">
+                <Link to="/" onClick={closeMobileMenu}>
+                    <h1 className="navbar-logo">
+                        <i className="logo"></i>
                     </h1>
                 </Link>
-                <div className='menu-icon' onClick={clickIconHandler}>
+                <div className="menu-icon" onClick={clickIconHandler}>
                     <i className={menuIconClasses}></i>
                 </div>
                 <ul className={navMenuClasses}>
                     {mapMenuItems}
-                    <div className='btn--create--idea'>
+                    <div className="btn--create--idea">
                         <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                     </div>
                 </ul>
-                <User data='Cody' />
+                <User data={userCardCtx.userInfo.fullName} />
             </nav>
             <DropdownSide onClick={closeMobileMenu} />
         </Fragment>

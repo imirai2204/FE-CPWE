@@ -7,7 +7,7 @@ import UserCardContext from "../../../store/user-card-context";
 
 const dash = (
     <Box
-        component='span'
+        component="span"
         sx={{
             display: "inline-block",
             mx: "6px",
@@ -37,16 +37,16 @@ const UserCard = (props) => {
 
     return (
         <Card sx={{ boxShadow: 0, textAlign: "center" }}>
-            <CardContent sx={{ height: 180 }}>
-                <Typography sx={{ mt: 1 }} color='text.main' component='div'>
+            <CardContent sx={{ height: 170, mt: 1, lineHeight: 4 }}>
+                <Typography variant="h4" color="text.main" component="div">
                     {fullName}
                     {dash}
                     {userId}
                 </Typography>
-                <Typography sx={{ mt: 1.5 }} color='text.secondary'>
+                <Typography variant="h5" sx={{ pt: 1 }} color="text.secondary">
                     {email}
                 </Typography>
-                <Typography variant='body1' color='text.secondary'>
+                <Typography variant="h5" sx={{ pt: 1.5 }} color="text.secondary">
                     {department}
                     <br />
                     {role}
