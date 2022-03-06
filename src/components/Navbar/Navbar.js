@@ -5,22 +5,32 @@ import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
 import DropdownSide from "./dropdown/DropdownSide";
 import User from "./greeting/User";
+import UserCardContext from "../../store/user-card-context";
 import SideBarContext from "../../store/side-bar-context";
 
 const Navbar = (props) => {
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-    const ctx = useContext(SideBarContext);
+    const sideBarCtx = useContext(SideBarContext);
+    const userCardCtx = useContext(UserCardContext);
 
     const isMobileSize = window.innerWidth < 1100 ? true : false;
     const clickIconHandler = () => {
-        if (ctx.isShown) {
-            ctx.onClose();
+        if (sideBarCtx.isShown) {
+            sideBarCtx.onClose();
+        }
+        if (userCardCtx.isCardOpen) {
+            userCardCtx.closeUserCard();
         }
         setIsClicked(!isClicked);
     };
 
-    const closeMobileMenu = () => setIsClicked(false);
+    const closeMobileMenu = () => {
+        setIsClicked(false);
+        if (userCardCtx.isCardOpen) {
+            userCardCtx.closeUserCard();
+        }
+    };
     const onMouseEnter = () => setShowDropdown(!isMobileSize);
     const onMouseLeave = () => setShowDropdown(false);
 
@@ -35,7 +45,7 @@ const Navbar = (props) => {
                     <Link
                         className={item.cName}
                         to={item.path}
-                        onClick={isMobileSize ? ctx.onShow : false}>
+                        onClick={isMobileSize ? sideBarCtx.onShow : false}>
                         {item.title}
                     </Link>
                     {showDropdown && <Dropdown />}
@@ -56,22 +66,22 @@ const Navbar = (props) => {
 
     return (
         <Fragment>
-            <nav className='NavbarItems'>
-                <Link to='/' onClick={closeMobileMenu}>
-                    <h1 className='navbar-logo'>
-                        <i className='logo'></i>
+            <nav className="NavbarItems">
+                <Link to="/" onClick={closeMobileMenu}>
+                    <h1 className="navbar-logo">
+                        <i className="logo"></i>
                     </h1>
                 </Link>
-                <div className='menu-icon' onClick={clickIconHandler}>
+                <div className="menu-icon" onClick={clickIconHandler}>
                     <i className={menuIconClasses}></i>
                 </div>
                 <ul className={navMenuClasses}>
                     {mapMenuItems}
-                    <div className='btn--create--idea'>
+                    <div className="btn--create--idea">
                         <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                     </div>
                 </ul>
-                <User data='Cody' />
+                <User data={userCardCtx.userInfo.fullName} />
             </nav>
             <DropdownSide onClick={closeMobileMenu} />
         </Fragment>

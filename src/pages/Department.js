@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
-import { StickyHeadTable } from "../components/UI/Table/Table"
+import { StickyHeadTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
 import axios from "axios";
+import EditTableContext from "../store/edit-table-context";
 
 function handleSubmit(values) {
     const body = {
@@ -32,9 +33,7 @@ const initialValues = {
     departmentName: "",
 };
 
-export const columns = [
-    { id: 'department', label: 'Department', minWidth: 170 },
-]
+export const columns = [{ id: "department", label: "Department", minWidth: 170 }];
 
 const data = [
     {
@@ -57,21 +56,24 @@ const data = [
     },
     {
         department: "Mathematics Department",
-    }
-]
+    },
+];
 
 function Department() {
+    const editTableCtx = useContext(EditTableContext);
+
+    console.log(editTableCtx.searchFieldValue);
+
     return (
         <div className="department-page container">
-            <h2 className='page-title'>Department</h2>
+            <h2 className="page-title">Department</h2>
             <div className="layout-form">
                 <Formik
                     initialValues={initialValues}
                     validationSchema={DepartmentSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         handleSubmit(values);
-                    }}
-                >
+                    }}>
                     {({
                         isSubmiting,
                         handleChange,
@@ -82,23 +84,22 @@ function Department() {
                         touched,
                         setFieldValue,
                     }) => (
-                        <Form className='submit-form'>
+                        <Form className="submit-form">
                             <div className="form-container">
-                                <div className='input-section label-mark'>
+                                <div className="input-section label-mark">
                                     <TextField
                                         label={"Department Name"}
                                         name='departmentName'
                                         type='text'
                                         placeholder='Type...'
                                         value={localStorage.getItem("department")}
+                                        //placeholder={editTableCtx.searchFieldValue}
                                     />
                                 </div>
                             </div>
                             <hr />
-                            <div className='list-button'>
-                                <button
-                                    className={'btn btn-warning'}
-                                    type='submit'>
+                            <div className="list-button">
+                                <button className={"btn btn-warning"} type="submit">
                                     Search
                                 </button>
                                 <button
@@ -108,9 +109,7 @@ function Department() {
                                 >
                                     Refresh
                                 </button>
-                                <button
-                                    className={'btn btn-success'}
-                                    type='submit'>
+                                <button className={"btn btn-success"} type="submit">
                                     Save
                                 </button>
                             </div>

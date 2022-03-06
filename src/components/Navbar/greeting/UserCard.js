@@ -1,41 +1,57 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import UserCardContext from "../../../store/user-card-context";
 
-const bull = (
+const dash = (
     <Box
-        component='span'
-        sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}>
-        •
+        component="span"
+        sx={{
+            display: "inline-block",
+            mx: "6px",
+            fontSize: "18px",
+        }}>
+        -
     </Box>
 );
 
 const UserCard = (props) => {
+    /**
+     * Get user info from useContext Hooks to pass:
+     * Full Name
+     * UserId
+     * Email
+     * Department
+     * Role
+     * after user has login successfully
+     */
+    const userCardCtx = useContext(UserCardContext);
+
+    const fullName = "Full Name"; //userCardCtx.userInfo.fullName
+    const userId = "UserID"; //userCardCtx.userInfo.userId
+    const email = "Email@email.com"; //userCardCtx.userInfo.email
+    const department = "User Department"; //userCardCtx.userInfo.department
+    const role = "User Role"; //userCardCtx.userInfo.role
+
     return (
-        <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-                    Word of the Day
+        <Card sx={{ boxShadow: 0, textAlign: "center" }}>
+            <CardContent sx={{ height: 170, mt: 1, lineHeight: 4 }}>
+                <Typography variant="h4" color="text.main" component="div">
+                    {fullName}
+                    {dash}
+                    {userId}
                 </Typography>
-                <Typography variant='h5' component='div'>
-                    be{bull}nev{bull}o{bull}lent
+                <Typography variant="h5" sx={{ pt: 1 }} color="text.secondary">
+                    {email}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-                    adjective
-                </Typography>
-                <Typography variant='body2'>
-                    well meaning and kindly.
+                <Typography variant="h5" sx={{ pt: 1.5 }} color="text.secondary">
+                    {department}
                     <br />
-                    {'"a benevolent smile"'}
+                    {role}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <Button size='small'>Learn More</Button>
-            </CardActions>
         </Card>
     );
 };

@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useState, Fragment, useContext } from "react";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
@@ -46,10 +48,6 @@ const User = (props) => {
 
     return (
         <Fragment>
-            <Button id='basic-button' type='button' onClick={onClickHandler}>
-                <Greeting data={props.data} />
-                <Avatar id='user-avatar-navbar' src={imgSourcePath} />
-            </Button>
             <Popper
                 id={id}
                 open={userCardCtx.isCardOpen}
@@ -67,25 +65,25 @@ const User = (props) => {
                                 p: 0,
                                 bgcolor: "background.paper",
                             }}>
-                            <div className='card-image'>
+                            <div className="card-image">
                                 <Avatar src={imgSourcePath} />
                             </div>
                             <UserCard />
-                            <div className='card--info--button'>
-                                <div className='user-settings-btn'>
-                                    <Button onClick={closeCardHandler} size='small'>
-                                        <Link to='/user/user-settings'>
+                            <div className="card--info--button">
+                                <div className="user-settings-btn">
+                                    <Button onClick={closeCardHandler} size="small">
+                                        <Link to="/user/user-settings">
                                             User Settings
                                         </Link>
                                     </Button>
                                 </div>
-                                <div className='log-out-btn'>
+                                <div className="log-out-btn">
                                     <Button
-                                        size='small'
-                                        color='error'
+                                        size="small"
+                                        color="error"
                                         endIcon={<LogoutIcon />}
                                         onClick={logOutHandler}>
-                                        <Link className='log-out' to='/login'>
+                                        <Link className="log-out" to="/login">
                                             Logout
                                         </Link>
                                     </Button>
