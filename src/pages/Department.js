@@ -8,7 +8,7 @@ import axios from "axios";
 
 function handleSubmit(values) {
     const body = {
-        title: values.title,
+        departmentName: values.departmentName,
     };
 
     axios
@@ -66,11 +66,11 @@ function Department() {
             <h2 className='page-title'>Department</h2>
             <div className="layout-form">
                 <Formik
-                initialValues={initialValues}
-                validationSchema={DepartmentSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                    handleSubmit(values);
-                }}
+                    initialValues={initialValues}
+                    validationSchema={DepartmentSchema}
+                    onSubmit={(values, { setSubmitting }) => {
+                        handleSubmit(values);
+                    }}
                 >
                     {({
                         isSubmiting,
@@ -89,8 +89,8 @@ function Department() {
                                         label={"Department Name"}
                                         name='departmentName'
                                         type='text'
-                                        multiple
                                         placeholder='Type...'
+                                        value={localStorage.getItem("department")}
                                     />
                                 </div>
                             </div>
@@ -103,7 +103,9 @@ function Department() {
                                 </button>
                                 <button
                                     className={'btn btn-info'}
-                                    type='submit'>
+                                    type='reset'
+                                    onClick={() => localStorage.removeItem("department")}
+                                >
                                     Refresh
                                 </button>
                                 <button
@@ -120,7 +122,7 @@ function Department() {
                 <StickyHeadTable
                     columns={columns}
                     rows={data}
-                    keys="Home"
+                    keys="Department"
                 />
             </div>
         </div>

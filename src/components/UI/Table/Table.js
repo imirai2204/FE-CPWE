@@ -17,6 +17,7 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [sortLable, setSortLable] = React.useState(false);
 
+
     const toggleSort = () => {
         setSortLable(!sortLable);
     };
@@ -31,21 +32,38 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
     };
 
     const handleGetName = (test) => {
-        console.log(test);
+        const testValue = Object.values(test).toString();
+        const testKey = Object.keys(test).toString();
+
+        localStorage.setItem(testKey, testValue);
     }
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
             <TableContainer sx={{ maxHeight: 440 }}>
-                <Table stickyHeader aria-label="sticky table">
+                <Table stickyHeader aria-label="sticky table" key={keys}>
                     <TableHead>
                         <TableRow>
                             <TableCell
                                 key="header-no"
                                 align="center"
-                                style={{ minWidth: 50 }}
+                                style={{ minWidth: 30 }}
                             >
                                 No
+                            </TableCell>
+                            <TableCell
+                                key="header-edit"
+                                align="center"
+                                style={{ minWidth: 50 }}
+                            >
+                                Edit
+                            </TableCell>
+                            <TableCell
+                                key="header-delete"
+                                align="center"
+                                style={{ minWidth: 50 }}
+                            >
+                                Delete
                             </TableCell>
                             {columns.map((column) => (
                                 <TableCell
@@ -62,20 +80,6 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
 
                                 </TableCell>
                             ))}
-                            <TableCell
-                                key="header-edit"
-                                align="center"
-                                style={{ minWidth: 100 }}
-                            >
-                                Edit
-                            </TableCell>
-                            <TableCell
-                                key="header-delete"
-                                align="center"
-                                style={{ minWidth: 100 }}
-                            >
-                                Delete
-                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -90,6 +94,25 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                                         >
                                             {index + 1}
                                         </TableCell>
+                                        <TableCell
+                                            key={row.id}
+                                            align={"center"}
+                                        >
+                                            <EditIcon
+                                                style={{ fill: '#FFC20E', fontSize: '20px' }}
+
+                                                onClick={() => handleGetName(row)}
+                                            />
+                                        </TableCell>
+                                        <TableCell
+                                            key={row.id}
+                                            align={"center"}
+                                        >
+                                            <TrashIcon
+                                                style={{ fill: '#EB1C24', fontSize: '20px' }}
+                                                onClick={() => handleGetName(row)}
+                                            />
+                                        </TableCell>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
@@ -102,18 +125,6 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                                                 </>
                                             );
                                         })}
-                                        <TableCell
-                                            key={row.id}
-                                            align={"center"}
-                                        >
-                                            <EditIcon style={{fill: '#FFC20E', fontSize: '20px'}} onClick={() => handleGetName(row.id)} />
-                                        </TableCell>
-                                        <TableCell
-                                            key={row.id}
-                                            align={"center"}
-                                        >
-                                            <TrashIcon style={{fill: '#EB1C24', fontSize: '20px'}} onClick={() => handleGetName(row.id)} />
-                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
