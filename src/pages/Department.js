@@ -9,7 +9,7 @@ import EditTableContext from "../store/edit-table-context";
 
 function handleSubmit(values) {
     const body = {
-        title: values.title,
+        departmentName: values.departmentName,
     };
 
     axios
@@ -89,10 +89,11 @@ function Department() {
                                 <div className="input-section label-mark">
                                     <TextField
                                         label={"Department Name"}
-                                        name="departmentName"
-                                        type="text"
-                                        multiple
-                                        placeholder={editTableCtx.searchFieldValue}
+                                        name='departmentName'
+                                        type='text'
+                                        placeholder='Type...'
+                                        value={localStorage.getItem("department")}
+                                        //placeholder={editTableCtx.searchFieldValue}
                                     />
                                 </div>
                             </div>
@@ -101,7 +102,11 @@ function Department() {
                                 <button className={"btn btn-warning"} type="submit">
                                     Search
                                 </button>
-                                <button className={"btn btn-info"} type="submit">
+                                <button
+                                    className={'btn btn-info'}
+                                    type='reset'
+                                    onClick={() => localStorage.removeItem("department")}
+                                >
                                     Refresh
                                 </button>
                                 <button className={"btn btn-success"} type="submit">
@@ -113,7 +118,11 @@ function Department() {
                 </Formik>
             </div>
             <div className="layout-table">
-                <StickyHeadTable columns={columns} rows={data} keys="Home" />
+                <StickyHeadTable
+                    columns={columns}
+                    rows={data}
+                    keys="Department"
+                />
             </div>
         </div>
     );
