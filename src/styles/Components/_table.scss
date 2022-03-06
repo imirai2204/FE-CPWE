@@ -33,3 +33,16 @@
 .MuiTablePagination-selectLabel {
     font-weight: 600 !important;
 }
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover {
+    color: $color-red-24 !important;
+}
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active {
+    color: $color-red-24 !important;
+}
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover .MuiTableSortLabel-icon {
+    opacity: 1 !important;
+}
+.MuiTableSortLabel-icon {
+    color: $color-red-24 !important;
+}

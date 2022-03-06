@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
-import { StickyHeadTable } from "../components/UI/Table/Table";
+import { EnhancedTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
 import axios from "axios";
 import EditTableContext from "../store/edit-table-context";
@@ -34,52 +34,53 @@ const initialValues = {
 };
 
 export const columns = [
-    { id: "department", label: "Department", width: "30%" },
+    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
+    { id: "department", label: "Department", width: "50%", align: "left" },
 ];
 
 const data = [
     {
-        id: "1",
+        id: 1,
         department: "Information Technology Department"
     },
     {
-        id: "2",
+        id: 2,
         department: "Human Resources Department"
     },
     {
-        id: "3",
+        id: 3,
         department: "Economics Department"
     },
     {
-        id: "4",
+        id: 4,
         department: "English and Comparative Literature Department"
     },
     {
-        id: "5",
+        id: 5,
         department: "Mechanical Engineering Department"
     },
     {
-        id: "6",
+        id: 6,
         department: "History Department"
     },
     {
-        id: "7",
+        id: 7,
         department: "Mathematics Department"
     },
     {
-        id: "4",
+        id: 8,
         department: "English and Comparative Literature Department"
     },
     {
-        id: "5",
+        id: 9,
         department: "Mechanical Engineering Department"
     },
     {
-        id: "6",
+        id: 10,
         department: "History Department"
     },
     {
-        id: "7",
+        id: 11,
         department: "Mathematics Department"
     },
 ];
@@ -115,8 +116,8 @@ function Department() {
                                         name='departmentName'
                                         type='text'
                                         placeholder='Type...'
-                                        value={editTableCtx.inputFieldValue}
-                                        // onChange={handleChange}
+                                    // value={editTableCtx.inputFieldValue}
+                                    // onChange={handleChange}
                                     />
                                 </div>
                             </div>
@@ -140,10 +141,9 @@ function Department() {
                 </Formik>
             </div>
             <div className="layout-table">
-                <StickyHeadTable
+                <EnhancedTable
                     columns={columns}
                     rows={data}
-                    keys="Department"
                 />
             </div>
         </div>
