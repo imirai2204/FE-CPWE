@@ -1,54 +1,101 @@
-import { useState } from "react";
+import { useState, Fragment, useContext } from "react";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
 import Fade from "@mui/material/Fade";
 import Greeting from "./Greeting";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+import UserCard from "./UserCard";
+import LogoutIcon from "@mui/icons-material/Logout";
+import UserCardContext from "../../../store/user-card-context";
 
 const defaultAvatar = "/default-avatar.png";
 
 const User = (props) => {
-    const [isOpen, setIsOpen] = useState(false);
     const [toggleDisplay, setToggleDisplay] = useState(null);
+    const [isLogOut, setIsLogOut] = useState(false);
+    const userCardCtx = useContext(UserCardContext);
 
-    const handleClick = (event) => {
+    const onClickHandler = (event) => {
         setToggleDisplay(event.currentTarget);
-        setIsOpen((previousOpen) => !previousOpen);
+
+        if (userCardCtx.isCardOpen === true) {
+            userCardCtx.closeUserCard();
+        } else {
+            userCardCtx.showUserCard();
+        }
+    };
+
+    const closeCardHandler = () => {
+        userCardCtx.closeUserCard();
+    };
+
+    const logOutHandler = () => {
+        /** Logic to set user logout */
+        userCardCtx.closeUserCard();
+        setIsLogOut(true);
+        setTimeout(() => {
+            console.log(isLogOut);
+        }, 500);
     };
 
     const imgSourcePath = props.src !== undefined ? props.src : defaultAvatar;
-
-    const canBeOpen = isOpen && Boolean(toggleDisplay);
+    const canBeOpen = userCardCtx.isCardOpen && Boolean(toggleDisplay);
     const id = canBeOpen ? "transition-popper" : undefined;
 
     return (
-        <nav>
-            <Button
-                id='basic-button'
-                aria-describedby={id}
-                type='button'
-                onClick={handleClick}>
+        <Fragment>
+            <Button id='basic-button' type='button' onClick={onClickHandler}>
                 <Greeting data={props.data} />
                 <Avatar id='user-avatar-navbar' src={imgSourcePath} />
             </Button>
-            <Popper id={id} open={isOpen} anchorEl={toggleDisplay} transition>
+            <Popper
+                id={id}
+                open={userCardCtx.isCardOpen}
+                anchorEl={toggleDisplay}
+                transition>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={250}>
                         <Box
                             sx={{
                                 width: 280,
-                                height: 300,
+                                height: 310,
                                 border: 0,
                                 borderRadius: 2,
                                 boxShadow: 4,
                                 p: 0,
                                 bgcolor: "background.paper",
-                            }}></Box>
+                            }}>
+                            <div className='card-image'>
+                                <Avatar src={imgSourcePath} />
+                            </div>
+                            <UserCard />
+                            <div className='card--info--button'>
+                                <div className='user-settings-btn'>
+                                    <Button onClick={closeCardHandler} size='small'>
+                                        <Link to='/user/user-settings'>
+                                            User Settings
+                                        </Link>
+                                    </Button>
+                                </div>
+                                <div className='log-out-btn'>
+                                    <Button
+                                        size='small'
+                                        color='error'
+                                        endIcon={<LogoutIcon />}
+                                        onClick={logOutHandler}>
+                                        <Link className='log-out' to='/login'>
+                                            Logout
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </div>
+                        </Box>
                     </Fade>
                 )}
             </Popper>
-        </nav>
+        </Fragment>
     );
 };
 

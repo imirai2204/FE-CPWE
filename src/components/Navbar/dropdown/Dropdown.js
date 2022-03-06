@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { DropdownItems } from "./DropdownItems";
+import UserCardContext from "../../../store/user-card-context";
 
 const Dropdown = () => {
     const [isClicked, setIsClicked] = useState(false);
+    const userCardCtx = useContext(UserCardContext);
 
-    const clickHandler = () => setIsClicked(!isClicked);
+    const clickHandler = () => {
+        setIsClicked(!isClicked);
+        if (userCardCtx.isCardOpen) {
+            userCardCtx.closeUserCard();
+        }
+    };
 
     const dropdownMenuClasses = isClicked ? "dropdown-menu clicked" : "dropdown-menu";
 

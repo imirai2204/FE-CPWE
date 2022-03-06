@@ -6,16 +6,6 @@
     align-items: center;
     font-size: 1.2rem;
     box-shadow: 3px 0px 12px 0px $color-black-40;
-
-    & .greeting-message.no-user {
-        margin-bottom: 0;
-        margin-top: 0.2rem;
-        color: $color-white;
-    }
-
-    & .btn--login {
-        padding-left: 0.5rem;
-    }
 }
 
 .navbar-logo {
@@ -49,10 +39,10 @@
 .nav-menu {
     display: grid;
     grid-template-columns: repeat(8, auto);
-    grid-gap: 3rem;
+    grid-gap: 2.5rem;
     list-style: none;
     text-align: center;
-    width: 75vw;
+    width: 70vw;
     justify-content: flex-start;
     padding-left: 2.5rem;
 
@@ -172,6 +162,7 @@
     .btn--user--info,
     .greeting-message,
     #user-avatar-navbar,
+    #transition-popper,
     .MuiButton-root {
         display: none !important;
     }

@@ -13,7 +13,7 @@ import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import SubmitPage from "./pages/SubmitPage";
 import AccountSetting from "./pages/AccountSetting";
-import Profile from "./pages/Profile";
+import UserSettings from "./pages/UserSettings";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
 
@@ -37,7 +37,7 @@ function App() {
                 <Route path='/category/topic' exact element={<Topic />} />
                 <Route path='/submit-page' exact element={<SubmitPage />} />
                 <Route path='/account-settings' exact element={<AccountSetting />} />
-                <Route path='/profile' exact element={<Profile />} />
+                <Route path='/user/user-settings' exact element={<UserSettings />} />
                 <Route path='/terms-conditions' exact element={<Terms />} />
             </Routes>
             <SubmitIdea isShowForm={isOpenModal} closeModalHandler={openModalHandler} />

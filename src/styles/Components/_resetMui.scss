@@ -1,15 +1,12 @@
 .NavbarItems {
-    & .user--info--button{
-        display: grid;
-        grid-template-rows: repeat(2, auto);
-    }
-
     & .MuiButton-root {
-        display: grid;
-        grid-template-columns: repeat(2, auto);
-        align-items: flex-start;
-        width: 18.5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 22rem;
         height: 50px !important;
+        margin-left: 1rem;
 
         &:hover {
             background-color: $color-purple-DD6E !important;
@@ -29,7 +26,7 @@
             width: 44px;
             height: 44px;
             margin-left: 0.8rem;
-            bottom: 0.2em;
+            bottom: 0.05em;
         }
     }
 
@@ -54,6 +51,65 @@
                 margin-left: 1rem !important;
                 align-items: center !important;
             }
+        }
+    }
+}
+
+.card-image {
+    justify-content: center;
+    padding-top: 5px;
+    padding-left: 38%;
+
+    & .MuiAvatar-root {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+.card--info--button {
+    padding-left: 10px;
+    width: 270px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    & .user-settings-btn,
+    & .log-out-btn {
+        &:hover {
+            border-radius: 8px;
+        }
+
+        & a {
+            font-size: 13px;
+        }
+    }
+
+    & .user-settings-btn {
+        &:hover {
+            background-color: $color-orange-user-card-btn-hover;
+        }
+
+        & a {
+            color: $color-orange-user-card-btn;
+        }
+    }
+
+    & .log-out-btn {
+        &:hover {
+            background-color: $color-red-user-card-btn-hover;
+        }
+
+        & a {
+            color: $color-red-2C;
+            font-weight: 550;
+        }
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .NavbarItems {
+        & .MuiButton-root {
+            margin-right: 1rem;
         }
     }
 }
