@@ -33,11 +33,9 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
         setPage(0);
     };
 
-    const handleGetName = (test) => {
-        const testValue = Object.values(test).toString();
-        const testKey = Object.keys(test).toString();
-
-        localStorage.setItem(testKey, testValue);
+    const handleGetData = (data) => {
+        const dataValue = Object.values(data);
+        editTableCtx.getValue(dataValue);
     }
 
     return (
@@ -47,31 +45,38 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                     <TableHead>
                         <TableRow>
                             <TableCell
-                                key="header-no"
-                                align="center"
-                                style={{ minWidth: 30 }}
-                            >
-                                No
-                            </TableCell>
-                            <TableCell
                                 key="header-edit"
                                 align="center"
-                                style={{ minWidth: 50 }}
+                                style={{ width: "10%" }}
                             >
                                 Edit
                             </TableCell>
                             <TableCell
                                 key="header-delete"
                                 align="center"
-                                style={{ minWidth: 50 }}
+                                style={{ width: "10%" }}
                             >
                                 Delete
+                            </TableCell>
+                            <TableCell
+                                key="header-no"
+                                align="center"
+                                style={{ width: "20%" }}
+                            >
+                                ID
+                                <span onClick={toggleSort}>
+                                    {sortLable ? (
+                                        <DownArrow style={{ fontSize: "20px" }} />
+                                    ) : (
+                                        <UpArrow style={{ fontSize: "20px" }} />
+                                    )}
+                                </span>
                             </TableCell>
                             {columns.map((column) => (
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}>
+                                    style={{ width: column.width }}>
                                     {column.label}
                                     <span onClick={toggleSort}>
                                         {sortLable ? (
@@ -94,27 +99,26 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={row.id}>
-                                        <TableCell key={index + 1} align={"center"}>
-                                            {index + 1}
-                                        </TableCell>
                                         <TableCell
-                                            key={row.id}
+                                            key={index + 2}
                                             align={"center"}
                                         >
                                             <EditIcon
                                                 style={{ fill: '#FFC20E', fontSize: '20px' }}
-
-                                                onClick={() => handleGetName(row)}
+                                                onClick={() => handleGetData(row)}
                                             />
                                         </TableCell>
                                         <TableCell
-                                            key={row.id}
+                                            key={index + 3}
                                             align={"center"}
                                         >
                                             <TrashIcon
                                                 style={{ fill: '#EB1C24', fontSize: '20px' }}
-                                                onClick={() => handleGetName(row)}
+                                                onClick={() => handleGetData(row)}
                                             />
+                                        </TableCell>
+                                        <TableCell key={index + 1} align={"center"}>
+                                            {row.id}
                                         </TableCell>
                                         {columns.map((column) => {
                                             const value = row[column.id];
@@ -124,7 +128,7 @@ export const StickyHeadTable = ({ columns, rows, keys }) => {
                                                         key={column.id}
                                                         align={column.align}>
                                                         {column.format &&
-                                                        typeof value === "number"
+                                                            typeof value === "number"
                                                             ? column.format(value)
                                                             : value}
                                                     </TableCell>

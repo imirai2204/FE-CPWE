@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 
 const EditTableContext = React.createContext({
-    searchFieldValue: "Type...123",
+    inputFieldValue: "",
     getValue: () => {},
 });
 
 export const EditTableContextProvider = (props) => {
-    const [searchFieldValue, setSearchFieldValue] = useState("Type...123");
+    const [inputFieldValue, setInputFieldValue] = useState("");
 
-    const getValue = (values) => setSearchFieldValue(values);
+    const getValue = (values) => setInputFieldValue(values);
 
     return (
         <EditTableContext.Provider
             value={{
-                searchFieldValue,
+                inputFieldValue,
                 getValue,
             }}>
             {props.children}

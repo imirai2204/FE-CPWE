@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
-import { SignInSchema } from "../validation";
+import { IdeaSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
 import { Link } from "react-router-dom";
@@ -13,11 +13,13 @@ import {
     Contributor,
 } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from 'material-ui-dropzone';
+import { AuthenApi } from "../api/ApiUrl";
+import { Header } from "../api/AxiosComponent"
 
 function handleSubmit(values) {
     const body = {
-        email: values.email,
-        password: values.password,
+        departmentId: values.departmentId,
+        topicId: values.topicId,
     };
 
     axios
@@ -37,28 +39,50 @@ function handleSubmit(values) {
         });
 }
 
+const checkPermission = async (setPermission) => {
+    const response = await axios.post(AuthenApi.checkPermission, Header)
+        .then(response => {
+            if (response.data.code == 1) {
+                setPermission(true);
+            } else {
+                setPermission(false);
+            }
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+                // setHasError(true);
+            }
+        });
+}
+
+const initialValues = {
+    // departmentId: "",
+    // topicId: "",
+    title: "",
+    //files: null,
+};
+
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
+    const [permission, setPermission] = useState(true);
+
+    // checkPermission(setPermission);
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
     };
 
-    const initialValues = {
-        email: "",
-        password: "",
-        files: null,
-    };
-
-    return (
-        <div className='submit-panel'>
-            <h2 className='submit-title'>Create idea</h2>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={SignInSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                    handleSubmit(values);
-                }}>
+    if (permission) {
+        return (
+            <div className='submit-panel'>
+                <h2 className='submit-title'>Create idea</h2>
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={IdeaSchema}
+                    onSubmit={(values, { setSubmitting }) => {
+                        handleSubmit(values);
+                    }}>
                 {({
                     isSubmiting,
                     handleChange,
@@ -94,6 +118,7 @@ const SubmitPage = (props) => {
                                         options={Topics}
                                         isClearable={true}
                                         placeholder={"Select topic"}
+                                        onChange={(value) => setFieldValue('topicId', value)}
                                     />
                                 </div>
                                 <div className='input-section label-mark'>
@@ -124,8 +149,7 @@ const SubmitPage = (props) => {
                             <TextField
                                 label={"Title"}
                                 name='title'
-                                type='title'
-                                multiple
+                                type='text'
                                 placeholder='Title'
                             />
                         </div>
@@ -171,13 +195,12 @@ const SubmitPage = (props) => {
                             <div></div>
                             <button
                                 className='btn btn--noline'
-                                type='submit'
+                                type='button'
                                 onClick={props.onClose}>
                                 Cancel
                             </button>
                             <button
-                                className={`btn btn--medium ${buttonShown ? "" : "disabled"
-                                    }`}
+                                className={`btn btn--medium ${buttonShown ? "" : "disabled"}`}
                                 type='submit'>
                                 Submit
                             </button>
@@ -185,8 +208,14 @@ const SubmitPage = (props) => {
                     </Form>
                 )}
             </Formik>
-        </div>
+            </div >
+
+        );
+    } else {
+    return (
+        <div><p>You have no permission</p></div>
     );
+}
 };
 
 export default SubmitPage;

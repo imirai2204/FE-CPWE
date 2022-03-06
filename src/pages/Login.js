@@ -6,6 +6,8 @@ import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import axios from "axios";
 import ErrorMessage from "../components/UI/Modal/ErrorMessage";
+import { AuthenApi } from "../api/ApiUrl";
+import { Header } from "../api/AxiosComponent"
 
 const style = {
     display: "block",
@@ -45,7 +47,13 @@ function Login() {
     const handleSubmit = async (values) => {
         const { ...data } = values;
 
-        const response = await axios.post(`/login`, data).catch((error) => {
+        const response = await axios.post(AuthenApi.login, data, Header)
+        .then(response => {
+            console.log(response.data);
+            setIsSuccessLogin(true);
+            localStorage.setItem("token", response.data.data.token)
+        })
+        .catch((error) => {
             if (error && error.response) {
                 console.log("Error: ", error);
                 setHasError(true);

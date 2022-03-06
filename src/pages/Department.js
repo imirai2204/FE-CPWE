@@ -33,36 +33,59 @@ const initialValues = {
     departmentName: "",
 };
 
-export const columns = [{ id: "department", label: "Department", minWidth: 170 }];
+export const columns = [
+    { id: "department", label: "Department", width: "30%" },
+];
 
 const data = [
     {
-        department: "Infomation Technology Department",
+        id: "1",
+        department: "Information Technology Department"
     },
     {
-        department: "Human Resources Department",
+        id: "2",
+        department: "Human Resources Department"
     },
     {
-        department: "Economics Department",
+        id: "3",
+        department: "Economics Department"
     },
     {
-        department: "English and Comparative Literature Department",
+        id: "4",
+        department: "English and Comparative Literature Department"
     },
     {
-        department: "Mechanical Engineering Department",
+        id: "5",
+        department: "Mechanical Engineering Department"
     },
     {
-        department: "History Department",
+        id: "6",
+        department: "History Department"
     },
     {
-        department: "Mathematics Department",
+        id: "7",
+        department: "Mathematics Department"
+    },
+    {
+        id: "4",
+        department: "English and Comparative Literature Department"
+    },
+    {
+        id: "5",
+        department: "Mechanical Engineering Department"
+    },
+    {
+        id: "6",
+        department: "History Department"
+    },
+    {
+        id: "7",
+        department: "Mathematics Department"
     },
 ];
 
 function Department() {
     const editTableCtx = useContext(EditTableContext);
-
-    console.log(editTableCtx.searchFieldValue);
 
     return (
         <div className="department-page container">
@@ -92,8 +115,8 @@ function Department() {
                                         name='departmentName'
                                         type='text'
                                         placeholder='Type...'
-                                        value={localStorage.getItem("department")}
-                                        //placeholder={editTableCtx.searchFieldValue}
+                                        value={editTableCtx.inputFieldValue}
+                                        // onChange={handleChange}
                                     />
                                 </div>
                             </div>
@@ -105,7 +128,6 @@ function Department() {
                                 <button
                                     className={'btn btn-info'}
                                     type='reset'
-                                    onClick={() => localStorage.removeItem("department")}
                                 >
                                     Refresh
                                 </button>
