@@ -51,12 +51,12 @@ const Login = () => {
 
         const response = await axios
             .post(Authen.login, data, RequestHeader.loginHeader)
-            .then(() => {
-                console.log(response.data);
+            .then((res) => {
+                console.log(res.data);
                 setIsSuccessLogin(true);
-                localStorage.setItem("token", response.data.data.token);
+                localStorage.setItem("token", res.data.data.token);
                 localStorage.setItem("isLogin", isSuccessLogin);
-                userCardCtx.getUserInfo(response.data.data.user);
+                userCardCtx.getUserInfo(res.data.data.user);
             })
             .catch((error) => {
                 if (error && error.response) {

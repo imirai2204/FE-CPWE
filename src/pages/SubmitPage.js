@@ -14,33 +14,35 @@ import {
     Contributor,
 } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from "material-ui-dropzone";
-import { Authen } from "../api/EndPoint";
+import { IdeaUrl, Authen } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
 
-function handleSubmit(values) {
-    const body = {
-        departmentId: values.departmentId,
-        topicId: values.topicId,
-    };
+const handleSubmit = async (values) => {
+    var formData = new FormData();
+    formData.append("departmentId", values.departmentId);
+    formData.append("topicId", values.topicId);
+    formData.append("categoryId", values.categoryId);
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("contributor", values.contributor);
 
-    console.log("Submit!!!");
+    if (values.files.length > 0) {
+        for ( var i = 0; i < values.files.length; i++) {
+            formData.append("files", values.files[i]);
+        }
+    }
 
-    axios
-        .post(`http://localhost:3000/login`, body)
-        .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            setTimeout(() => {
-                alert("Login success");
-            }, 400);
+    const response = await axios
+        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .then(() => {
+            console.log("Create success")
         })
         .catch((error) => {
-            console.log(error);
-            setTimeout(() => {
-                alert(error);
-            }, 400);
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
         });
-}
+};
 
 const checkPermission = async (setPermission) => {
     const response = await axios
@@ -61,26 +63,20 @@ const checkPermission = async (setPermission) => {
 };
 
 const initialValues = {
-    department: "",
-    topic: "",
-    tag: "",
+    departmentId: 0,
+    topicId: 0,
+    categoryId: 0,
     title: "",
     description: "",
-    contributor: "",
+    contributor: false,
     files: []
 };
 
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
     const [permission, setPermission] = useState(true);
-    const [files, setfiles] = useState([]);
 
     // checkPermission(setPermission);
-    // console.log(files);
-
-    const handleChangeFile = (files) => {
-        setfiles(files);
-    }
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -120,26 +116,17 @@ const SubmitPage = (props) => {
                                             id='department'
                                             options={Departments}
                                             placeholder={"Select depertment"}
-                                            // defaultValue={Departments[0]}
-                                            value={values.department}
                                             isDisabled={false}
-                                            isClearable={true}
                                             onChange={
                                                 selectOption => {
-                                                    let event = {
-                                                        target: {
-                                                            name: 'department',
-                                                            value: selectOption
-                                                        }
-                                                    }
-                                                    handleChange(event)
+                                                    setFieldValue("departmentId", selectOption.value)
                                                 }
                                             }
                                             onBlur={() => {
                                                 handleBlur({ target: { name: 'department' } });
                                             }}
                                         />
-                                        <ErrorMessage component='div' name={'department'} className='error' />
+                                        <ErrorMessage component='div' name={'departmentId'} className='error' />
                                     </div>
                                     <div className='input-section label-mark'>
                                         <label className='label' htmlFor='topic'>
@@ -151,24 +138,16 @@ const SubmitPage = (props) => {
                                             id='topic'
                                             options={Topics}
                                             placeholder={"Select topic"}
-                                            value={values.topic}
-                                            isClearable={true}
                                             onChange={
                                                 selectOption => {
-                                                    let event = {
-                                                        target: {
-                                                            name: 'topic',
-                                                            value: selectOption
-                                                        }
-                                                    }
-                                                    handleChange(event)
+                                                    setFieldValue("topicId", selectOption.value)
                                                 }
                                             }
                                             onBlur={() => {
                                                 handleBlur({ target: { name: 'topic' } });
                                             }}
                                         />
-                                        <ErrorMessage component='div' name={'topic'} className='error' />
+                                        <ErrorMessage component='div' name={'topicId'} className='error' />
                                     </div>
                                     <div className='input-section label-mark'>
                                         <label className='label' htmlFor='tag'>
@@ -180,24 +159,16 @@ const SubmitPage = (props) => {
                                             id='tag'
                                             options={Tags}
                                             placeholder={"Select tag"}
-                                            value={values.tag}
-                                            isClearable={true}
                                             onChange={
                                                 selectOption => {
-                                                    let event = {
-                                                        target: {
-                                                            name: 'tag',
-                                                            value: selectOption
-                                                        }
-                                                    }
-                                                    handleChange(event)
+                                                    setFieldValue("categoryId", selectOption.value)
                                                 }
                                             }
                                             onBlur={() => {
                                                 handleBlur({ target: { name: 'tag' } });
                                             }}
                                         />
-                                        <ErrorMessage component='div' name={'tag'} className='error' />
+                                        <ErrorMessage component='div' name={'categoryId'} className='error' />
                                     </div>
                                 </div>
                                 <div className='layout-1--right'>
@@ -238,17 +209,9 @@ const SubmitPage = (props) => {
                                     id="contributor"
                                     options={Contributor}
                                     placeholder={"Select contributor"}
-                                    // defaultValue={Contributor[0]}
-                                    value={values.contributor}
                                     onChange={
                                         selectOption => {
-                                            let event = {
-                                                target: {
-                                                    name: 'contributor',
-                                                    value: selectOption
-                                                }
-                                            }
-                                            handleChange(event)
+                                            setFieldValue("contributor", selectOption.value)
                                         }
                                     }
                                     onBlur={() => {
@@ -278,7 +241,7 @@ const SubmitPage = (props) => {
                                     onDrop={dropFiles => {
                                         let event = {
                                             target: {
-                                                name: 'file',
+                                                name: 'files',
                                                 value: dropFiles
                                             }
                                         }
