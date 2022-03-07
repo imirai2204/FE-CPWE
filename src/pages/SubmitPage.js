@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
+import { TextArea } from "../components/UI/Form/TextArea";
 import { IdeaSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
@@ -21,6 +22,8 @@ function handleSubmit(values) {
         departmentId: values.departmentId,
         topicId: values.topicId,
     };
+
+    console.log("Submit!!!");
 
     axios
         .post(`http://localhost:3000/login`, body)
@@ -43,7 +46,7 @@ const checkPermission = async (setPermission) => {
     const response = await axios
         .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
         .then((response) => {
-            if (response.data.code == 1) {
+            if (response.data.code === 1) {
                 setPermission(true);
             } else {
                 setPermission(false);
@@ -60,8 +63,12 @@ const checkPermission = async (setPermission) => {
 const initialValues = {
     // departmentId: "",
     // topicId: "",
+    department: "",
+    topic: "",
+    tag: "",
     title: "",
-    //files: null,
+    description: "",
+    contributor: "",
 };
 
 const SubmitPage = (props) => {
@@ -104,10 +111,13 @@ const SubmitPage = (props) => {
                                         <Select
                                             className='select'
                                             options={Departments}
-                                            isClearable={true}
+                                            name='department'
                                             defaultValue={Departments[0]}
                                             placeholder={"Select depertment"}
-                                            isDisabled={true}
+                                            isDisabled={false}
+                                            // onChange={(value) =>
+                                            //     setFieldValue("department", value)
+                                            // }
                                         />
                                     </div>
                                     <div className='input-section label-mark'>
@@ -116,12 +126,10 @@ const SubmitPage = (props) => {
                                         </label>
                                         <Select
                                             className='select'
+                                            name='topic'
+                                            id='topic'
                                             options={Topics}
-                                            isClearable={true}
                                             placeholder={"Select topic"}
-                                            onChange={(value) =>
-                                                setFieldValue("topicId", value)
-                                            }
                                         />
                                     </div>
                                     <div className='input-section label-mark'>
@@ -131,7 +139,8 @@ const SubmitPage = (props) => {
                                         <Select
                                             className='select'
                                             options={Tags}
-                                            isClearable={true}
+                                            name='tag'
+                                            id='tag'
                                             placeholder={"Select tag"}
                                         />
                                     </div>
@@ -157,13 +166,12 @@ const SubmitPage = (props) => {
                                 />
                             </div>
                             <div className='input-section'>
-                                <label htmlFor='description'>Description</label>
-                                <textarea
+                                <TextArea
                                     label={"Description"}
                                     className='textarea'
                                     name='description'
                                     rows={8}
-                                    style={{ width: "100%", resize: "none" }}></textarea>
+                                    style={{ width: "100%", resize: "none" }}></TextArea>
                             </div>
                             <div className='input-section contributor label-mark'>
                                 <label className='label' htmlFor='contributor'>
@@ -171,6 +179,7 @@ const SubmitPage = (props) => {
                                 </label>
                                 <Select
                                     className='select'
+                                    name='contributor'
                                     options={Contributor}
                                     defaultValue={Contributor[0]}
                                 />
@@ -181,10 +190,10 @@ const SubmitPage = (props) => {
                                         ".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf",
                                     ]}
                                     showPreviews={true}
-                                    maxFileSize={5000000}
+                                    maxFileSize={10000000}
                                     fullWidth={true}
                                     dropzoneText='Drop files to attach or browse'
-                                    filesLimit={8}
+                                    filesLimit={5}
                                     showFileNamesInPreview={true}
                                     showPreviewsInDropzone={false}
                                     showAlerts={false}
