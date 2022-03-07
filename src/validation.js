@@ -25,8 +25,9 @@ export const DepartmentSchema = Yup.object().shape({
 export const IdeaSchema = Yup.object().shape({
     // department: Yup.mixed().oneOf(departmentLabel, "Must Select A Department"),
     // contributor: Yup.mixed().oneOf(contributor, "Must Select Contributor Type"),
-    topic: Yup.string().required("Required"),
-    tag: Yup.string().required("Required"),
+    department: Yup.object().required("Required").nullable(),
+    topic: Yup.object().required("Required").nullable(),
+    tag: Yup.object().required("Required").nullable(),
     title: Yup.string()
         .required("Required")
         .min(10, "Title should have at least 10 characters")
@@ -35,4 +36,5 @@ export const IdeaSchema = Yup.object().shape({
         .required("Required")
         .min(50, "Description should have at least 50 characters")
         .max(1000, "Description should have less than 1000 characters"),
+    contributor: Yup.object().required("Required").nullable(),
 });

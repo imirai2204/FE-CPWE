@@ -112,6 +112,7 @@
     }
 }
 
+//reset Mui form
 .css-1s2u09g-control {
     border: none !important;
     border-radius: 0 !important;
@@ -160,8 +161,16 @@
 
     .MuiDropzonePreviewList-image {
         width: 100% !important;
-        height: 50% !important;
+        height: 70% !important;
+        background-color: $color-white !important;
+        @media screen and (max-width: 1095px) {
+            height: 50% !important;
+        }
     }
+}
+
+.MuiDropzonePreviewList-imageContainer:hover .MuiDropzonePreviewList-image {
+    opacity: 1 !important;
 }
 
 .MuiGrid-spacing-xs-8 .MuiGrid-item {
@@ -169,8 +178,8 @@
 }
 
 .MuiGrid-grid-xs-4 {
-    max-width: 25% !important;
-    flex-basis: 25% !important;
+    max-width: 20% !important;
+    flex-basis: 20% !important;
     height: 20rem;
 }
 
