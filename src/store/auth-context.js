@@ -46,11 +46,6 @@ export const AuthContextProvider = (props) => {
                     setHasError(true);
                 }
             });
-
-        // if (response.data.data.code === 1) {
-        //     setIsLoggedIn(true);
-        //     console.log(response.data.data);
-        // }
     };
 
     return (

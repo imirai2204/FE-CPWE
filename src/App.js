@@ -58,16 +58,6 @@ function App() {
         setIsOpenModal((prevIsOpenModal) => !prevIsOpenModal);
     };
 
-    // let isLogin = false;
-    // if (
-    //     localStorage.getItem("token") != null &&
-    //     localStorage.getItem("token") != undefined
-    // ) {
-    //     isLogin = true;
-    // } else {
-    //     isLogin = false;
-    // }
-
     return (
         <Fragment>
             {authCtx.isLoggedIn && (
