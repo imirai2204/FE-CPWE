@@ -19,7 +19,7 @@ import Terms from "./pages/Terms";
 import { SideBarContextProvider } from "./store/side-bar-context";
 import { UserCardContextProvider } from "./store/user-card-context";
 import { EditTableContextProvider } from "./store/edit-table-context";
-import AuthContext, { AuthContextProvider } from "./store/auth-context";
+import AuthContext from "./store/auth-context";
 
 function GlobalRoute({ children, ...props }) {
     return (
@@ -70,47 +70,33 @@ function App() {
 
     return (
         <Fragment>
-            <AuthContextProvider>
-                {authCtx.isLoggedIn && (
-                    <PrivateRoute
-                        openModalHandler={openModalHandler}
-                        isOpenModal={isOpenModal}>
-                        <Route path='/' exact element={<Home />} />
-                        <Route path='/dashboard' exact element={<Dashboard />} />
-                        <Route path='/manage-user' exact element={<ManageUser />} />
-                        <Route
-                            path='/category/academic-year'
-                            exact
-                            element={<AcademicYear />}
-                        />
-                        <Route
-                            path='/category/department'
-                            exact
-                            element={<Department />}
-                        />
-                        <Route path='/category/tags' exact element={<Tags />} />
-                        <Route path='/category/topic' exact element={<Topic />} />
-                        <Route path='/submit-page' exact element={<SubmitPage />} />
-                        <Route
-                            path='/account-settings'
-                            exact
-                            element={<AccountSetting />}
-                        />
-                        <Route
-                            path='/user/user-settings'
-                            exact
-                            element={<UserSettings />}
-                        />
-                        <Route path='/terms-conditions' exact element={<Terms />} />
-                    </PrivateRoute>
-                )}
-                {!authCtx.isLoggedIn && (
-                    <GlobalRoute>
-                        <Route path='/' exact element={<Navigate to='/login' />} />
-                        <Route path='/login' exact element={<Login />} />
-                    </GlobalRoute>
-                )}
-            </AuthContextProvider>
+            {authCtx.isLoggedIn && (
+                <PrivateRoute
+                    openModalHandler={openModalHandler}
+                    isOpenModal={isOpenModal}>
+                    <Route path='/' exact element={<Home />} />
+                    <Route path='/dashboard' exact element={<Dashboard />} />
+                    <Route path='/manage-user' exact element={<ManageUser />} />
+                    <Route
+                        path='/category/academic-year'
+                        exact
+                        element={<AcademicYear />}
+                    />
+                    <Route path='/category/department' exact element={<Department />} />
+                    <Route path='/category/tags' exact element={<Tags />} />
+                    <Route path='/category/topic' exact element={<Topic />} />
+                    <Route path='/submit-page' exact element={<SubmitPage />} />
+                    <Route path='/account-settings' exact element={<AccountSetting />} />
+                    <Route path='/user/user-settings' exact element={<UserSettings />} />
+                    <Route path='/terms-conditions' exact element={<Terms />} />
+                </PrivateRoute>
+            )}
+            {!authCtx.isLoggedIn && (
+                <GlobalRoute>
+                    <Route path='/' exact element={<Navigate to='/login' />} />
+                    <Route path='/login' exact element={<Login />} />
+                </GlobalRoute>
+            )}
         </Fragment>
     );
 }

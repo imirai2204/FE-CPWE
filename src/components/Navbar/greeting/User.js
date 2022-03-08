@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import UserCard from "./UserCard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import UserCardContext from "../../../store/user-card-context";
+import AuthContext from "../../../store/auth-context";
 
 const defaultAvatar = "/default-avatar.png";
 
@@ -16,6 +17,7 @@ const User = (props) => {
     const [toggleDisplay, setToggleDisplay] = useState(null);
     const [isLogOut, setIsLogOut] = useState(false);
     const userCardCtx = useContext(UserCardContext);
+    const authCtx = useContext(AuthContext);
 
     const onClickHandler = (event) => {
         setToggleDisplay(event.currentTarget);
@@ -34,6 +36,7 @@ const User = (props) => {
     const logOutHandler = () => {
         /** Logic to set user logout */
         userCardCtx.closeUserCard();
+        authCtx.onLogout();
         setIsLogOut(true);
         setTimeout(() => {
             console.log(isLogOut);

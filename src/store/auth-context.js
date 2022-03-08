@@ -46,10 +46,10 @@ export const AuthContextProvider = (props) => {
                 }
             });
 
-        if (response && response.data) {
-            setIsLoggedIn(true);
-            console.log(response.data.data);
-        }
+        // if (response.data.data.code === 1) {
+        //     setIsLoggedIn(true);
+        //     console.log(response.data.data);
+        // }
     };
 
     return (
