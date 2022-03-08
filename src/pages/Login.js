@@ -9,6 +9,7 @@ import ErrorMessage from "../components/UI/Modal/ErrorMessage";
 import { Authen } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
 import UserCardContext from "../store/user-card-context";
+import AuthContext from "../store/auth-context";
 
 const style = {
     display: "block",
@@ -27,6 +28,7 @@ const Login = () => {
     const [hasError, setHasError] = useState(false);
     const [isSuccessLogin, setIsSuccessLogin] = useState(false);
     const userCardCtx = useContext(UserCardContext);
+    const authCtx = useContext(AuthContext);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
@@ -47,28 +49,29 @@ const Login = () => {
     };
 
     const handleSubmit = async (values) => {
-        const { ...data } = values;
+        authCtx.onLogIn(values);
+        // const { ...data } = values;
 
-        const response = await axios
-            .post(Authen.login, data, RequestHeader.loginHeader)
-            .then((res) => {
-                console.log(res.data);
-                setIsSuccessLogin(true);
-                localStorage.setItem("token", res.data.data.token);
-                localStorage.setItem("isLogin", isSuccessLogin);
-                userCardCtx.getUserInfo(res.data.data.user);
-            })
-            .catch((error) => {
-                if (error && error.response) {
-                    console.log("Error: ", error);
-                    setHasError(true);
-                }
-            });
+        // const response = await axios
+        //     .post(Authen.login, data, RequestHeader.loginHeader)
+        //     .then((res) => {
+        //         console.log(res.data);
+        //         setIsSuccessLogin(true);
+        //         localStorage.setItem("token", res.data.data.token);
+        //         localStorage.setItem("isLogin", isSuccessLogin);
+        //         userCardCtx.getUserInfo(res.data.data.user);
+        //     })
+        //     .catch((error) => {
+        //         if (error && error.response) {
+        //             console.log("Error: ", error);
+        //             setHasError(true);
+        //         }
+        //     });
 
-        if (response && response.data) {
-            setIsSuccessLogin(true);
-            console.log(response.data.data);
-        }
+        // if (response && response.data) {
+        //     setIsSuccessLogin(true);
+        //     console.log(response.data.data);
+        // }
     };
 
     return (
@@ -124,13 +127,13 @@ const Login = () => {
                                     LOGIN
                                 </button>
                             </div>
-                            {isSuccessLogin && <p>Login Success!</p>}
+                            {authCtx.isLoggedIn && <p>Login Success!</p>}
                         </Form>
                     )}
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {hasError && <ErrorMessage closebtn={setHasError} />}
+            {authCtx.hasError && <ErrorMessage closebtn={setHasError} />}
         </div>
     );
 };
