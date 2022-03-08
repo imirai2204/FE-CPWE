@@ -5,7 +5,6 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import ErrorMessage from "../components/UI/Modal/ErrorMessage";
-import UserCardContext from "../store/user-card-context";
 import AuthContext from "../store/auth-context";
 
 const style = {
