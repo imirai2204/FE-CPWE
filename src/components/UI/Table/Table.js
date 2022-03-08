@@ -1,4 +1,5 @@
-import * as React from 'react';
+//import * as React from 'react';
+import React, { useState, useContext } from "react";
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -14,6 +15,7 @@ import { visuallyHidden } from '@mui/utils';
 import EditIcon from "@mui/icons-material/Edit";
 import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
+import ConfirmDialog from '../Modal/ConfirmDialog';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -106,6 +108,7 @@ export const EnhancedTable = ({ columns, rows }) => {
     const [orderBy, setOrderBy] = React.useState('ID');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title:'', subTitle:''})
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -174,6 +177,13 @@ export const EnhancedTable = ({ columns, rows }) => {
                                             <TrashIcon
                                                 style={{ fill: '#EB1C24', fontSize: '20px' }}
                                             // onClick={() => handleGetData(row)}
+                                            onClick={() => {
+                                                setConfirmDialog({
+                                                    isOpen:true, 
+                                                    title: 'Are you sure you want to delete this record ?',
+                                                    subTitle: "You can't undo this operetion"
+                                                })
+                                            }}
                                             />
                                         </TableCell>
                                     </TableRow>
@@ -195,6 +205,10 @@ export const EnhancedTable = ({ columns, rows }) => {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+            <ConfirmDialog 
+            confirmDialog={confirmDialog}
+            setConfirmDialog = {setConfirmDialog}
             />
         </Paper>
     );
