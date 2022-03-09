@@ -418,10 +418,26 @@ label {
       height: 45px;
       background-color: #EB1C24;
       border: none;
-      margin-left: 47.5%;
+      margin-left: 48vw;
       margin-top: 20px; }
       .dropdown-menu-mobile .return svg {
-        font-size: 40px; } }
+        font-size: 45px; } }
+
+@media screen and (max-width: 980px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 47.5vw; } }
+
+@media screen and (max-width: 780px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 47vw; } }
+
+@media screen and (max-width: 600px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 46.4vw; } }
+
+@media screen and (max-width: 500px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 45vw; } }
 
 .backdrop {
   position: fixed;
@@ -634,6 +650,21 @@ body.active-modal {
 
 .user-card-mobile {
   display: none; }
+  .user-card-mobile .card-image {
+    padding-top: 30px;
+    padding-left: 27%; }
+    .user-card-mobile .card-image .MuiAvatar-root {
+      width: 160px;
+      height: 160px; }
+  .user-card-mobile .return {
+    width: 45px;
+    height: 45px;
+    background-color: #EB1C24;
+    border: none;
+    margin-left: 47.5%;
+    margin-top: 20px; }
+    .user-card-mobile .return svg {
+      font-size: 40px; }
 
 @media screen and (max-width: 1130px) {
   .user-card-mobile {
@@ -652,7 +683,28 @@ body.active-modal {
       left: 0;
       opacity: 1;
       transition: all 0.5s ease;
-      z-index: 20; } }
+      z-index: 20; }
+      .user-card-mobile.active .card-image {
+        padding-top: 30px;
+        padding-left: 27%; }
+        .user-card-mobile.active .card-image .MuiAvatar-root {
+          width: 160px;
+          height: 160px; }
+      .user-card-mobile.active .card--info--button {
+        height: 40px;
+        width: 320px; }
+        .user-card-mobile.active .card--info--button .user-settings-btn button,
+        .user-card-mobile.active .card--info--button .log-out-btn button {
+          width: 100px; }
+    .user-card-mobile .return {
+      width: 45px;
+      height: 45px;
+      background-color: #EB1C24;
+      border: none;
+      margin-left: 46vw;
+      margin-top: 20px; }
+      .user-card-mobile .return svg {
+        font-size: 45px; } }
 
 .NavbarItems {
   background: #EB1C24;
@@ -778,7 +830,7 @@ body.active-modal {
     background: #FFF000;
     font-weight: 600;
     font-size: 1.5rem; }
-    .nav-link-mobile.account {
+    .nav-link-mobile.user-card {
       background: #b3e95d; }
     .nav-link-mobile:hover {
       color: #000000; }

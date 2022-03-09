@@ -29,7 +29,13 @@ const Navbar = (props) => {
 
     const closeMobileMenu = () => {
         setIsClicked(false);
-        if (userCardCtx.isCardOpen) {
+        if (
+            userCardCtx.isCardOpen ||
+            sideBarCtx.isAccountShown ||
+            sideBarCtx.isCategoryShown
+        ) {
+            sideBarCtx.onCloseAccount();
+            sideBarCtx.onCloseCategory();
             userCardCtx.closeUserCard();
         }
     };
@@ -102,7 +108,7 @@ const Navbar = (props) => {
                 />
             </nav>
             <DropdownSide onClick={closeMobileMenu} />
-            <UserMobile onClick={closeMobileMenu} />
+            <UserMobile onClick={closeMobileMenu} src={userCardCtx.userInfo.avatar} />
         </Fragment>
     );
 };

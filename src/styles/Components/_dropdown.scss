@@ -97,13 +97,44 @@
             height: 45px;
             background-color: $color-red-24;
             border: none;
-            margin-left: 47.5%;
+            margin-left: 48vw;
             margin-top: 20px;
-            
 
             & svg {
-                font-size: 40px;
+                font-size: 45px;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 980px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 47.5vw;
+        }
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 47vw;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 46.4vw;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 45vw;
         }
     }
 }

@@ -13,7 +13,6 @@ import AuthContext from "../../../store/auth-context";
 
 const User = (props) => {
     const [toggleDisplay, setToggleDisplay] = useState(null);
-    const [isLogOut, setIsLogOut] = useState(false);
     const userCardCtx = useContext(UserCardContext);
     const authCtx = useContext(AuthContext);
 
@@ -35,10 +34,6 @@ const User = (props) => {
         /** Logic to set user logout */
         userCardCtx.closeUserCard();
         authCtx.onLogout();
-        setIsLogOut(true);
-        setTimeout(() => {
-            console.log(isLogOut);
-        }, 500);
     };
 
     const canBeOpen = userCardCtx.isCardOpen && Boolean(toggleDisplay);
