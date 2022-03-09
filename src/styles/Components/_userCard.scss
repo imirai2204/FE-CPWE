@@ -1,0 +1,26 @@
+.user-card-mobile {
+    display: none;
+}
+
+@media screen and (max-width: 1130px) {
+    .user-card-mobile {
+        display: inline-block;
+        background: $color-red-24;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 60px;
+        left: -105%;
+        margin: 0;
+        opacity: 1;
+        transition: all 0.5s ease;
+
+        &.active {
+            padding: 0;
+            left: 0;
+            opacity: 1;
+            transition: all 0.5s ease;
+            z-index: 20;
+        }
+    }
+}
