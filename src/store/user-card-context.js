@@ -8,6 +8,7 @@ const UserCardContext = React.createContext({
         email: "",
         department: "",
         userRole: "",
+        avatar: "",
     },
     getUserInfo: (values) => {},
     showUserCard: () => {},
@@ -17,11 +18,12 @@ const UserCardContext = React.createContext({
 export const UserCardContextProvider = (props) => {
     const [isCardOpen, setIsCardOpen] = useState(null);
     const [userInfo, setUserInfo] = useState({
-        fullName: "",
-        userId: "",
-        email: "",
-        department: "",
-        userRole: "",
+        fullName: "User Test",
+        userId: "ID-001",
+        email: "Email@email.com",
+        department: "Testing",
+        userRole: "User Test",
+        avatar: "/default-avatar.png",
     });
 
     useEffect(() => {

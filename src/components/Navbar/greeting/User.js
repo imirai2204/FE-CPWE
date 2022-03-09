@@ -11,8 +11,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import UserCardContext from "../../../store/user-card-context";
 import AuthContext from "../../../store/auth-context";
 
-const defaultAvatar = "/default-avatar.png";
-
 const User = (props) => {
     const [toggleDisplay, setToggleDisplay] = useState(null);
     const [isLogOut, setIsLogOut] = useState(false);
@@ -43,15 +41,14 @@ const User = (props) => {
         }, 500);
     };
 
-    const imgSourcePath = props.src !== undefined ? props.src : defaultAvatar;
     const canBeOpen = userCardCtx.isCardOpen && Boolean(toggleDisplay);
     const id = canBeOpen ? "transition-popper" : undefined;
 
     return (
         <Fragment>
             <Button id='basic-button' type='button' onClick={onClickHandler}>
-                <Greeting data={props.data} />
-                <Avatar id='user-avatar-navbar' src={imgSourcePath} />
+                <Greeting userName={props.userName} />
+                <Avatar id='user-avatar-navbar' src={props.src} />
             </Button>
             <Popper
                 id={id}
@@ -71,7 +68,7 @@ const User = (props) => {
                                 bgcolor: "background.paper",
                             }}>
                             <div className='card-image'>
-                                <Avatar src={imgSourcePath} />
+                                <Avatar src={props.src} />
                             </div>
                             <UserCard />
                             <div className='card--info--button'>
