@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
 import DropdownSide from "./dropdown/DropdownSide";
 import User from "./greeting/User";
+import UserMobile from "./greeting/UserMobile";
 import UserCardContext from "../../store/user-card-context";
 import SideBarContext from "../../store/side-bar-context";
 
@@ -16,8 +17,9 @@ const Navbar = (props) => {
 
     const isMobileSize = window.innerWidth < 1100 ? true : false;
     const clickIconHandler = () => {
-        if (sideBarCtx.isShown) {
-            sideBarCtx.onClose();
+        if (sideBarCtx.isCategoryShown || sideBarCtx.isAccountShown) {
+            sideBarCtx.onCloseCategory();
+            sideBarCtx.onCloseAccount();
         }
         if (userCardCtx.isCardOpen) {
             userCardCtx.closeUserCard();
@@ -45,7 +47,20 @@ const Navbar = (props) => {
                     <Link
                         className={item.cName}
                         to={item.path}
-                        onClick={isMobileSize ? sideBarCtx.onShow : false}>
+                        onClick={isMobileSize ? sideBarCtx.onShowCategory : false}>
+                        {item.title}
+                    </Link>
+                    {showDropdown && <Dropdown />}
+                </li>
+            );
+        }
+        if (item.cName.includes("user-card")) {
+            return (
+                <li key={index} className='nav-items'>
+                    <Link
+                        className={item.cName}
+                        to={item.path}
+                        onClick={isMobileSize ? sideBarCtx.onShowAccount : false}>
                         {item.title}
                     </Link>
                     {showDropdown && <Dropdown />}
@@ -87,6 +102,7 @@ const Navbar = (props) => {
                 />
             </nav>
             <DropdownSide onClick={closeMobileMenu} />
+            <UserMobile onClick={closeMobileMenu} />
         </Fragment>
     );
 };

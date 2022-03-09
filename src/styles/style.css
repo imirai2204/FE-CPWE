@@ -306,14 +306,21 @@ label {
   margin: 0 !important; }
   .MuiGrid-container .MuiDropzonePreviewList-image {
     width: 100% !important;
-    height: 50% !important; }
+    height: 70% !important;
+    background-color: #FFFFFF !important; }
+    @media screen and (max-width: 1095px) {
+      .MuiGrid-container .MuiDropzonePreviewList-image {
+        height: 50% !important; } }
+
+.MuiDropzonePreviewList-imageContainer:hover .MuiDropzonePreviewList-image {
+  opacity: 1 !important; }
 
 .MuiGrid-spacing-xs-8 .MuiGrid-item {
   padding: 16px !important; }
 
 .MuiGrid-grid-xs-4 {
-  max-width: 25% !important;
-  flex-basis: 25% !important;
+  max-width: 20% !important;
+  flex-basis: 20% !important;
   height: 20rem; }
 
 @media screen and (max-width: 1095px) {
@@ -367,7 +374,7 @@ label {
 .dropdown-menu-mobile {
   display: none; }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1130px) {
   .dropdown-menu-mobile {
     display: inline-block;
     background: #EB1C24;
@@ -613,6 +620,40 @@ body.active-modal {
 .MuiTablePagination-selectLabel {
   font-weight: 600 !important; }
 
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover {
+  color: #EB1C24 !important; }
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active {
+  color: #EB1C24 !important; }
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover .MuiTableSortLabel-icon {
+  opacity: 1 !important; }
+
+.MuiTableSortLabel-icon {
+  color: #EB1C24 !important; }
+
+.user-card-mobile {
+  display: none; }
+
+@media screen and (max-width: 1130px) {
+  .user-card-mobile {
+    display: inline-block;
+    background: #EB1C24;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 60px;
+    left: -105%;
+    margin: 0;
+    opacity: 1;
+    transition: all 0.5s ease; }
+    .user-card-mobile.active {
+      padding: 0;
+      left: 0;
+      opacity: 1;
+      transition: all 0.5s ease;
+      z-index: 20; } }
+
 .NavbarItems {
   background: #EB1C24;
   height: 60px;
@@ -683,7 +724,7 @@ body.active-modal {
 .menu-icon {
   display: none; }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1130px) {
   .NavbarItems {
     position: relative; }
   .nav-menu {
@@ -737,6 +778,8 @@ body.active-modal {
     background: #FFF000;
     font-weight: 600;
     font-size: 1.5rem; }
+    .nav-link-mobile.account {
+      background: #b3e95d; }
     .nav-link-mobile:hover {
       color: #000000; }
   .btn.btn--primary,
