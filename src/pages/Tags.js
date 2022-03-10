@@ -60,7 +60,7 @@ const Tags = (props) => {
                                 <div className='input-section label-mark'>
                                     <TextField
                                         label={"Tag"}
-                                        name='tag'
+                                        name='tagName'
                                         type='text'
                                         placeholder='Tag name...'
                                         // value={editTableCtx.inputFieldValue}
@@ -76,7 +76,7 @@ const Tags = (props) => {
                                         options={TopicOptions}
                                         placeholder={"Select topic"}
                                         onChange={(selectOption) => {
-                                            setFieldValue("tagName", selectOption.value);
+                                            setFieldValue("topicId", selectOption.value);
                                         }}
                                         onBlur={() => {
                                             handleBlur({ target: { name: "topic" } });
@@ -84,7 +84,7 @@ const Tags = (props) => {
                                     />
                                     <ErrorMessage
                                         component='div'
-                                        name={"tagName"}
+                                        name={"topicId"}
                                         className='error'
                                     />
                                 </div>
