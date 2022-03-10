@@ -69,7 +69,6 @@ const Navbar = (props) => {
                         onClick={isMobileSize ? sideBarCtx.onShowAccount : false}>
                         {item.title}
                     </Link>
-                    {showDropdown && <Dropdown />}
                 </li>
             );
         }
