@@ -10,7 +10,7 @@ import Select from "react-select";
 
 function handleSubmit(values) {
     const body = {
-        departmentName: values.departmentName,
+        tagName: values.tagName,
     };
 
     axios
@@ -31,7 +31,7 @@ function handleSubmit(values) {
 }
 
 const initialValues = {
-    departmentName: "",
+    tagName: "",
 };
 
 const Tags = (props) => {
