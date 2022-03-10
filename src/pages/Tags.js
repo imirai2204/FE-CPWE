@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -106,7 +106,11 @@ const Tags = (props) => {
                 </Formik>
             </div>
             <div className='layout-table'>
-                <EnhancedTable columns={TableColumns} rows={TagsData} />
+                <EnhancedTable
+                    columns={TableColumns}
+                    rows={TagsData}
+                    hasDisabledBtn={true}
+                />
             </div>
         </div>
     );
