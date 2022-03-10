@@ -249,7 +249,7 @@ const SubmitPage = (props) => {
                                     }}
                                 />
                             </div>
-                            <div className='container--idea--submit check-submit'>
+                            <div className='check-submit'>
                                 <label className='checkbox'>
                                     <input type='checkbox' onClick={clickTerms} />
                                     <span></span>

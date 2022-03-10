@@ -57,12 +57,17 @@
 
             & .card--info--button {
                 height: 40px;
-                width: 320px;
+                width: 100%;
+                padding: 0 20px;
 
                 & .user-settings-btn,
                 & .log-out-btn {
                     & button {
                         width: 100px;
+                    }
+                    & a{
+                        font-size: 20px;
+                        font-weight: 600;
                     }
                 }
             }

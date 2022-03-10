@@ -25,6 +25,7 @@
 
 .checkbox {
     font-size: 15px;
+    margin-inline-end: auto;
 
     input {
         display: none;
@@ -44,8 +45,8 @@
 [type="checkbox"]:checked + span:before {
     content: "✔";
     position: absolute;
-    top: -1px;
-    left: 0;
+    top: 0px;
+    left: 4px;
     color: $color-green;
 
     @media screen and (max-width: 1095px) {
@@ -203,6 +204,23 @@
 
         .form-container {
             margin: 0 0 2rem;
+        }
+    }
+}
+
+.container--idea--submit {
+    padding: 0px 24px 10px !important;
+
+    label {
+        font-weight: 500;
+    }
+
+    .btn {
+        font-size: 15px;
+        font-weight: 600;
+
+        &-noline:hover {
+            text-decoration: underline;
         }
     }
 }

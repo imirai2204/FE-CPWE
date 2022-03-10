@@ -9,6 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import UserCard from "./UserCard";
 import UserCardContext from "../../../store/user-card-context";
 import AuthContext from "../../../store/auth-context";
+import Button from "@mui/material/Button";
 
 const UserMobile = (props) => {
     const categoryMobileCtx = useContext(SideBarContext);
@@ -45,15 +46,13 @@ const UserMobile = (props) => {
                     <UserCard />
                     <div className='card--info--button'>
                         <div className='user-settings-btn'>
-                            <Link to='/user/user-settings'>
-                                <button onClick={props.onClick}>User Settings</button>
+                            <Link to='/user/user-settings' onClick={props.onClick}>
+                                User Settings
                             </Link>
                         </div>
                         <div className='log-out-btn'>
-                            <Link className='log-out' to='/login'>
-                                <button onClick={logOutHandler}>
-                                    Logout <LogoutIcon />
-                                </button>
+                            <Link className='log-out' to='/login' onClick={logOutHandler}>
+                                Logout <LogoutIcon />
                             </Link>
                         </div>
                     </div>

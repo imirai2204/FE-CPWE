@@ -1,17 +1,16 @@
 import { Dialog, DialogContent, DialogTitle, Typography, DialogActions } from '@mui/material'
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "../../../styles/style.scss"
 
 function ConfirmDialog(props) {
 
   const [buttonShown, setButtonShown] = useState(false);
   const { confirmDialog, setConfirmDialog } = props;
-  
+
 
   const clickTerms = () => {
     setButtonShown(!buttonShown);
-};
+  };
 
 
   return (
@@ -26,22 +25,22 @@ function ConfirmDialog(props) {
           {confirmDialog.subTitle}
         </Typography>
       </DialogContent>
-      <DialogActions className='container--idea--submit check-submit'>
+      <DialogActions className='container--idea--submit'>
         <label className='checkbox'>
           <input type='checkbox' onClick={clickTerms} />
           <span></span>
-          <Link
-            to='/terms-conditions'
-            className='terms-link'
-            target='_blank'>
-            Terms & Conditions
-          </Link>
+          <label>Are you sure?</label>
         </label>
-        <button class="btn btn-warning" onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}> NO </button>
+        <button
+          class="btn btn-noline"
+          onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
+          NO
+        </button>
         <button className={`btn btn-danger ${buttonShown ? "" : "disabled"
           }`}
-          type='submit'> YES 
-          </button>
+          onClick={() => console.log(confirmDialog.selectDelete)}
+          type='submit'> YES
+        </button>
       </DialogActions>
 
     </Dialog>

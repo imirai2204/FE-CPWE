@@ -108,7 +108,7 @@ export const EnhancedTable = ({ columns, rows }) => {
     const [orderBy, setOrderBy] = React.useState('ID');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title:'', subTitle:''})
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -176,14 +176,15 @@ export const EnhancedTable = ({ columns, rows }) => {
                                         >
                                             <TrashIcon
                                                 style={{ fill: '#EB1C24', fontSize: '20px' }}
-                                            // onClick={() => handleGetData(row)}
-                                            onClick={() => {
-                                                setConfirmDialog({
-                                                    isOpen:true, 
-                                                    title: 'Are you sure you want to delete this record ?',
-                                                    subTitle: "You can't undo this operetion"
-                                                })
-                                            }}
+                                                // onClick={() => handleGetData(row)}
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure you want to delete this record?',
+                                                        subTitle: "You can't undo this operetion",
+                                                        selectDelete: row.id
+                                                    })
+                                                }}
                                             />
                                         </TableCell>
                                     </TableRow>
@@ -206,9 +207,9 @@ export const EnhancedTable = ({ columns, rows }) => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
             />
-            <ConfirmDialog 
-            confirmDialog={confirmDialog}
-            setConfirmDialog = {setConfirmDialog}
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
             />
         </Paper>
     );

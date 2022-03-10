@@ -20,6 +20,7 @@ import { SideBarContextProvider } from "./store/side-bar-context";
 import { UserCardContextProvider } from "./store/user-card-context";
 import { EditTableContextProvider } from "./store/edit-table-context";
 import AuthContext from "./store/auth-context";
+import PageNotFound from "./404";
 
 function GlobalRoute({ children, ...props }) {
     return (
@@ -68,11 +69,7 @@ function App() {
                     <Route path='/' exact element={<Home />} />
                     <Route path='/dashboard' exact element={<Dashboard />} />
                     <Route path='/manage-user' exact element={<ManageUser />} />
-                    <Route
-                        path='/category/academic-year'
-                        exact
-                        element={<AcademicYear />}
-                    />
+                    <Route path='/category/academic-year'exact element={<AcademicYear />}/>
                     <Route path='/category/department' exact element={<Department />} />
                     <Route path='/category/tags' exact element={<Tags />} />
                     <Route path='/category/topic' exact element={<Topic />} />
@@ -80,12 +77,26 @@ function App() {
                     <Route path='/account-settings' exact element={<AccountSetting />} />
                     <Route path='/user/user-settings' exact element={<UserSettings />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
+                    <Route path="*" element={<Navigate to='/404' />} />
+                    <Route path='/404' exact element={<PageNotFound />} />
                 </PrivateRoute>
             )}
             {!authCtx.isLoggedIn && (
                 <GlobalRoute>
                     <Route path='/' exact element={<Navigate to='/login' />} />
                     <Route path='/login' exact element={<Login />} />
+                    <Route path='/dashboard' exact element={<Navigate to='/login' />} />
+                    <Route path='/manage-user' exact element={<Navigate to='/login' />} />
+                    <Route path='/category/academic-year'exact element={<Navigate to='/login' />}/>
+                    <Route path='/category/department' exact element={<Navigate to='/login' />} />
+                    <Route path='/category/tags' exact element={<Navigate to='/login' />} />
+                    <Route path='/category/topic' exact element={<Navigate to='/login' />} />
+                    <Route path='/submit-page' exact element={<Navigate to='/login' />} />
+                    <Route path='/account-settings' exact element={<Navigate to='/login' />} />
+                    <Route path='/user/user-settings' exact element={<Navigate to='/login' />} />
+                    <Route path='/terms-conditions' exact element={<Navigate to='/login' />} />
+                    <Route path="*" element={<Navigate to='/404' />} />
+                    <Route path='/404' exact element={<PageNotFound />} />
                 </GlobalRoute>
             )}
         </Fragment>
