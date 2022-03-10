@@ -62,10 +62,10 @@
 
                 & .user-settings-btn,
                 & .log-out-btn {
-                    & button {
-                        width: 100px;
-                    }
-                    & a{
+                    display: flex;
+                    align-items: center;
+
+                    & a {
                         font-size: 20px;
                         font-weight: 600;
                     }
