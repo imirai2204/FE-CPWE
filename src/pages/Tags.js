@@ -76,7 +76,7 @@ const Tags = (props) => {
                                         options={TopicOptions}
                                         placeholder={"Select topic"}
                                         onChange={(selectOption) => {
-                                            setFieldValue("topicId", selectOption.value);
+                                            setFieldValue("tagName", selectOption.value);
                                         }}
                                         onBlur={() => {
                                             handleBlur({ target: { name: "topic" } });
@@ -84,7 +84,7 @@ const Tags = (props) => {
                                     />
                                     <ErrorMessage
                                         component='div'
-                                        name={"topicId"}
+                                        name={"tagName"}
                                         className='error'
                                     />
                                 </div>
