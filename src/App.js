@@ -64,7 +64,7 @@ function App() {
                 <PrivateRoute
                     openModalHandler={openModalHandler}
                     isOpenModal={isOpenModal}>
-                    {/* <Navigate to='/' />*/}
+                    <Route path='/login' exact element={<Navigate to='/' />} />
                     <Route path='/' exact element={<Home />} />
                     <Route path='/dashboard' exact element={<Dashboard />} />
                     <Route path='/manage-user' exact element={<ManageUser />} />

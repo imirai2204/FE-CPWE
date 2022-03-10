@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 const date = new Date();
 
 const Greeting = (props) => {
-    const greetingUser = props.data.trim().length === 0 ? "User" : props.data;
+    const greetingUser = props.userName;
     let greetingMessage = "";
     let hour = date.getHours();
 

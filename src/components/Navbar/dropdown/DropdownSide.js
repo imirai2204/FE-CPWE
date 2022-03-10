@@ -5,10 +5,10 @@ import SideBarContext from "../../../store/side-bar-context";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 const DropdownSide = (props) => {
-    const ctx = useContext(SideBarContext);
+    const categoryMobileCtx = useContext(SideBarContext);
 
     const onClickHandler = () => {
-        ctx.onClose();
+        categoryMobileCtx.onCloseCategory();
         props.onClick();
     };
 
@@ -25,7 +25,7 @@ const DropdownSide = (props) => {
         );
     });
 
-    const dropdownClassName = ctx.isShown
+    const dropdownClassName = categoryMobileCtx.isCategoryShown
         ? "dropdown-menu-mobile active"
         : "dropdown-menu-mobile";
 
@@ -34,7 +34,7 @@ const DropdownSide = (props) => {
             <ul onClick={onClickHandler} className='dropdown-side'>
                 {dropdownMenu}
             </ul>
-            <button className='return' onClick={ctx.onClose}>
+            <button className='return' onClick={categoryMobileCtx.onCloseCategory}>
                 <ArrowCircleLeftIcon />
             </button>
         </div>

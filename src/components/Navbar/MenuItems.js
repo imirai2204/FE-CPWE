@@ -29,4 +29,10 @@ export const MenuItems = [
         cName: "nav-link-mobile",
         hasMenu: false,
     },
+    {
+        title: "ACCOUNT",
+        path: "#",
+        cName: "nav-link-mobile user-card",
+        hasMenu: false,
+    },
 ];

@@ -1,100 +1,88 @@
-import React from "react";
-
-import { useState, Fragment, useContext } from "react";
+import React, { useContext } from "react";
 import Box from "@mui/material/Box";
-import Popper from "@mui/material/Popper";
-import Fade from "@mui/material/Fade";
-import Greeting from "./Greeting";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import UserCard from "./UserCard";
+import SideBarContext from "../../../store/side-bar-context";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Avatar from "@mui/material/Avatar";
+import UserCard from "./UserCard";
 import UserCardContext from "../../../store/user-card-context";
+import AuthContext from "../../../store/auth-context";
 
-const defaultAvatar = "/default-avatar.png";
-
-const User = (props) => {
-    const [toggleDisplay, setToggleDisplay] = useState(null);
-    const [isLogOut, setIsLogOut] = useState(false);
+const UserMobile = (props) => {
+    const categoryMobileCtx = useContext(SideBarContext);
     const userCardCtx = useContext(UserCardContext);
+    const authCtx = useContext(AuthContext);
 
-    const onClickHandler = (event) => {
-        setToggleDisplay(event.currentTarget);
-
-        if (userCardCtx.isCardOpen === true) {
-            userCardCtx.closeUserCard();
-        } else {
-            userCardCtx.showUserCard();
-        }
-    };
-
-    const closeCardHandler = () => {
-        userCardCtx.closeUserCard();
-    };
+    const accountClassName = categoryMobileCtx.isAccountShown
+        ? "user-card-mobile active"
+        : "user-card-mobile";
 
     const logOutHandler = () => {
         /** Logic to set user logout */
         userCardCtx.closeUserCard();
-        setIsLogOut(true);
-        setTimeout(() => {
-            console.log(isLogOut);
-        }, 500);
+        authCtx.onLogout();
+        props.onClick();
     };
 
-    const imgSourcePath = props.src !== undefined ? props.src : defaultAvatar;
-    const canBeOpen = userCardCtx.isCardOpen && Boolean(toggleDisplay);
-    const id = canBeOpen ? "transition-popper" : undefined;
-
     return (
-        <Fragment>
-            <Popper
-                id={id}
-                open={userCardCtx.isCardOpen}
-                anchorEl={toggleDisplay}
-                transition>
-                {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={250}>
-                        <Box
-                            sx={{
-                                width: 280,
-                                height: 310,
-                                border: 0,
-                                borderRadius: 2,
-                                boxShadow: 4,
-                                p: 0,
-                                bgcolor: "background.paper",
-                            }}>
-                            <div className="card-image">
-                                <Avatar src={imgSourcePath} />
-                            </div>
-                            <UserCard />
-                            <div className="card--info--button">
-                                <div className="user-settings-btn">
-                                    <Button onClick={closeCardHandler} size="small">
-                                        <Link to="/user/user-settings">
-                                            User Settings
-                                        </Link>
-                                    </Button>
-                                </div>
-                                <div className="log-out-btn">
-                                    <Button
-                                        size="small"
-                                        color="error"
-                                        endIcon={<LogoutIcon />}
-                                        onClick={logOutHandler}>
-                                        <Link className="log-out" to="/login">
-                                            Logout
-                                        </Link>
-                                    </Button>
-                                </div>
-                            </div>
-                        </Box>
-                    </Fade>
-                )}
-            </Popper>
-        </Fragment>
+        <div className={accountClassName}>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    paddingTop: 2.5,
+                    "& > :not(style)": {
+                        width: 330,
+                        height: 420,
+                    },
+                }}>
+                <Paper>
+                    <div className='card-image'>
+                        <Avatar src={props.src} />
+                    </div>
+                    <UserCard />
+                    <div className='card--info--button'>
+                        <div className='user-settings-btn'>
+                            <Link to='/user/user-settings'>
+                                <button onClick={props.onClick}>User Settings</button>
+                            </Link>
+                        </div>
+                        <div className='log-out-btn'>
+                            <Link className='log-out' to='/login'>
+                                <button onClick={logOutHandler}>
+                                    Logout <LogoutIcon />
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </Paper>
+            </Box>
+            <button className='return' onClick={categoryMobileCtx.onCloseAccount}>
+                <ArrowCircleLeftIcon />
+            </button>
+        </div>
     );
 };
 
-export default User;
+export default UserMobile;
+
+/**                    <div className='card--info--button'>
+                        <div className='user-settings-btn'>
+                            <Button onClick={props.onClick} size='small'>
+                                <Link to='/user/user-settings'>User Settings</Link>
+                            </Button>
+                        </div>
+                        <div className='log-out-btn'>
+                            <Button
+                                size='small'
+                                color='error'
+                                endIcon={<LogoutIcon />}
+                                onClick={logOutHandler}>
+                                <Link className='log-out' to='/login'>
+                                    Logout
+                                </Link>
+                            </Button>
+                        </div>
+                    </div> */
