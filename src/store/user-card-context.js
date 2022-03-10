@@ -16,7 +16,7 @@ const UserCardContext = React.createContext({
 });
 
 export const UserCardContextProvider = (props) => {
-    const [isCardOpen, setIsCardOpen] = useState(null);
+    const [isCardOpen, setIsCardOpen] = useState(false);
     const [userInfo, setUserInfo] = useState({
         fullName: "Context User",
         userId: "CTX.01",
