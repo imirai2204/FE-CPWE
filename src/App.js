@@ -85,7 +85,7 @@ function App() {
                 <GlobalRoute>
                     <Route path='/' exact element={<Navigate to='/login' />} />
                     <Route path='/login' exact element={<Login />} />
-                    <Route path='/dashboard' exact element={<Navigate to='/login' />} />
+                    {/* <Route path='/dashboard' exact element={<Navigate to='/login' />} />
                     <Route path='/manage-user' exact element={<Navigate to='/login' />} />
                     <Route path='/category/academic-year'exact element={<Navigate to='/login' />}/>
                     <Route path='/category/department' exact element={<Navigate to='/login' />} />
@@ -96,7 +96,7 @@ function App() {
                     <Route path='/user/user-settings' exact element={<Navigate to='/login' />} />
                     <Route path='/terms-conditions' exact element={<Navigate to='/login' />} />
                     <Route path="*" element={<Navigate to='/404' />} />
-                    <Route path='/404' exact element={<PageNotFound />} />
+                    <Route path='/404' exact element={<PageNotFound />} /> */}
                 </GlobalRoute>
             )}
         </Fragment>

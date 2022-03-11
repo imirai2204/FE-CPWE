@@ -113,9 +113,9 @@ const Tags = (props) => {
                                 </div>
                                 <hr />
                                 <div className='list-button'>
-                                    <button className='btn btn-warning' type='button'>
+                                    {/* <button className='btn btn-warning' type='button'>
                                         Search
-                                    </button>
+                                    </button> */}
                                     <button className='btn btn-info' type='reset'>
                                         Refresh
                                     </button>
@@ -131,6 +131,8 @@ const Tags = (props) => {
                     <EnhancedTable
                         columns={TableColumns}
                         rows={TagsData}
+                        hasEditedBtn={false}
+                        hasDeletedBtn={true}
                         hasDisabledBtn={true}
                     />
                 </div>

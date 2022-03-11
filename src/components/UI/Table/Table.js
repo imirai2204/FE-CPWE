@@ -18,6 +18,9 @@ import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from "../Modal/ConfirmDialog";
 import CloseIcon from "@mui/icons-material/Close";
 
+import EditPopup from "../Modal/EditPopup";
+import EditForm from "./EditForm";
+
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -78,12 +81,18 @@ function EnhancedTableHead(props) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                <TableCell key='header-edit' align='center' style={{ width: "5%" }}>
-                    Edit
-                </TableCell>
-                <TableCell key='header-delete' align='center' style={{ width: "5%" }}>
-                    Delete
-                </TableCell>
+                {props.isEditCol ?
+                    <TableCell key='header-edit' align='center' style={{ width: "5%" }}>
+                        Edit
+                    </TableCell> :
+                    <></>
+                }
+                {props.isDeleteCol ?
+                    <TableCell key='header-delete' align='center' style={{ width: "5%" }}>
+                        Delete
+                    </TableCell> :
+                    <></>
+                }
                 {props.isDisableCol ?
                     <TableCell key='header-disabled' align='center' style={{ width: "5%" }}>
                         Disabled
@@ -111,6 +120,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
         title: "",
         subTitle: "",
     });
+    const [openPopup, setOpenpopup] = useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -130,7 +140,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     return (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <><Paper sx={{ width: "100%", overflow: "hidden" }}>
+
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label='sticky table'>
                     <EnhancedTableHead
@@ -138,6 +149,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                         orderBy={orderBy}
                         onRequestSort={handleRequestSort}
                         columns={columns}
+                        isEditCol={props.hasEditedBtn}
+                        isDeleteCol={props.hasDeletedBtn}
                         isDisableCol={props.hasDisabledBtn}
                     />
                     <TableBody>
@@ -163,33 +176,35 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                 </TableCell>
                                             );
                                         })}
-                                        <TableCell key={index + 2} align={"center"}>
-                                            <EditIcon
-                                                style={{
-                                                    fill: "#FFC20E",
-                                                    fontSize: "20px",
-                                                }}
-                                            // onClick={() => handleGetData(row)}
-                                            />
-                                        </TableCell>
-                                        <TableCell key={index + 3} align={"center"}>
-                                            <TrashIcon
-                                                style={{
-                                                    fill: "#EB1C24",
-                                                    fontSize: "20px",
-                                                }}
-                                                // onClick={() => handleGetData(row)}
-                                                onClick={() => {
-                                                    setConfirmDialog({
-                                                        isOpen: true,
-                                                        title: "Are you sure you want to delete this record?",
-                                                        subTitle:
-                                                            "You can't undo this operetion",
-                                                        selectDelete: row.id,
-                                                    });
-                                                }}
-                                            />
-                                        </TableCell>
+                                        {props.hasEditedBtn ?
+                                            <TableCell key={index + 2} align={"center"}>
+                                                <EditIcon
+                                                    style={{
+                                                        fill: "#FFC20E",
+                                                        fontSize: "20px",
+                                                    }}
+                                                // onClick={() => setOpenpopup(true)}
+                                                />
+                                            </TableCell> : <></>
+                                        }
+                                        {props.hasDeletedBtn ?
+                                            <TableCell key={index + 3} align={"center"}>
+                                                <TrashIcon
+                                                    style={{
+                                                        fill: "#EB1C24",
+                                                        fontSize: "20px",
+                                                    }}
+                                                    onClick={() => {
+                                                        setConfirmDialog({
+                                                            isOpen: true,
+                                                            title: "Are you sure you want to delete this record?",
+                                                            subTitle: "You can't undo this operetion",
+                                                            selectDelete: row.id,
+                                                        });
+                                                    }}
+                                                />
+                                            </TableCell> : <></>
+                                        }
                                         {props.hasDisabledBtn ?
                                             <TableCell key={index + 4} align={"center"}>
                                                 <CloseIcon
@@ -203,7 +218,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                             title: "Are you sure you want to disabled this record?",
                                                             subTitle:
                                                                 "You can enable it again before final closure date",
-                                                            selectDelete: row.id,
+                                                            selectDisable: row.id,
                                                         });
                                                     }}
                                                 />
@@ -227,12 +242,18 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+                onRowsPerPageChange={handleChangeRowsPerPage} />
             <ConfirmDialog
                 confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog}
-            />
-        </Paper >
+                setConfirmDialog={setConfirmDialog} />
+        </Paper>
+
+            <EditPopup
+                title="Edit Department"
+                openPopup={openPopup}
+                setOpenpopup={setOpenpopup} >
+                <EditForm props={setOpenpopup} />
+            </EditPopup>
+        </>
     );
 };
