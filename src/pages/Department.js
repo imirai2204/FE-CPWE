@@ -7,6 +7,7 @@ import { DepartmentSchema } from "../validation";
 import axios from "axios";
 import { IdeaUrl, Authen } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
+import { Columns, Data } from "./dummy-data/department-page";
 
 const handleSubmit = async (values) => {
     var formData = new FormData();
@@ -46,58 +47,6 @@ const checkPermission = async (setPermission) => {
         });
 };
 
-export const columns = [
-    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
-    { id: "department", label: "Department Name", width: "50%", align: "left" },
-];
-
-const data = [
-    {
-        id: 1,
-        department: "Information Technology Department"
-    },
-    {
-        id: 2,
-        department: "Human Resources Department"
-    },
-    {
-        id: 3,
-        department: "Economics Department"
-    },
-    {
-        id: 4,
-        department: "English and Comparative Literature Department"
-    },
-    {
-        id: 5,
-        department: "Mechanical Engineering Department"
-    },
-    {
-        id: 6,
-        department: "History Department"
-    },
-    {
-        id: 7,
-        department: "Mathematics Department"
-    },
-    {
-        id: 8,
-        department: "English and Comparative Literature Department"
-    },
-    {
-        id: 9,
-        department: "Mechanical Engineering Department"
-    },
-    {
-        id: 10,
-        department: "History Department"
-    },
-    {
-        id: 11,
-        department: "Mathematics Department"
-    },
-];
-
 function Department() {
     const [permission, setPermission] = useState(true);
 
@@ -135,9 +84,9 @@ function Department() {
                                 </div>
                                 <hr />
                                 <div className="list-button">
-                                    <button className={"btn btn-warning"} type="button">
+                                    {/* <button className={"btn btn-warning"} type="button">
                                         Search
-                                    </button>
+                                    </button> */}
                                     <button
                                         className={'btn btn-info'}
                                         type='reset'
@@ -154,8 +103,11 @@ function Department() {
                 </div>
                 <div className="layout-table">
                     <EnhancedTable
-                        columns={columns}
-                        rows={data}
+                        columns={Columns}
+                        rows={Data}
+                        hasEditedBtn={false}
+                        hasDeletedBtn={true}
+                        hasDisabledBtn={true}
                     />
                 </div>
             </div>

@@ -1,228 +1,164 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import "../styles/style.scss";
-import { Formik, Form } from "formik";
+import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { AcademicYearSchema } from "../validation";
 import axios from "axios";
-import EditTableContext from "../store/edit-table-context";
+import Select from "react-select";
+import { YearOptions, Columns, Data } from "./dummy-data/years-page";
+import { IdeaUrl, Authen } from "../api/EndPoint";
+import { RequestHeader } from "../api/AxiosComponent";
 
+const handleSubmit = async (values) => {
+    var formData = new FormData();
+    formData.append("yearId", values.yearId);
+    formData.append("semester", values.semester);
+    formData.append("startDate", values.startDate);
+    formData.append("endDate", values.endDate);
 
-function handleSubmit(values) {
-    const body = {
-        closureDate: values.closureDate,
-        finalClosureDate: values.finalClosureDate,
-        createDate: values.createDate,
-        updateDate: values.updateDate,
-    };
-
-    axios
-        .post(`http://localhost:3000/login`, body)
-        .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            setTimeout(() => {
-                alert("Login success");
-            }, 400);
+    const response = await axios
+        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .then(() => {
+            console.log("Create success")
         })
         .catch((error) => {
-            console.log(error);
-            setTimeout(() => {
-                alert(error);
-            }, 400);
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
         });
-}
-
-const initialValues = {
-    id: 0,
-    closureDate: "",
-    finalClosureDate: "",
-    createDate: new Date,
-    updateDate: new Date,
-    disable: false,
 };
 
-export const columns = [
-    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
-    { id: "closureDate", label: "Closure Date", width: "35%", align: "left" },
-    { id: "finalClosureDate", label: "Final closure Date", width: "35%", align: "left" },
-    { id: "createDate", label: "Create Date", width: "10%", align: "left" },
-    { id: "updateDate", label: "Update Date", width: "10%", align: "left" },
-    { id: "disable", label: "Disable", width: "5%", align: "left" },
-];
+const initialValues = {
+    yearId: 0,
+    semester: "",
+    startDate: "",
+    endDate: "",
+};
 
-const data = [
-    {
-        id: 1,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 2,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 3,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 4,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 5,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 6,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 7,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 8,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 9,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 10,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-    {
-        id: 11,
-        closureDate: "3/11/2022",
-        finalClosureDate: "4/11/2022",
-        createDate: "10/11/2022",
-        updateDate: "22/11/2022",
-        disable: false,
-    },
-];
+const checkPermission = async (setPermission) => {
+    const response = await axios
+        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+        .then((response) => {
+            if (response.data.code === 1) {
+                setPermission(true);
+            } else {
+                setPermission(false);
+            }
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+                // setHasError(true);
+            }
+        });
+};
 
 function AcademicYear() {
-    const editTableCtx = useContext(EditTableContext);
+    const [permission, setPermission] = useState(true);
 
-    return (<div className="academic-page container">
-        <h2 className="page-title">Academic Year</h2>
-        <div className="layout-form">
-            <Formik
-                initialValues={initialValues}
-                validationSchema={AcademicYearSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                    handleSubmit(values);
-                }}>
-                {({
-                    isSubmiting,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    values,
-                    errors,
-                    touched,
-                    setFieldValue,
-                }) => (
-                    <Form className="submit-form">
-                        <div className="form-container">
-                            <div className="input-section label-mark">
-                                <TextField
-                                    label={"Year"}
-                                    name='year'
-                                    type='text'
-                                    placeholder='Type...'
-                                // value={editTableCtx.inputFieldValue}
-                                // onChange={handleChange}
-                                />
+    if (permission) {
+        return (<div className="department-page container">
+            <h2 className="page-title">Academic Year</h2>
+            <div className="layout-form">
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={AcademicYearSchema}
+                    onSubmit={(values, { setSubmitting }) => {
+                        handleSubmit(values);
+                        console.log(values);
+                    }}>
+                    {({
+                        isSubmiting,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        values,
+                        errors,
+                        touched,
+                        setFieldValue,
+                    }) => (
+                        <Form className="submit-form">
+                            <div className="form-container">
+                                <div
+                                    className='input-section label-mark'
+                                    style={{ width: "45%" }}
+                                >
+                                    <label className='label'>Year</label>
+                                    <Select
+                                        className='select'
+                                        name='yearId'
+                                        id='year'
+                                        options={YearOptions}
+                                        placeholder={"Select Year"}
+                                        onChange={(selectOption) => {
+                                            setFieldValue("yearId", selectOption.value);
+                                        }}
+                                        onBlur={() => {
+                                            handleBlur({ target: { name: "year" } });
+                                        }}
+                                    />
+                                    <ErrorMessage component='div' name={"yearId"} className='error' />
+                                </div>
+                                <div className="input-section label-mark">
+                                    <TextField
+                                        label={"Semester Name"}
+                                        name='semester'
+                                        type='text'
+                                        placeholder='Semester Name...'
+                                    />
+                                </div>
+                                <div className="layout-date">
+                                    <div className="input-section label-mark time first">
+                                        <TextField
+                                            label={"Start Date"}
+                                            name='startDate'
+                                            type='date'
+                                        />
+                                    </div>
+                                    <div className="input-section label-mark time second">
+                                        <TextField
+                                            label={"End Date"}
+                                            name='endDate'
+                                            type='date'
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="input-section">
-                                <label className='label' htmlFor='closureDate'>
-                                    Closure Date
-                                </label>
-                                <input type="date"
-                                    id="start"
-                                    name="closureDate"
-                                />
-                            </div>
-                            <div className="input-section">
-                                <label className='label' htmlFor='finalClosureDate'>
-                                    Final closure date
-                                </label>
-                                <input
-                                    name='finalClosureDate'
-                                    id="end"
-                                    type="date"
-                                />
-                            </div>
-                        </div>
-                        <hr />
-                        <div className="list-button">
-                            <button className={"btn btn-warning"} type="submit">
+                            <hr />
+                            <div className="list-button">
+                                {/* <button className={"btn btn-warning"} type="submit">
                                 Search
-                            </button>
-                            <button
-                                className={'btn btn-info'}
-                                type='reset'
-                            >
-                                Refresh
-                            </button>
-                            <button className={"btn btn-success"} type="submit">
-                                Save
-                            </button>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
+                            </button> */}
+                                <button className={'btn btn-info'} type='reset'>
+                                    Refresh
+                                </button>
+                                <button className={"btn btn-success"} type="submit">
+                                    Save
+                                </button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+            <div className="layout-table">
+                <EnhancedTable
+                    columns={Columns}
+                    rows={Data}
+                    hasEditedBtn={false}
+                    hasDeletedBtn={true}
+                    hasDisabledBtn={true}
+                />
+            </div>
         </div>
-        <div className="layout-table">
-            <EnhancedTable
-                columns={columns}
-                rows={data}
-            />
-        </div>
-    </div>
-    );
+        )
+    } else {
+        return (
+            <div>
+                <p>You have no permission</p>
+            </div>
+        );
+    }
 }
 
 export default AcademicYear;
