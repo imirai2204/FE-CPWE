@@ -1,0 +1,123 @@
+export const TagsData = [
+    {
+        id: 1,
+        tagLabel: "Tag Name #1",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 2,
+        tagLabel: "Tag Name #2",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 3,
+        tagLabel: "Tag Name #3",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 4,
+        tagLabel: "Tag Name #4",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 5,
+        tagLabel: "Tag Name #5",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 6,
+        tagLabel: "Tag Name #6",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 7,
+        tagLabel: "Tag Name #7",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 8,
+        tagLabel: "Tag Name #8",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 9,
+        tagLabel: "Tag Name #9",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 10,
+        tagLabel: "Tag Name #10",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 11,
+        tagLabel: "Tag Name #11",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 12,
+        tagLabel: "Tag Name #12",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 13,
+        tagLabel: "Tag Name #13",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 14,
+        tagLabel: "Tag Name #14",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+    {
+        id: 15,
+        tagLabel: "Tag Name #15",
+        finalClosure: "mm/dd/yy",
+        createDate: "mm/dd/yy",
+        updateDate: "mm/dd/yy",
+    },
+];
+
+export const TableColumns = [
+    { id: "id", label: "ID", width: "1%", align: "center", style: { left: "13px" } },
+    { id: "tagLabel", label: "Tag Name", width: "20%", align: "left" },
+    { id: "finalClosure", label: "Final Closure Date", width: "15%", align: "left" },
+    { id: "createDate", label: "Create Date", width: "15%", align: "left" },
+    { id: "updateDate", label: "Update Date", width: "15%", align: "left" },
+];
+
+export const TopicOptions = [
+    { value: 1, label: "Topic 1", key: "1" },
+    { value: 2, label: "Topic 2", key: "2" },
+    { value: 3, label: "Topic 3", key: "3" },
+    { value: 4, label: "Topic 3", key: "4" },
+    { value: 5, label: "Topic 3", key: "5" },
+];
