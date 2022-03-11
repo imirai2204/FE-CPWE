@@ -1,0 +1,49 @@
+.layout-table {
+    .MuiTableCell-head {
+        background-color: $color-yellow-00 !important;
+        color: $color-red-24 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-size: 15px !important;
+        line-height: 28px !important;
+        font-weight: 600 !important;
+    }
+
+    .MuiTableCell-body {
+        color: $color-black-40 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-size: 15px !important;
+        line-height: 28px !important;
+    }
+
+    svg {
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
+
+.MuiTablePagination-selectLabel, 
+.MuiTablePagination-displayedRows, 
+.MuiSelect-standard,
+.css-10by3a5-MuiButtonBase-root-MuiMenuItem-root-MuiTablePagination-menuItem {
+    color: $color-black-40 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 15px !important;
+    line-height: 28px !important;
+}
+
+.MuiTablePagination-selectLabel {
+    font-weight: 600 !important;
+}
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover {
+    color: $color-red-24 !important;
+}
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active {
+    color: $color-red-24 !important;
+}
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover .MuiTableSortLabel-icon {
+    opacity: 1 !important;
+}
+.MuiTableSortLabel-icon {
+    color: $color-red-24 !important;
+}

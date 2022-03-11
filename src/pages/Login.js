@@ -1,43 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
-import axios from "axios";
+import ErrorMessage from "../components/UI/Modal/ErrorMessage";
+import AuthContext from "../store/auth-context";
 
-function handleSubmit(values) {
-    const body = {
-        email: values.email,
-        password: values.password,
-    };
+const style = {
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "45px",
+};
 
-    axios
-        .post(`http://localhost:3000/login`, body)
-        .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            setTimeout(() => {
-                alert("Login success");
-            }, 400);
-        })
-        .catch((error) => {
-            console.log(error);
-            setTimeout(() => {
-                alert(error);
-            }, 400);
-        });
-}
+const initialValues = {
+    email: "",
+    password: "",
+};
 
-function Login() {
-    const style = {
-        display: "block",
-        marginLeft: "auto",
-        marginRight: "auto",
-        marginTop: "45px",
-    };
-
+const Login = () => {
     const [passwordShown, setPasswordShown] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const authCtx = useContext(AuthContext);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
@@ -47,16 +32,27 @@ function Login() {
         console.log("test");
     };
 
+    if (hasError) {
+        document.body.classList.add("active-modal");
+    } else {
+        document.body.classList.remove("active-modal");
+    }
+
+    const clickLoginButtonHandler = () => {
+        setHasError(true);
+    };
+
+    const handleSubmit = async (values) => {
+        authCtx.onLogIn(values);
+    };
+
     return (
         <div className='login-layout'>
             <div className='login-panel'>
                 <div className='login-panel_header'></div>
                 <h2 className='login-title'>Login</h2>
                 <Formik
-                    initialValues={{
-                        email: "",
-                        password: "",
-                    }}
+                    initialValues={initialValues}
                     validationSchema={SignInSchema}
                     onSubmit={(values, { setSubmitting }) => handleSubmit(values)}>
                     {({
@@ -98,17 +94,20 @@ function Login() {
                                 <button
                                     className='btn btn--linear'
                                     type='submit'
-                                    style={style}>
+                                    style={style}
+                                    onClick={clickLoginButtonHandler}>
                                     LOGIN
                                 </button>
                             </div>
+                            {authCtx.isLoggedIn && <p>Login Success!</p>}
                         </Form>
                     )}
                 </Formik>
             </div>
             <div className='login-background'></div>
+            {authCtx.hasError && <ErrorMessage closebtn={setHasError} />}
         </div>
     );
-}
+};
 
 export default Login;

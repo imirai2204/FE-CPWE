@@ -1,38 +1,140 @@
 .dropdown-menu {
-    width: 180px;
+    width: 16rem;
     position: absolute;
-    top: 80px;
+    top: 60px;
     display: block;
     list-style: none;
     text-align: start;
     border: none;
     padding: 0;
+    box-shadow: 4px 4px 15px -3px $color-black-40;
 
-    & li {
+    li {
         height: 60px;
-        background: $color-red-2C;
+        background: $color-red-24;
         cursor: pointer;
-        padding-top: 0.8rem;
+        padding: 1rem;
+        border-top: 1px solid $color-black;
     }
 
-    & li:hover {
-        background: $color-red-7F;
-    }
-
-    &.clicked {
+    .clicked {
         display: none;
     }
 
-    & .dropdown-link {
+    .dropdown-link {
         display: block;
         width: 100%;
         height: 100%;
-        text-decoration: none;
         color: $color-white;
-        padding: 1rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem 1rem;
 
         &:hover {
-            color: $color-yellow-nav-link;
+            background-color: $color-yellow-00;
+            color: $color-black;
+            border-radius: 6px;
+            transition: all 0.2s ease-out;
+        }
+    }
+}
+
+.dropdown-menu-mobile {
+    display: none;
+}
+
+@media screen and (max-width: 1130px) {
+    .dropdown-menu-mobile {
+        display: inline-block;
+        background: $color-red-24;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 60px;
+        left: -105%;
+        margin: 0;
+        opacity: 1;
+        transition: all 0.5s ease;
+
+        &.active {
+            padding: 0;
+            left: 0;
+            opacity: 1;
+            transition: all 0.5s ease;
+            z-index: 20;
+        }
+
+        & .dropdown-side {
+            width: 100vw;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        & .dropdown-items-mobile {
+            cursor: pointer;
+            text-align: center;
+            padding-top: 1rem;
+            width: 100%;
+        }
+
+        & .mobile--side--link {
+            width: 100%;
+            color: $color-white-FA;
+            line-height: 28px;
+            display: table;
+            font-weight: 600;
+            padding: 2rem;
+
+            &:hover {
+                background-color: $color-yellow-00;
+                border-radius: 6px;
+                transition: all 0.2s ease-out;
+                color: $color-black;
+            }
+        }
+
+        & .return {
+            width: 45px;
+            height: 45px;
+            background-color: $color-red-24;
+            border: none;
+            margin-left: 48vw;
+            margin-top: 20px;
+
+            & svg {
+                font-size: 45px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 980px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 47.5vw;
+        }
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 47vw;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 46.4vw;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .dropdown-menu-mobile {
+        & .return {
+            margin-left: 45vw;
         }
     }
 }

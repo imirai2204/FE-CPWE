@@ -1,13 +1,13 @@
 .input-section {
     margin-bottom: 13px;
-    margin-top: 40px;
+    margin-top: 25px;
     position: relative;
 }
 
 .form-control {
     margin-top: 5px;
     margin-bottom: 5px;
-    border-bottom: 3px solid $color-black-70;
+    border-bottom: 2px solid $color-black-70;
     border-left: none;
     border-right: none;
     border-top: none;
@@ -19,18 +19,18 @@
     padding-right: 30px;
 
     &:hover {
-        border-bottom: 3px solid $color-blue-B8;
+        border-bottom: 2px solid $color-blue-B8;
     }
 }
 
-.checkbox{
+.checkbox {
     font-size: 15px;
+    margin-inline-end: auto;
 
     input {
-        display: none; 
+        display: none;
     }
 }
-
 
 .checkbox span {
     height: 24px;
@@ -42,17 +42,23 @@
     margin-right: 10px;
 }
 
-[type=checkbox]:checked + span:before {
-    content: '\2714';
+[type="checkbox"]:checked + span:before {
+    content: "✔";
     position: absolute;
-    top: -1px;
-    left: 0;
+    top: 0px;
+    left: 4px;
+    color: $color-green;
+
+    @media screen and (max-width: 1095px) {
+        left: 3px;
+        color: $color-green;
+    }
 }
 
 .password-icon {
     position: absolute;
-    top: 18px;
-    right: 9px;
+    top: 20px;
+    right: 5px;
 }
 
 .error {
@@ -62,7 +68,159 @@
     line-height: 22px;
 }
 
-.form-control.is-invalid, .was-validated .form-control:invalid {
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
     background-image: none !important;
 }
 
+.select {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 2px solid $color-black-70;
+    font-size: 15px;
+    color: $color-black-70;
+
+    &:hover {
+        border: 2px solid $color-blue-B8;
+    }
+}
+
+.textarea {
+    border: 2px solid $color-black-70;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    font-size: 15px;
+    color: $color-black-70;
+    text-align: justify;
+
+    &:hover {
+        border: 2px solid $color-blue-B8;
+    }
+}
+
+.label-mark {
+    .label {
+        &:after {
+            content: "*";
+            color: $color-red;
+            font-size: 25px;
+
+            @media screen and (max-width: 1095px) {
+                font-size: 17px;
+            }
+        }
+    }
+}
+
+//reset Mui form
+.css-1s2u09g-control {
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.css-1insrsq-control {
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.css-1pahdxg-control:hover {
+    border: none !important;
+}
+
+.css-1pahdxg-control {
+    box-shadow: none !important;
+}
+
+.MuiDropzoneArea-root {
+    min-height: 140px !important;
+    border: 2px dotted !important;
+    border-color: $color-black-70 !important;
+
+    &:hover {
+        border-color: $color-blue-B8 !important;
+    }
+}
+
+.MuiDropzonePreviewList-removeButton {
+    top: 15px !important;
+    right: 20px !important;
+}
+
+.MuiTypography-subtitle1,
+.MuiTypography-body1 {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 28px !important;
+    word-break: break-all;
+    white-space: normal;
+}
+
+.MuiGrid-container {
+    width: 100% !important;
+    margin: 0 !important;
+
+    .MuiDropzonePreviewList-image {
+        width: 100% !important;
+        height: 70% !important;
+        background-color: $color-white !important;
+        @media screen and (max-width: 1095px) {
+            height: 50% !important;
+        }
+    }
+}
+
+.MuiDropzonePreviewList-imageContainer:hover .MuiDropzonePreviewList-image {
+    opacity: 1 !important;
+}
+
+.MuiGrid-spacing-xs-8 .MuiGrid-item {
+    padding: 16px !important;
+}
+
+.MuiGrid-grid-xs-4 {
+    max-width: 20% !important;
+    flex-basis: 20% !important;
+    height: 20rem;
+}
+
+@media screen and (max-width: 1095px) {
+    .MuiTypography-subtitle1,
+    .MuiTypography-body1 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+.layout-form {
+    margin-bottom: 5rem;
+    .form-container {
+        margin: 0 20rem 2rem;
+    }
+
+    @media screen and (max-width: 1095px) {
+        margin-bottom: 3rem;
+
+        .form-container {
+            margin: 0 0 2rem;
+        }
+    }
+}
+
+.container--idea--submit {
+    padding: 0px 24px 10px !important;
+
+    label {
+        font-weight: 500;
+    }
+
+    .btn {
+        font-size: 15px;
+        font-weight: 600;
+
+        &-noline:hover {
+            text-decoration: underline;
+        }
+    }
+}

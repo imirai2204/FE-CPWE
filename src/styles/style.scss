@@ -6,12 +6,15 @@
 @import './Base/typography';
 //Components
 @import './Components/button';
-@import './Components/lable';
+@import './Components/label';
 @import './Components/card';
 @import './Components/form';
 @import './Components/dropdown';
 @import './Components/modal';
 @import './Components/resetMui';
+@import './Components/message';
+@import './Components/table';
+@import './Components/userCard';
 //Layouts
 @import './Layout/nav';
 @import './Layout/header';
@@ -20,3 +23,6 @@
 @import './Pages/home';
 @import './Pages/login';
 @import './Pages/register';
+@import './Pages/submit';
+@import './Pages/terms';
+@import './Pages/department';

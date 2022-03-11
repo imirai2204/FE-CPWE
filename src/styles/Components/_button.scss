@@ -6,21 +6,28 @@
     cursor: pointer;
     text-decoration: none;
 
-    &:hover {
-        transition: all 0.2s ease-out;
-        background-color: $color-purple-C2CE;
-        color: $color-black-40;
-    }
+    // &:hover {
+    //     transition: all 0.2s ease-out;
+    //     background-color: $color-purple-C2CE;
+    //     color: $color-black-40;
+    // }
 
     &--primary {
         background-color: transparent;
     }
 
-    &--outline {
+    &--noline {
         background-color: $color-white;
-        color: $color-white;
-        border: 1px solid var(--primary);
+        color: $color-black-40;
+        font-size: 15px;
+        border: none;
         transition: all 0.3s ease-out;
+
+        &:hover {
+            background-color: $color-white;
+            color: $color-black-40;
+            text-decoration: underline;
+        }
     }
 
     &--modal {
@@ -36,9 +43,11 @@
     &--medium {
         font-size: 18px;
         color: $color-white;
+        background-color: $color-blue-CC;
 
         &:hover {
             color: $color-yellow-btn-hover;
+            background-color: $color-blue-CC;
         }
     }
 
@@ -49,11 +58,11 @@
     }
 
     &--linear {
-        background: linear-gradient(180deg, #FFF13C 0%, #FBC50C 51.04%, #F18F3F 100%);
-        border-radius: 4px;
+        background: linear-gradient(180deg, #fff13c 0%, #fbc50c 51.04%, #f18f3f 100%);
+        border-radius: 8px;
         justify-content: center;
         align-items: center;
-        padding: 13px 38px;
+        padding: 12px 20px;
         font-weight: bold;
         font-size: 16px;
         line-height: 24px;
@@ -78,6 +87,36 @@
             div {
                 color: $color-black-40;
                 font-weight: 600;
+            }
+        }
+    }
+}
+
+.list-button {
+    text-align: center;
+    margin-top: 2rem;
+
+    .btn {
+        margin: 0 0.5rem;
+        color: $color-white;
+        font-size: 15px;
+        width: 10rem;
+
+        &--warning{
+            &:hover{
+                background-color: #ffc107;
+            }
+        }
+
+        &--info{
+            &:hover{
+                background-color: #31d2f2;
+            }
+        }
+
+        &--success{
+            &:hover{
+                background-color: #157347;
             }
         }
     }

@@ -19,14 +19,20 @@ export const MenuItems = [
     },
     {
         title: "Category",
-        path: "/category",
+        path: "#",
         cName: "nav-link",
-        hasMenu: true,
+        hasDropdown: true,
     },
     {
         title: "CREATE",
-        path: "/create-idea",
+        path: "/submit-page",
         cName: "nav-link-mobile",
+        hasMenu: false,
+    },
+    {
+        title: "ACCOUNT",
+        path: "#",
+        cName: "nav-link-mobile user-card",
         hasMenu: false,
     },
 ];

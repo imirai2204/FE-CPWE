@@ -1,0 +1,59 @@
+.terms {
+    padding: 10px 20px;
+
+    h2 {
+        text-align: center;
+    }
+
+    i {
+        font-family: "Montserrat", sans-serif;
+        font-size: 15px;
+        line-height: 28px;
+        color: $color-red;
+        font-weight: 600;
+        text-align: justify;
+    }
+
+    ol {
+        list-style-type: lower-alpha;
+        li {
+            font-family: "Montserrat", sans-serif;
+            font-size: 15px;
+            line-height: 28px;
+            color: $color-black;
+            font-weight: 600;
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: disc;
+            li {
+                font-family: "Montserrat", sans-serif;
+                font-size: 15px;
+                line-height: 28px;
+                color: $color-black;
+                font-weight: 400;
+                text-align: justify;
+            }
+        }
+    }
+
+    p {
+        color: $color-red;
+        font-weight: 600;
+        text-align: justify;
+    }
+
+    span {
+        color: $color-red;
+        font-weight: 600;
+        text-align: justify;
+        font-family: "Montserrat", sans-serif;
+        font-size: 15px;
+        line-height: 28px;
+    }
+
+    .mail {
+        text-decoration: underline;
+    }
+}

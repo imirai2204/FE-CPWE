@@ -1,69 +1,62 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Greeting from "./Greeting";
-import Avatar from "@mui/material/Avatar";
-import { Link } from "react-router-dom";
-import { UserMenu } from "./UserMenu";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import React, { useContext } from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import UserCardContext from "../../../store/user-card-context";
 
-const defaultAvatar = "/default-avatar.png";
+const dash = (
+    <Box
+        component='span'
+        sx={{
+            display: "inline-block",
+            mx: "5px",
+            fontSize: "22px",
+        }}>
+        -
+    </Box>
+);
 
-export default function BasicMenu(props) {
-    const [showMenu, setShowMenu] = React.useState(null);
-    const open = Boolean(showMenu);
+const UserCard = (props) => {
+    /**
+     * Get user info from useContext Hooks to pass:
+     * Full Name
+     * UserId
+     * Email
+     * Department
+     * Role
+     * after user has login successfully
+     */
+    const userCardCtx = useContext(UserCardContext);
 
-    const openMenuHandler = (event) => {
-        setShowMenu(event.currentTarget);
-    };
-
-    const closeMenuHandler = () => {
-        setShowMenu(null);
-    };
-
-    const hasImageSource = props.src !== undefined;
-
-    const userMenu = UserMenu.map((item) => {
-        return (
-            <Link to={item.path}>
-                <MenuItem onClick={closeMenuHandler}>
-                    {item.title}{" "}
-                    {item.path === "/login" && (
-                        <div className='logout'>
-                            <LogoutRoundedIcon />
-                        </div>
-                    )}
-                </MenuItem>
-            </Link>
-        );
-    });
+    const fullName = userCardCtx.userInfo.fullName;
+    const userId = userCardCtx.userInfo.userId;
+    const email = userCardCtx.userInfo.email;
+    const department = userCardCtx.userInfo.department;
+    const role = userCardCtx.userInfo.userRole;
 
     return (
-        <>
-            <Button
-                id='basic-button'
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup='true'
-                aria-expanded={open ? "true" : undefined}
-                onClick={openMenuHandler}>
-                <Greeting data={props.data} />
-                {hasImageSource ? (
-                    <Avatar id='user-avatar-navbar' src={props.src} />
-                ) : (
-                    <Avatar id='user-avatar-navbar' src={defaultAvatar} />
-                )}
-            </Button>
-            <Menu
-                id='basic-menu'
-                anchorEl={showMenu}
-                open={open}
-                onClose={closeMenuHandler}
-                MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                }}>
-                {userMenu}
-            </Menu>
-        </>
+        <Card sx={{ boxShadow: 0, textAlign: "center" }}>
+            <CardContent sx={{ height: 170, mt: 1, lineHeight: 4 }}>
+                <Typography variant='h4' color='text.main' component='div'>
+                    {fullName}
+                    {dash}
+                    {userId}
+                </Typography>
+                <Typography variant='h5' sx={{ pt: 1.5 }} color='text.secondary'>
+                    {email}
+                </Typography>
+                <Typography
+                    variant='h5'
+                    sx={{ pt: 1.8, lineHeight: 1.8, fontSize: "1.6rem", fontWeight: 500 }}
+                    color='text.secondary'>
+                    {department}
+                    <br />
+                    {role}
+                </Typography>
+            </CardContent>
+        </Card>
     );
-}
+};
+
+export default UserCard;

@@ -1,10 +1,10 @@
-.login{
+.login {
     &-layout {
         white-space: nowrap;
     }
 
     &-background {
-        background: url(../../asset/login-bg.jpg);
+        background: url("../../asset/login-bg.jpg");
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
@@ -27,7 +27,7 @@
 
         &_header {
             margin-bottom: 27px;
-            background: url(../../asset/logo.jpg);
+            background: url("../../asset/logo.jpg");
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
@@ -41,6 +41,14 @@
         font-weight: 600;
         line-height: 28px;
     }
+
+    &-form {
+        .input-section {
+            label {
+                display: none;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 1095px) {
@@ -48,10 +56,22 @@
         &-background {
             display: none;
         }
-    
+
         &-panel {
             width: 100%;
             min-height: 100%;
+        }
+
+        &-form {
+            .input-section {
+                label {
+                    display: inline-block;
+                }
+
+                .password-icon {
+                    top: 40px;
+                }
+            }
         }
     }
 }

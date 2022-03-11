@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const date = new Date();
 
 const Greeting = (props) => {
+    const greetingUser = props.userName;
     let greetingMessage = "";
     let hour = date.getHours();
 
@@ -12,18 +13,18 @@ const Greeting = (props) => {
         greetingMessage = "Good morning";
     } else if (hour < 15) {
         greetingMessage = "Good afternoon";
-    } else if (hour < 19) {
+    } else if (hour <= 19) {
         greetingMessage = "Good evening";
     }
 
     return (
-        <>
-            <p className='greeting-message'>
-                {`${greetingMessage} ${props.data}!`}
+        <Fragment>
+            <p className="greeting-message">
+                {`${greetingMessage},`}
                 <br />
-                <span className='greeting-message'>Nice to see you back</span>
+                <span className="greeting-message">{greetingUser}</span>
             </p>
-        </>
+        </Fragment>
     );
 };
 

@@ -34,24 +34,29 @@ h2 {
 p {
     color: $color-black-40;
     font-family: 'Montserrat', sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     line-height: 28px;
     font-weight: 400;
     white-space: normal;
+    margin-bottom: 0;
 }
 
 a {
     text-decoration: none;
     color: $color-black-40;
     font-family: 'Montserrat', sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     line-height: 28px;
     font-weight: 400;
     white-space: normal;
 }
 
 .container {
-    margin: 0 141px;
+    max-width: 100%;
+    padding: 3% 5% 2%;
+    @media screen and (max-width: 1095px) {
+        padding: 6% 5% 20%;
+    }
 }
 
 img {
@@ -62,6 +67,15 @@ dl, ol, ul {
     margin-bottom: 0;
 }
 
+hr {
+    background-color: $color-black-70;
+    opacity: 1;
+}
+
 #root {
     min-height: 100%;
+    background: url("../../asset/manage-bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
