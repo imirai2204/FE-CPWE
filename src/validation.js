@@ -9,12 +9,12 @@ import {
 // const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|([0-9]{2,4}[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 export const SignInSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().required("Password is required"),
 });
 
 export const DepartmentSchema = Yup.object().shape({
-    departmentName: Yup.string().required("Required"),
+    departmentName: Yup.string().required("Sorry, that department doesn't exist!"),
 });
 
 // let departmentLabel = Departments.map((item) => item.label);
@@ -25,16 +25,15 @@ export const DepartmentSchema = Yup.object().shape({
 export const IdeaSchema = Yup.object().shape({
     // department: Yup.mixed().oneOf(departmentLabel, "Must Select A Department"),
     // contributor: Yup.mixed().oneOf(contributor, "Must Select Contributor Type"),
-    department: Yup.object().required("Required").nullable(),
-    topic: Yup.object().required("Required").nullable(),
-    tag: Yup.object().required("Required").nullable(),
+    department: Yup.object().required("Department is required").nullable(),
+    topic: Yup.object().required("Topic is required").nullable(),
+    tag: Yup.object().required("Tag is required").nullable(),
     title: Yup.string()
-        .required("Required")
+        .required("Title is required")
         .min(10, "Title should have at least 10 characters")
         .max(50, "Title should have less than 50 characters"),
     description: Yup.string()
-        .required("Required")
         .min(50, "Description should have at least 50 characters")
         .max(1000, "Description should have less than 1000 characters"),
-    contributor: Yup.object().required("Required").nullable(),
+    contributor: Yup.object().required("Contributor is required").nullable(),
 });

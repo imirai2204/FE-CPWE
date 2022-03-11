@@ -16,6 +16,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from '../Modal/ConfirmDialog';
+import EditPopup from "../Modal/EditPopup";
+import EditForm from "./EditForm";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -108,7 +110,8 @@ export const EnhancedTable = ({ columns, rows }) => {
     const [orderBy, setOrderBy] = React.useState('ID');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title:'', subTitle:''})
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
+    const [openPopup, setOpenpopup] = useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -129,15 +132,15 @@ export const EnhancedTable = ({ columns, rows }) => {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     return (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <><Paper sx={{ width: "100%", overflow: "hidden" }}>
+
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <EnhancedTableHead
                         order={order}
                         orderBy={orderBy}
                         onRequestSort={handleRequestSort}
-                        columns={columns}
-                    />
+                        columns={columns} />
                     <TableBody>
                         {stableSort(rows, getComparator(order, orderBy))
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -167,8 +170,8 @@ export const EnhancedTable = ({ columns, rows }) => {
                                         >
                                             <EditIcon
                                                 style={{ fill: '#FFC20E', fontSize: '20px' }}
-                                            // onClick={() => handleGetData(row)}
-                                            />
+                                                // onClick={() => handleGetData(row)}
+                                                onClick={() => setOpenpopup(true)} />
                                         </TableCell>
                                         <TableCell
                                             key={index + 3}
@@ -176,15 +179,14 @@ export const EnhancedTable = ({ columns, rows }) => {
                                         >
                                             <TrashIcon
                                                 style={{ fill: '#EB1C24', fontSize: '20px' }}
-                                            // onClick={() => handleGetData(row)}
-                                            onClick={() => {
-                                                setConfirmDialog({
-                                                    isOpen:true, 
-                                                    title: 'Are you sure you want to delete this record ?',
-                                                    subTitle: "You can't undo this operetion"
-                                                })
-                                            }}
-                                            />
+                                                // onClick={() => handleGetData(row)}
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: 'Are you sure you want to delete this record ?',
+                                                        subTitle: "You can't undo this operetion"
+                                                    });
+                                                }} />
                                         </TableCell>
                                     </TableRow>
                                 );
@@ -204,12 +206,19 @@ export const EnhancedTable = ({ columns, rows }) => {
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-            <ConfirmDialog 
-            confirmDialog={confirmDialog}
-            setConfirmDialog = {setConfirmDialog}
-            />
+                onRowsPerPageChange={handleChangeRowsPerPage} />
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog} />
         </Paper>
+            <EditPopup
+            title = "Edit Department"
+                openPopup={openPopup}
+                setOpenpopup={setOpenpopup}
+            >
+                <EditForm props={setOpenpopup}/>
+            </EditPopup>
+        </>
+
     );
 }
