@@ -201,4 +201,4 @@ function Topic() {
     }
 }
 
-export default AcademicYear;
+export default Topic;
