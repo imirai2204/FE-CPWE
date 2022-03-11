@@ -17,6 +17,8 @@ import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from "../Modal/ConfirmDialog";
 import CloseIcon from "@mui/icons-material/Close";
+import EditPopup from "../Modal/EditPopup";
+import EditForm from "./EditForm";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -111,6 +113,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
         title: "",
         subTitle: "",
     });
+    const [openPopup, setOpenpopup] = useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -130,7 +133,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     return (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <><Paper sx={{ width: "100%", overflow: "hidden" }}>
+
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label='sticky table'>
                     <EnhancedTableHead
@@ -169,7 +173,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                     fill: "#FFC20E",
                                                     fontSize: "20px",
                                                 }}
-                                            // onClick={() => handleGetData(row)}
+                                                onClick={() => setOpenpopup(true)} />
                                             />
                                         </TableCell>
                                         <TableCell key={index + 3} align={"center"}>
@@ -178,13 +182,11 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                     fill: "#EB1C24",
                                                     fontSize: "20px",
                                                 }}
-                                                // onClick={() => handleGetData(row)}
                                                 onClick={() => {
                                                     setConfirmDialog({
                                                         isOpen: true,
                                                         title: "Are you sure you want to delete this record?",
-                                                        subTitle:
-                                                            "You can't undo this operetion",
+                                                        subTitle: "You can't undo this operetion",
                                                         selectDelete: row.id,
                                                     });
                                                 }}
@@ -227,12 +229,18 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+                onRowsPerPageChange={handleChangeRowsPerPage} />
             <ConfirmDialog
                 confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog}
-            />
-        </Paper >
+                setConfirmDialog={setConfirmDialog} />
+        </Paper>
+            <EditPopup
+                title="Edit Department"
+                openPopup={openPopup}
+                setOpenpopup={setOpenpopup}
+            >
+                <EditForm props={setOpenpopup} />
+            </EditPopup>
+        </>
     );
 };
