@@ -91,7 +91,6 @@ const SubmitPage = (props) => {
                     validationSchema={IdeaSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         handleSubmit(values);
-                        console.log(values)
                     }}>
                     {({
                         isSubmiting,
@@ -199,7 +198,7 @@ const SubmitPage = (props) => {
                                     rows={8}
                                     style={{ width: "100%", resize: "none" }}></TextArea>
                             </div>
-                            <div className='input-section contributor label-mark'>
+                            <div className='input-section contributor'>
                                 <label className='label' htmlFor='contributor'>
                                     Contributor
                                 </label>

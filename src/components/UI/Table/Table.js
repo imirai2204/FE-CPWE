@@ -82,8 +82,14 @@ function EnhancedTableHead(props) {
                     Edit
                 </TableCell>
                 <TableCell key='header-delete' align='center' style={{ width: "5%" }}>
-                    {props.isDisableCol ? "Disabled" : "Delete"}
+                    Delete
                 </TableCell>
+                {props.isDisableCol ?
+                    <TableCell key='header-disabled' align='center' style={{ width: "5%" }}>
+                        Disabled
+                    </TableCell> :
+                    <></>
+                }
             </TableRow>
         </TableHead>
     );
@@ -151,7 +157,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                     key={column.id}
                                                     align={column.align}>
                                                     {column.format &&
-                                                    typeof value === "number"
+                                                        typeof value === "number"
                                                         ? column.format(value)
                                                         : value}
                                                 </TableCell>
@@ -163,29 +169,29 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                     fill: "#FFC20E",
                                                     fontSize: "20px",
                                                 }}
-                                                // onClick={() => handleGetData(row)}
+                                            // onClick={() => handleGetData(row)}
                                             />
                                         </TableCell>
                                         <TableCell key={index + 3} align={"center"}>
-                                            {!props.hasDisabledBtn && (
-                                                <TrashIcon
-                                                    style={{
-                                                        fill: "#EB1C24",
-                                                        fontSize: "20px",
-                                                    }}
-                                                    // onClick={() => handleGetData(row)}
-                                                    onClick={() => {
-                                                        setConfirmDialog({
-                                                            isOpen: true,
-                                                            title: "Are you sure you want to delete this record?",
-                                                            subTitle:
-                                                                "You can't undo this operetion",
-                                                            selectDelete: row.id,
-                                                        });
-                                                    }}
-                                                />
-                                            )}
-                                            {props.hasDisabledBtn && (
+                                            <TrashIcon
+                                                style={{
+                                                    fill: "#EB1C24",
+                                                    fontSize: "20px",
+                                                }}
+                                                // onClick={() => handleGetData(row)}
+                                                onClick={() => {
+                                                    setConfirmDialog({
+                                                        isOpen: true,
+                                                        title: "Are you sure you want to delete this record?",
+                                                        subTitle:
+                                                            "You can't undo this operetion",
+                                                        selectDelete: row.id,
+                                                    });
+                                                }}
+                                            />
+                                        </TableCell>
+                                        {props.hasDisabledBtn ?
+                                            <TableCell key={index + 4} align={"center"}>
                                                 <CloseIcon
                                                     style={{
                                                         fill: "#636E72",
@@ -201,8 +207,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                         });
                                                     }}
                                                 />
-                                            )}
-                                        </TableCell>
+                                            </TableCell> : <></>
+                                        }
                                     </TableRow>
                                 );
                             })}
@@ -227,6 +233,6 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                 confirmDialog={confirmDialog}
                 setConfirmDialog={setConfirmDialog}
             />
-        </Paper>
+        </Paper >
     );
 };

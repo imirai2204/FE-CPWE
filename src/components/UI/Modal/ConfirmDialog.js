@@ -32,7 +32,7 @@ function ConfirmDialog(props) {
                 </label>
                 <button
                     className='btn btn-noline'
-                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
+                    onClick={() => {setConfirmDialog({ ...confirmDialog, isOpen: false }); setButtonShown(false)}}>
                     NO
                 </button>
                 <button
