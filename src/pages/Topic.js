@@ -60,7 +60,7 @@ const checkPermission = async (setPermission) => {
         });
 };
 
-function AcademicYear() {
+function Topic() {
     const [permission, setPermission] = useState(true);
 
     if (permission) {
