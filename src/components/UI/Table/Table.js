@@ -212,11 +212,11 @@ export const EnhancedTable = ({ columns, rows }) => {
                 setConfirmDialog={setConfirmDialog} />
         </Paper>
             <EditPopup
-            title = "Edit Department"
+                title="Edit Department"
                 openPopup={openPopup}
                 setOpenpopup={setOpenpopup}
             >
-                <EditForm props={setOpenpopup}/>
+                <EditForm props={setOpenpopup} />
             </EditPopup>
         </>
 

@@ -2,6 +2,11 @@
   margin-bottom: 13px;
   margin-top: 25px;
   position: relative;
+
+  input {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .form-control {

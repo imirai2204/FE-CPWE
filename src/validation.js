@@ -17,6 +17,15 @@ export const DepartmentSchema = Yup.object().shape({
     departmentName: Yup.string().required("Sorry, that department doesn't exist!"),
 });
 
+export const AcademicYearSchema = Yup.object().shape({
+    year: Yup.string().required("Sorry, that year doesn't have any related information!"),
+});
+
+export const TopicSchema = Yup.object().shape({
+    topic: Yup.string().required("Sorry, that topic doesn't exist!"),
+});
+
+
 // let departmentLabel = Departments.map((item) => item.label);
 // let contributor = Contributor.map((item) => item.label);
 // let topicLabel = Topics.map((item) => item.label);
