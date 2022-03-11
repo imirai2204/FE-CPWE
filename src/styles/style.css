@@ -201,7 +201,8 @@ label {
     border-bottom: 2px solid #0067B8; }
 
 .checkbox {
-  font-size: 15px; }
+  font-size: 15px;
+  margin-inline-end: auto; }
   .checkbox input {
     display: none; }
 
@@ -217,8 +218,8 @@ label {
 [type="checkbox"]:checked + span:before {
   content: "✔";
   position: absolute;
-  top: -1px;
-  left: 0;
+  top: 0px;
+  left: 4px;
   color: #4FA800; }
   @media screen and (max-width: 1095px) {
     [type="checkbox"]:checked + span:before {
@@ -306,14 +307,21 @@ label {
   margin: 0 !important; }
   .MuiGrid-container .MuiDropzonePreviewList-image {
     width: 100% !important;
-    height: 50% !important; }
+    height: 70% !important;
+    background-color: #FFFFFF !important; }
+    @media screen and (max-width: 1095px) {
+      .MuiGrid-container .MuiDropzonePreviewList-image {
+        height: 50% !important; } }
+
+.MuiDropzonePreviewList-imageContainer:hover .MuiDropzonePreviewList-image {
+  opacity: 1 !important; }
 
 .MuiGrid-spacing-xs-8 .MuiGrid-item {
   padding: 16px !important; }
 
 .MuiGrid-grid-xs-4 {
-  max-width: 25% !important;
-  flex-basis: 25% !important;
+  max-width: 20% !important;
+  flex-basis: 20% !important;
   height: 20rem; }
 
 @media screen and (max-width: 1095px) {
@@ -332,6 +340,16 @@ label {
       margin-bottom: 3rem; }
       .layout-form .form-container {
         margin: 0 0 2rem; } }
+
+.container--idea--submit {
+  padding: 0px 24px 10px !important; }
+  .container--idea--submit label {
+    font-weight: 500; }
+  .container--idea--submit .btn {
+    font-size: 15px;
+    font-weight: 600; }
+    .container--idea--submit .btn-noline:hover {
+      text-decoration: underline; }
 
 .dropdown-menu {
   width: 16rem;
@@ -367,7 +385,7 @@ label {
 .dropdown-menu-mobile {
   display: none; }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1130px) {
   .dropdown-menu-mobile {
     display: inline-block;
     background: #EB1C24;
@@ -411,10 +429,26 @@ label {
       height: 45px;
       background-color: #EB1C24;
       border: none;
-      margin-left: 47.5%;
+      margin-left: 48vw;
       margin-top: 20px; }
       .dropdown-menu-mobile .return svg {
-        font-size: 40px; } }
+        font-size: 45px; } }
+
+@media screen and (max-width: 980px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 47.5vw; } }
+
+@media screen and (max-width: 780px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 47vw; } }
+
+@media screen and (max-width: 600px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 46.4vw; } }
+
+@media screen and (max-width: 500px) {
+  .dropdown-menu-mobile .return {
+    margin-left: 45vw; } }
 
 .backdrop {
   position: fixed;
@@ -453,7 +487,7 @@ label {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  width: 22rem;
+  width: 25rem;
   height: 50px !important;
   margin-left: 1rem; }
   .NavbarItems .MuiButton-root:hover {
@@ -489,6 +523,9 @@ label {
       margin-left: 1rem !important;
       align-items: center !important; }
 
+#transition-popper {
+  z-index: 3; }
+
 .card-image {
   justify-content: center;
   padding-top: 10px;
@@ -498,8 +535,8 @@ label {
     height: 80px; }
 
 .card--info--button {
-  padding-left: 10px;
-  width: 270px;
+  padding: 0 15px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between; }
@@ -508,7 +545,8 @@ label {
     border-radius: 8px; }
   .card--info--button .user-settings-btn a,
   .card--info--button .log-out-btn a {
-    font-size: 13px; }
+    font-size: 13px;
+    font-weight: 600; }
   .card--info--button .user-settings-btn:hover {
     background-color: #eccc9b3b; }
   .card--info--button .user-settings-btn a {
@@ -599,7 +637,8 @@ body.active-modal {
   line-height: 28px !important; }
 
 .layout-table svg {
-  font-size: 20px; }
+  font-size: 20px;
+  cursor: pointer; }
 
 .MuiTablePagination-selectLabel,
 .MuiTablePagination-displayedRows,
@@ -612,6 +651,84 @@ body.active-modal {
 
 .MuiTablePagination-selectLabel {
   font-weight: 600 !important; }
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover {
+  color: #EB1C24 !important; }
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root.Mui-active {
+  color: #EB1C24 !important; }
+
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root:hover .MuiTableSortLabel-icon {
+  opacity: 1 !important; }
+
+.MuiTableSortLabel-icon {
+  color: #EB1C24 !important; }
+
+.user-card-mobile {
+  display: none; }
+  .user-card-mobile .card-image {
+    padding-top: 30px;
+    padding-left: 27%; }
+    .user-card-mobile .card-image .MuiAvatar-root {
+      width: 160px;
+      height: 160px; }
+  .user-card-mobile .return {
+    width: 45px;
+    height: 45px;
+    background-color: #EB1C24;
+    border: none;
+    margin-left: 47.5%;
+    margin-top: 20px; }
+    .user-card-mobile .return svg {
+      font-size: 40px; }
+
+@media screen and (max-width: 1130px) {
+  .user-card-mobile {
+    display: inline-block;
+    background: #EB1C24;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 60px;
+    left: -105%;
+    margin: 0;
+    opacity: 1;
+    transition: all 0.5s ease; }
+    .user-card-mobile.active {
+      padding: 0;
+      left: 0;
+      opacity: 1;
+      transition: all 0.5s ease;
+      z-index: 20; }
+      .user-card-mobile.active .card-image {
+        padding-top: 30px;
+        padding-left: 27%; }
+        .user-card-mobile.active .card-image .MuiAvatar-root {
+          width: 160px;
+          height: 160px; }
+      .user-card-mobile.active .card--info--button {
+        height: 40px;
+        width: 100%;
+        padding: 0 20px; }
+        .user-card-mobile.active .card--info--button .user-settings-btn,
+        .user-card-mobile.active .card--info--button .log-out-btn {
+          display: flex;
+          align-items: center; }
+          .user-card-mobile.active .card--info--button .user-settings-btn a,
+          .user-card-mobile.active .card--info--button .log-out-btn a {
+            font-size: 20px;
+            font-weight: 600; }
+        .user-card-mobile.active .card--info--button .log-out-btn:hover {
+          background-color: #ee96963b; }
+    .user-card-mobile .return {
+      width: 45px;
+      height: 45px;
+      background-color: #EB1C24;
+      border: none;
+      margin-left: 46vw;
+      margin-top: 20px; }
+      .user-card-mobile .return svg {
+        font-size: 45px; } }
 
 .NavbarItems {
   background: #EB1C24;
@@ -683,7 +800,7 @@ body.active-modal {
 .menu-icon {
   display: none; }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1130px) {
   .NavbarItems {
     position: relative; }
   .nav-menu {
@@ -737,6 +854,8 @@ body.active-modal {
     background: #FFF000;
     font-weight: 600;
     font-size: 1.5rem; }
+    .nav-link-mobile.user-card {
+      background: #b3e95d; }
     .nav-link-mobile:hover {
       color: #000000; }
   .btn.btn--primary,

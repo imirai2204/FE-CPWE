@@ -153,6 +153,10 @@
         font-weight: 600;
         font-size: 1.5rem;
 
+        &.user-card {
+            background: $color-green-btn-account-mobile;
+        }
+
         &:hover {
             color: $color-black;
         }

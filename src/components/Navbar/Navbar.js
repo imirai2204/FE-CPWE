@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "./dropdown/Dropdown";
 import DropdownSide from "./dropdown/DropdownSide";
 import User from "./greeting/User";
+import UserMobile from "./greeting/UserMobile";
 import UserCardContext from "../../store/user-card-context";
 import SideBarContext from "../../store/side-bar-context";
 
@@ -16,8 +17,9 @@ const Navbar = (props) => {
 
     const isMobileSize = window.innerWidth < 1100 ? true : false;
     const clickIconHandler = () => {
-        if (sideBarCtx.isShown) {
-            sideBarCtx.onClose();
+        if (sideBarCtx.isCategoryShown || sideBarCtx.isAccountShown) {
+            sideBarCtx.onCloseCategory();
+            sideBarCtx.onCloseAccount();
         }
         if (userCardCtx.isCardOpen) {
             userCardCtx.closeUserCard();
@@ -27,7 +29,13 @@ const Navbar = (props) => {
 
     const closeMobileMenu = () => {
         setIsClicked(false);
-        if (userCardCtx.isCardOpen) {
+        if (
+            userCardCtx.isCardOpen ||
+            sideBarCtx.isAccountShown ||
+            sideBarCtx.isCategoryShown
+        ) {
+            sideBarCtx.onCloseAccount();
+            sideBarCtx.onCloseCategory();
             userCardCtx.closeUserCard();
         }
     };
@@ -45,10 +53,22 @@ const Navbar = (props) => {
                     <Link
                         className={item.cName}
                         to={item.path}
-                        onClick={isMobileSize ? sideBarCtx.onShow : false}>
+                        onClick={isMobileSize ? sideBarCtx.onShowCategory : false}>
                         {item.title}
                     </Link>
                     {showDropdown && <Dropdown />}
+                </li>
+            );
+        }
+        if (item.cName.includes("user-card")) {
+            return (
+                <li key={index} className='nav-items'>
+                    <Link
+                        className={item.cName}
+                        to={item.path}
+                        onClick={isMobileSize ? sideBarCtx.onShowAccount : false}>
+                        {item.title}
+                    </Link>
                 </li>
             );
         }
@@ -66,24 +86,28 @@ const Navbar = (props) => {
 
     return (
         <Fragment>
-            <nav className="NavbarItems">
-                <Link to="/" onClick={closeMobileMenu}>
-                    <h1 className="navbar-logo">
-                        <i className="logo"></i>
+            <nav className='NavbarItems'>
+                <Link to='/' onClick={closeMobileMenu}>
+                    <h1 className='navbar-logo'>
+                        <i className='logo'></i>
                     </h1>
                 </Link>
-                <div className="menu-icon" onClick={clickIconHandler}>
+                <div className='menu-icon' onClick={clickIconHandler}>
                     <i className={menuIconClasses}></i>
                 </div>
                 <ul className={navMenuClasses}>
                     {mapMenuItems}
-                    <div className="btn--create--idea">
+                    <div className='btn--create--idea'>
                         <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                     </div>
                 </ul>
-                <User data={userCardCtx.userInfo.fullName} />
+                <User
+                    userName={userCardCtx.userInfo.fullName}
+                    src={userCardCtx.userInfo.avatar}
+                />
             </nav>
             <DropdownSide onClick={closeMobileMenu} />
+            <UserMobile onClick={closeMobileMenu} src={userCardCtx.userInfo.avatar} />
         </Fragment>
     );
 };

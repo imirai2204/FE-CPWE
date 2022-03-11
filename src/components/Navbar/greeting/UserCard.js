@@ -7,11 +7,11 @@ import UserCardContext from "../../../store/user-card-context";
 
 const dash = (
     <Box
-        component="span"
+        component='span'
         sx={{
             display: "inline-block",
-            mx: "6px",
-            fontSize: "18px",
+            mx: "5px",
+            fontSize: "22px",
         }}>
         -
     </Box>
@@ -29,24 +29,27 @@ const UserCard = (props) => {
      */
     const userCardCtx = useContext(UserCardContext);
 
-    const fullName = "Full Name"; //userCardCtx.userInfo.fullName
-    const userId = "UserID"; //userCardCtx.userInfo.userId
-    const email = "Email@email.com"; //userCardCtx.userInfo.email
-    const department = "User Department"; //userCardCtx.userInfo.department
-    const role = "User Role"; //userCardCtx.userInfo.role
+    const fullName = userCardCtx.userInfo.fullName;
+    const userId = userCardCtx.userInfo.userId;
+    const email = userCardCtx.userInfo.email;
+    const department = userCardCtx.userInfo.department;
+    const role = userCardCtx.userInfo.userRole;
 
     return (
         <Card sx={{ boxShadow: 0, textAlign: "center" }}>
             <CardContent sx={{ height: 170, mt: 1, lineHeight: 4 }}>
-                <Typography variant="h4" color="text.main" component="div">
+                <Typography variant='h4' color='text.main' component='div'>
                     {fullName}
                     {dash}
                     {userId}
                 </Typography>
-                <Typography variant="h5" sx={{ pt: 1 }} color="text.secondary">
+                <Typography variant='h5' sx={{ pt: 1.5 }} color='text.secondary'>
                     {email}
                 </Typography>
-                <Typography variant="h5" sx={{ pt: 1.5 }} color="text.secondary">
+                <Typography
+                    variant='h5'
+                    sx={{ pt: 1.8, lineHeight: 1.8, fontSize: "1.6rem", fontWeight: 500 }}
+                    color='text.secondary'>
                     {department}
                     <br />
                     {role}

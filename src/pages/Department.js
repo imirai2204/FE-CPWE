@@ -1,41 +1,54 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
 import axios from "axios";
-import EditTableContext from "../store/edit-table-context";
+import { IdeaUrl, Authen } from "../api/EndPoint";
+import { RequestHeader } from "../api/AxiosComponent";
 
-function handleSubmit(values) {
-    const body = {
-        departmentName: values.departmentName,
-    };
+const handleSubmit = async (values) => {
+    var formData = new FormData();
+    formData.append("departmentName", values.departmentName);
 
-    axios
-        .post(`http://localhost:3000/login`, body)
-        .then((res) => {
-            console.log(res);
-            console.log(res.data);
-            setTimeout(() => {
-                alert("Login success");
-            }, 400);
+    const response = await axios
+        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .then(() => {
+            console.log("Create success")
         })
         .catch((error) => {
-            console.log(error);
-            setTimeout(() => {
-                alert(error);
-            }, 400);
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
         });
-}
+};
 
 const initialValues = {
     departmentName: "",
 };
 
+const checkPermission = async (setPermission) => {
+    const response = await axios
+        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+        .then((response) => {
+            if (response.data.code === 1) {
+                setPermission(true);
+            } else {
+                setPermission(false);
+            }
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+                // setHasError(true);
+            }
+        });
+};
+
 export const columns = [
     { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
-    { id: "department", label: "Department", width: "50%", align: "left" },
+    { id: "department", label: "Department Name", width: "50%", align: "left" },
 ];
 
 const data = [
@@ -86,68 +99,74 @@ const data = [
 ];
 
 function Department() {
-    const editTableCtx = useContext(EditTableContext);
+    const [permission, setPermission] = useState(true);
 
-    return (
-        <div className="department-page container">
-            <h2 className="page-title">Department</h2>
-            <div className="layout-form">
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={DepartmentSchema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values);
-                    }}>
-                    {({
-                        isSubmiting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                        setFieldValue,
-                    }) => (
-                        <Form className="submit-form">
-                            <div className="form-container">
-                                <div className="input-section label-mark">
-                                    <TextField
-                                        label={"Department Name"}
-                                        name='departmentName'
-                                        type='text'
-                                        placeholder='Type...'
-                                    // value={editTableCtx.inputFieldValue}
-                                    // onChange={handleChange}
-                                    />
+    if (permission) {
+        return (
+            <div className="department-page container">
+                <h2 className="page-title">Department</h2>
+                <div className="layout-form">
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={DepartmentSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleSubmit(values);
+                        }}>
+                        {({
+                            isSubmiting,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                            setFieldValue,
+                        }) => (
+                            <Form className="submit-form">
+                                <div className="form-container">
+                                    <div className="input-section label-mark">
+                                        <TextField
+                                            label={"Department Name"}
+                                            name='departmentName'
+                                            type='text'
+                                            placeholder='Type...'
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <hr />
-                            <div className="list-button">
-                                <button className={"btn btn-warning"} type="submit">
-                                    Search
-                                </button>
-                                <button
-                                    className={'btn btn-info'}
-                                    type='reset'
-                                >
-                                    Refresh
-                                </button>
-                                <button className={"btn btn-success"} type="submit">
-                                    Save
-                                </button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
+                                <hr />
+                                <div className="list-button">
+                                    <button className={"btn btn-warning"} type="button">
+                                        Search
+                                    </button>
+                                    <button
+                                        className={'btn btn-info'}
+                                        type='reset'
+                                    >
+                                        Refresh
+                                    </button>
+                                    <button className={"btn btn-success"} type="submit">
+                                        Save
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className="layout-table">
+                    <EnhancedTable
+                        columns={columns}
+                        rows={data}
+                    />
+                </div>
             </div>
-            <div className="layout-table">
-                <EnhancedTable
-                    columns={columns}
-                    rows={data}
-                />
+        );
+    } else {
+        return (
+            <div>
+                <p>You have no permission</p>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default Department;

@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from "react";
 
 const SideBarContext = React.createContext({
-    isShown: null,
-    onShow: () => {},
-    onClose: () => {},
+    isCategoryShown: null,
+    isAccountShown: null,
+    onShowCategory: () => {},
+    onCloseCategory: () => {},
+    onShowAccount: () => {},
+    onCloseAccount: () => {},
 });
 
 export const SideBarContextProvider = (props) => {
-    const [isShown, setIsShown] = useState(null);
+    const [isCategoryShown, setIsCategoryShown] = useState(null);
+    const [isAccountShown, setIsAccountShown] = useState(null);
 
     useEffect(() => {
         const isMobileSize = window.innerWidth < 1100 ? true : false;
         if (isMobileSize) {
-            setIsShown(false);
+            setIsCategoryShown(false);
         }
     }, []);
 
-    const ShowDropdown = () => setIsShown(true);
-    const hideDropdown = () => setIsShown(false);
+    const showDropdown = () => setIsCategoryShown(true);
+    const hideDropdown = () => setIsCategoryShown(false);
+    const showAccount = () => setIsAccountShown(true);
+    const hideAccount = () => setIsAccountShown(false);
 
     return (
         <SideBarContext.Provider
             value={{
-                isShown,
-                onShow: ShowDropdown,
-                onClose: hideDropdown,
+                isCategoryShown,
+                isAccountShown,
+                onShowCategory: showDropdown,
+                onCloseCategory: hideDropdown,
+                onShowAccount: showAccount,
+                onCloseAccount: hideAccount,
             }}>
             {props.children}
         </SideBarContext.Provider>
