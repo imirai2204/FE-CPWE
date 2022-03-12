@@ -1,4 +1,3 @@
-//import * as React from 'react';
 import React, { useState, useContext, Fragment } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -20,6 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import EditPopup from "../Modal/EditPopup";
 import EditForm from "./EditForm";
+import SearchBar from "../SearchBar/SearchBar";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -154,6 +154,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
     return (
         <Fragment>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
+                <SearchBar />
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label='sticky table'>
                         <EnhancedTableHead
