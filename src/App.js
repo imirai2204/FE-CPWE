@@ -61,15 +61,16 @@ function App() {
 
     return (
         <Fragment>
-            {authCtx.isLoggedIn && (
+            {console.log(authCtx.isLoggedIn)}
+            {authCtx.isLoggedIn == true ? (
                 <PrivateRoute
                     openModalHandler={openModalHandler}
                     isOpenModal={isOpenModal}>
-                    <Route path='/login' exact element={<Navigate to='/' />} />
                     <Route path='/' exact element={<Home />} />
+                    <Route path='/login' exact element={<Navigate to='/' />} />
                     <Route path='/dashboard' exact element={<Dashboard />} />
                     <Route path='/manage-user' exact element={<ManageUser />} />
-                    <Route path='/category/academic-year'exact element={<AcademicYear />}/>
+                    <Route path='/category/academic-year' exact element={<AcademicYear />} />
                     <Route path='/category/department' exact element={<Department />} />
                     <Route path='/category/tags' exact element={<Tags />} />
                     <Route path='/category/topic' exact element={<Topic />} />
@@ -77,14 +78,15 @@ function App() {
                     <Route path='/account-settings' exact element={<AccountSetting />} />
                     <Route path='/user/user-settings' exact element={<UserSettings />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
-                    <Route path="*" element={<Navigate to='/404' />} />
-                    <Route path='/404' exact element={<PageNotFound />} />
+                    {/* <Route path="*" element={<Navigate to='/404' />} /> */}
+                    {/* <Route path='/404' exact element={<PageNotFound />} /> */}
                 </PrivateRoute>
-            )}
-            {!authCtx.isLoggedIn && (
+            ) : (
                 <GlobalRoute>
                     <Route path='/' exact element={<Navigate to='/login' />} />
                     <Route path='/login' exact element={<Login />} />
+                    {/* <Route path="/*" element={<Navigate to='/404' />} />
+                    <Route path='/404' exact element={<PageNotFound />} /> */}
                     {/* <Route path='/dashboard' exact element={<Navigate to='/login' />} />
                     <Route path='/manage-user' exact element={<Navigate to='/login' />} />
                     <Route path='/category/academic-year'exact element={<Navigate to='/login' />}/>

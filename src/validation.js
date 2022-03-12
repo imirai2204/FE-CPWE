@@ -15,7 +15,7 @@ export const TagSchema = Yup.object().shape({
 });
 
 export const AcademicYearSchema = Yup.object().shape({
-    yearId: Yup.number().min(1, "Sorry, Year is required"),
+    year: Yup.string().required("Sorry, Year is required"),
     semester: Yup.string().required("Sorry, Semester name is required"),
     startDate: Yup.date().required("Sorry, Start Date is required"),
     endDate: Yup.date().required("Sorry, End Date is required").min(Yup.ref('startDate')),

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -7,20 +7,46 @@ import { AcademicYearSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
 import { YearOptions, Columns, Data } from "./dummy-data/years-page";
-import { IdeaUrl, Authen } from "../api/EndPoint";
+import { AcademicUrl, Authen, BASE_URL } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
 
-const handleSubmit = async (values) => {
-    var formData = new FormData();
-    formData.append("yearId", values.yearId);
-    formData.append("semester", values.semester);
-    formData.append("startDate", values.startDate);
-    formData.append("endDate", values.endDate);
-
+const handleSubmit = async (values, setIsSubmiting) => {
     const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .post(AcademicUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
         .then(() => {
             console.log("Create success")
+            setIsSubmiting(false)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const handleGet = async (values, setReturnData, returnData) => {
+    const response = await axios
+        .get(AcademicUrl.get, { 
+            headers: RequestHeader.checkAuthHeaders,
+            params: {
+                searchKey: null,
+                page: 1,
+                limit: 15,
+                sortBy: "id",
+                sortType: "ASC",
+            }
+         })
+        .then((res) => {
+            var data = res.data.data.content.map((content) => {
+                return {
+                    id: content.id,
+                    year: content.year,
+                    semester: content.semester,
+                    startDate: content.startDate,
+                    endDate: content.endDate
+                }
+            } )
+            setReturnData(data)
         })
         .catch((error) => {
             if (error && error.response) {
@@ -30,7 +56,7 @@ const handleSubmit = async (values) => {
 };
 
 const initialValues = {
-    yearId: 0,
+    year: "",
     semester: "",
     startDate: "",
     endDate: "",
@@ -56,6 +82,25 @@ const checkPermission = async (setPermission) => {
 
 function AcademicYear() {
     const [permission, setPermission] = useState(true);
+    const [returnData, setReturnData] = useState([]);
+    const [isSubmiting, setIsSubmiting] = useState(false)
+
+    if (isSubmiting == false) {
+        handleGet(null, setReturnData, returnData)
+        setIsSubmiting(true)
+    }
+    // useEffect(()=>{handleGet(null, setReturnData, returnData)},[handleGet, isSubmiting])
+
+    // handleGet(null, setReturnData, returnData)
+    // console.log(returnData)
+
+    // const {id, year, semester, startDate, endDate, ...response} = handleGet();
+
+    // useEffect(()=>{
+    //     setTableData(id, year, semester, startDate, endDate)
+    // }, [handleGet])
+
+    // console.log(tableData)
 
     if (permission) {
         return (<div className="department-page container">
@@ -65,8 +110,7 @@ function AcademicYear() {
                     initialValues={initialValues}
                     validationSchema={AcademicYearSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values);
-                        console.log(values);
+                        handleSubmit(values, setIsSubmiting);
                     }}>
                     {({
                         isSubmiting,
@@ -87,18 +131,18 @@ function AcademicYear() {
                                     <label className='label'>Year</label>
                                     <Select
                                         className='select'
-                                        name='yearId'
+                                        name='year'
                                         id='year'
                                         options={YearOptions}
                                         placeholder={"Select Year"}
                                         onChange={(selectOption) => {
-                                            setFieldValue("yearId", selectOption.value);
+                                            setFieldValue("year", selectOption.value);
                                         }}
                                         onBlur={() => {
                                             handleBlur({ target: { name: "year" } });
                                         }}
                                     />
-                                    <ErrorMessage component='div' name={"yearId"} className='error' />
+                                    <ErrorMessage component='div' name={"year"} className='error' />
                                 </div>
                                 <div className="input-section label-mark">
                                     <TextField
@@ -144,10 +188,10 @@ function AcademicYear() {
             <div className="layout-table">
                 <EnhancedTable
                     columns={Columns}
-                    rows={Data}
+                    rows={returnData}
                     hasEditedBtn={false}
-                    hasDeletedBtn={true}
-                    hasDisabledBtn={true}
+                    hasDeletedBtn={false}
+                    hasDisabledBtn={false}
                 />
             </div>
         </div>
