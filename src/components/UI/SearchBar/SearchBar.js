@@ -2,10 +2,6 @@ import React, { Fragment } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 
-const searchIcon = () => {
-    return <SearchIcon color='red' sx={{ width: "25px", height: "25px", mt: 2 }} />;
-};
-
 const SearchBar = () => {
     return (
         <Fragment>
