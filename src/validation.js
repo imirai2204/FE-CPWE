@@ -1,7 +1,5 @@
 import * as Yup from "yup";
 
-// const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|([0-9]{2,4}[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-
 export const SignInSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
@@ -45,3 +43,20 @@ export const IdeaSchema = Yup.object().shape({
         .max(1000, "Description should have less than 1000 characters"),
     contributor: Yup.boolean().required("Required"),
 });
+
+export const UserSchema = Yup.object().shape({
+    firstname: Yup.string().required("Sorry, First name is required"),
+    lastname: Yup.string().required("Sorry, Last name is required"),
+    address: Yup.string()
+        .min(10, "Title should have at least 10 characters")
+        .max(50, "Title should have less than 50 characters"),
+    // gender: Yup.number().min(1, "Sorry, Gender is required"),
+    email: Yup.string().email("Invalid email").required("Sorry, Email is required"),
+    phone: Yup.string()
+        .matches(/^(\\+[1-9]{1,4}[ \\-]*)|([0-9]{2,4}[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Sorry, Phone number is not valid')
+        .max(12, "Phone number should have less than 12 characters"),
+    departmentId: Yup.number().min(1, "Sorry, Department is required"),
+    userRole: Yup.number().min(1, "Sorry, User Role is required"),
+});
+
+

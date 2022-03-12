@@ -1,0 +1,20 @@
+.manageUser-page {
+    .page-title {
+        color: $color-red-24;
+        text-align: center;
+    }
+
+    .user-form {
+        display: flex;
+
+        .layout-left {
+            flex: 45%;
+            margin-right: 5%;
+        }
+
+        .layout-right {
+            flex: 45%;
+            margin-left: 5%;
+        }
+    }
+}

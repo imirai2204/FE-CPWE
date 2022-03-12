@@ -43,3 +43,15 @@ export const Contributor = [
     { value: false, label: 'Public', key: '1'},
     { value: true, label: 'Anonymous', key: '2' }
 ]
+
+export const Gender = [
+    { value: 1, label: 'Male', key: '1' },
+    { value: 2, label: 'Female', key: '2' },
+    { value: 3, label: 'Other', key: '3' }
+]
+
+export const UserRole = [
+    { value: 1, label: 'Admin', key: '1' },
+    { value: 2, label: 'QA coordinator', key: '2' },
+    { value: 3, label: 'Staff', key: '3' }
+]
