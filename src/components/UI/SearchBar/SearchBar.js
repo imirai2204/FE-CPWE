@@ -12,16 +12,16 @@ const SearchBar = () => {
                     display: "flex",
                     width: "100%",
                     justifyContent: "center",
-                    height: "50px",
+                    height: "60px",
                 }}>
                 <SearchIcon
                     color='red'
                     style={{
                         position: "absolute",
-                        right: "25.5%",
-                        top: 10,
+                        right: "26%",
+                        top: 15,
                         width: 28,
-                        height: 28,
+                        height: 30,
                     }}
                 />
                 <TextField
@@ -29,7 +29,6 @@ const SearchBar = () => {
                     type='text'
                     placeholder='Search...'
                     sx={{ width: "50%" }}
-                    style={{ fontSize: "16px" }}
                 />
             </div>
         </Fragment>
