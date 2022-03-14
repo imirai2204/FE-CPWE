@@ -53,7 +53,16 @@ function PrivateRoute({ children, ...props }) {
 
 function App() {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     const authCtx = useContext(AuthContext);
+
+    useEffect(() => {
+        if (authCtx.isLoggedIn == true) {
+            setIsAuthenticated(true)
+        } else {
+            setIsAuthenticated(false)
+        }
+    }, []);
 
     const openModalHandler = () => {
         setIsOpenModal((prevIsOpenModal) => !prevIsOpenModal);
@@ -62,7 +71,7 @@ function App() {
     return (
         <Fragment>
             {console.log(authCtx.isLoggedIn)}
-            {authCtx.isLoggedIn == true ? (
+            {isAuthenticated == true ? (
                 <PrivateRoute
                     openModalHandler={openModalHandler}
                     isOpenModal={isOpenModal}>
