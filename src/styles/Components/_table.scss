@@ -47,10 +47,24 @@
 .MuiTableSortLabel-icon {
     color: $color-red-24 !important;
 }
-
+.MuiPagination-outlined {
+    button {
+        font-size: 15px !important;
+    }
+}
 .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
     font-size: 15px !important;
 }
+
+.MuiTablePagination-toolbar {
+//     flex-flow: wrap !important;
+//     justify-content: center !important;
+    padding: 0 !important;
+}
+
+// // .MuiPagination-outlined {
+// //     margin-left: 17rem;
+// // }
 
 .search--bar {
     input {

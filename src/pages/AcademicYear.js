@@ -37,7 +37,7 @@ const handleGet = async (values, setReturnData, returnData) => {
             }
          })
         .then((res) => {
-            var data = res.data.data.content.map((content) => {
+            var tableData = res.data.data.content.map((content) => {
                 return {
                     id: content.id,
                     year: content.year,
@@ -46,7 +46,7 @@ const handleGet = async (values, setReturnData, returnData) => {
                     endDate: content.endDate
                 }
             } )
-            setReturnData(data)
+            setReturnData(tableData)
         })
         .catch((error) => {
             if (error && error.response) {
@@ -192,6 +192,7 @@ function AcademicYear() {
                     hasEditedBtn={false}
                     hasDeletedBtn={false}
                     hasDisabledBtn={false}
+                    // pages={}
                 />
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, Fragment, useContext, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
@@ -71,7 +71,7 @@ function App() {
     return (
         <Fragment>
             {console.log(authCtx.isLoggedIn)}
-            {isAuthenticated == true ? (
+            {isAuthenticated == false ? (
                 <PrivateRoute
                     openModalHandler={openModalHandler}
                     isOpenModal={isOpenModal}>

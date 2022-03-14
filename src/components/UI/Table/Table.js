@@ -16,10 +16,11 @@ import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from "../Modal/ConfirmDialog";
 import CloseIcon from "@mui/icons-material/Close";
-
+import Pagination from '@mui/material/Pagination';
 import EditPopup from "../Modal/EditPopup";
 import EditForm from "./EditForm";
 import SearchBar from "../SearchBar/SearchBar";
+import Stack from "@mui/material/Stack";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -50,7 +51,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort, columns } = props;
+    const { order, orderBy, onRequestSort, columns, pages } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -125,8 +126,9 @@ EnhancedTableHead.propTypes = {
 export const EnhancedTable = ({ columns, rows, ...props }) => {
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("ID");
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = React.useState(1);
+    const [countPage, setCountPage] = React.useState(3);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [confirmDialog, setConfirmDialog] = useState({
         isOpen: false,
         title: "",
@@ -146,10 +148,11 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setPage(1);
+        setCountPage(2);
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = (page - 1) > 0 ? Math.max(0, page * rowsPerPage - rows.length) : 0;
 
     return (
         <Fragment>
@@ -169,8 +172,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(
-                                    page * rowsPerPage,
-                                    page * rowsPerPage + rowsPerPage
+                                    (page - 1) * rowsPerPage,
+                                    (page - 1) * rowsPerPage + rowsPerPage
                                 )
                                 .map((row, index) => {
                                     return (
@@ -186,7 +189,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                         key={column.id}
                                                         align={column.align}>
                                                         {column.format &&
-                                                        typeof value === "number"
+                                                            typeof value === "number"
                                                             ? column.format(value)
                                                             : value}
                                                     </TableCell>
@@ -201,7 +204,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                                                             fill: "#FFC20E",
                                                             fontSize: "20px",
                                                         }}
-                                                        // onClick={() => setOpenpopup(true)}
+                                                    // onClick={() => setOpenpopup(true)}
                                                     />
                                                 </TableCell>
                                             ) : (
@@ -264,15 +267,38 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component='div'
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{
+                        justifyContent: 'space-between',
+                        padding: '0px 55px'
+                    }}
+                >
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component='div'
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        ActionsComponent={() => {
+                            return <></>
+                        }}
+                        labelDisplayedRows={() => {
+                            return <></>
+                        }}
+                    />
+                    <Pagination
+                        onChange={handleChangePage}
+                        count={countPage}
+                        // count={pages}
+                        color="primary"
+                        variant="outlined"
+                        shape="rounded"
+                        sx={{ alignSelf: 'center' }} />
+                </Stack>
                 <ConfirmDialog
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}
@@ -285,6 +311,6 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                 setOpenpopup={setOpenpopup}>
                 <EditForm props={setOpenpopup} />
             </EditPopup>
-        </Fragment>
+        </Fragment >
     );
 };

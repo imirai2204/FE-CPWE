@@ -12,9 +12,6 @@ export const Columns = [
     { id: "endDate", label: "End Date", width: "20%", align: "left" },
 ];
 
-
-
-
 export const Data = [
     {
         id: 1,
