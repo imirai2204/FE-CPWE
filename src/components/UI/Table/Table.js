@@ -297,6 +297,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                         color="primary"
                         variant="outlined"
                         shape="rounded"
+                        showFirstButton={true}
+                        showLastButton={true}
                         sx={{ alignSelf: 'center' }} />
                 </Stack>
                 <ConfirmDialog
