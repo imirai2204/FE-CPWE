@@ -9,6 +9,7 @@ import Select from "react-select";
 import { YearOptions, Columns, Data } from "./dummy-data/years-page";
 import { AcademicUrl, Authen, BASE_URL } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
+import { convertDate, getFormattedDate } from "../function/library";
 
 const handleSubmit = async (values, setIsSubmiting) => {
     const response = await axios
@@ -24,29 +25,40 @@ const handleSubmit = async (values, setIsSubmiting) => {
         });
 };
 
-const handleGet = async (values, setReturnData, returnData) => {
+const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
     const response = await axios
-        .get(AcademicUrl.get, { 
+        .get(AcademicUrl.get, {
             headers: RequestHeader.checkAuthHeaders,
-            params: {
-                searchKey: null,
-                page: 1,
-                limit: 15,
-                sortBy: "id",
-                sortType: "ASC",
-            }
-         })
+            params: paramsValue
+        })
         .then((res) => {
+            console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages
+            }
             var tableData = res.data.data.content.map((content) => {
+                var startDate = getFormattedDate(convertDate(content.startDate))
+                var endDate = getFormattedDate(convertDate(content.endDate))
                 return {
                     id: content.id,
                     year: content.year,
                     semester: content.semester,
-                    startDate: content.startDate,
-                    endDate: content.endDate
+                    startDate: startDate,
+                    endDate: endDate
                 }
-            } )
+            })
             setReturnData(tableData)
+            setPagination(pagination)
+
         })
         .catch((error) => {
             if (error && error.response) {
@@ -83,10 +95,11 @@ const checkPermission = async (setPermission) => {
 function AcademicYear() {
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
+    const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false)
 
-    if (isSubmiting == false) {
-        handleGet(null, setReturnData, returnData)
+    if (isSubmiting === false) {
+        handleGet(null, setReturnData, returnData, setPagination)
         setIsSubmiting(true)
     }
     // useEffect(()=>{handleGet(null, setReturnData, returnData)},[handleGet, isSubmiting])
@@ -100,7 +113,11 @@ function AcademicYear() {
     //     setTableData(id, year, semester, startDate, endDate)
     // }, [handleGet])
 
-    // console.log(tableData)
+    // console.log(returnPagination)
+    // console.log(returnData)
+    // var dataAPI = "2021-06-01T04:00:00.000+00:00";
+    // console.log(convertDate(dataAPI))
+
 
     if (permission) {
         return (<div className="department-page container">
@@ -192,7 +209,7 @@ function AcademicYear() {
                     hasEditedBtn={false}
                     hasDeletedBtn={false}
                     hasDisabledBtn={false}
-                    // pages={}
+                    totalPages={returnPagination.totalPages}
                 />
             </div>
         </div>

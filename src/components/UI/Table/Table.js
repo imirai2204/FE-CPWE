@@ -51,7 +51,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort, columns, pages } = props;
+    const { order, orderBy, onRequestSort, columns } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -123,7 +123,7 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
 
-export const EnhancedTable = ({ columns, rows, ...props }) => {
+export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("ID");
     const [page, setPage] = React.useState(1);
@@ -134,6 +134,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
         title: "",
         subTitle: "",
     });
+
     const [openPopup, setOpenpopup] = useState(false);
 
     const handleRequestSort = (event, property) => {
@@ -143,6 +144,7 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
     };
 
     const handleChangePage = (event, newPage) => {
+        console.log(newPage)
         setPage(newPage);
     };
 
@@ -292,8 +294,8 @@ export const EnhancedTable = ({ columns, rows, ...props }) => {
                     />
                     <Pagination
                         onChange={handleChangePage}
-                        count={countPage}
-                        // count={pages}
+                        // count={countPage}
+                        count={totalPages}
                         color="primary"
                         variant="outlined"
                         shape="rounded"

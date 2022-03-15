@@ -186,8 +186,8 @@ function Topic() {
                     columns={Columns}
                     rows={Data}
                     hasEditedBtn={false}
-                    hasDeletedBtn={true}
-                    hasDisabledBtn={true}
+                    hasDeletedBtn={false}
+                    hasDisabledBtn={false}
                 />
             </div>
         </div>

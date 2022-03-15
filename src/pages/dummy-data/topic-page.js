@@ -8,12 +8,12 @@ export const SemesterOptions = [
 
 export const Columns = [
     { id: "id", label: "ID", width: "3%", align: "center", style: { left: "13px" } },
-    { id: "topic", label: "Topic", width: "15%", align: "left" },
+    { id: "topic", label: "Topic", width: "10%", align: "left" },
     { id: "year", label: "Year", width: "3%", align: "center", style: { left: "13px" } },
-    { id: "semester", label: "Semester", width: "20%", align: "left" },
-    { id: "department", label: "Department", width: "20%", align: "left" },
-    { id: "startDate", label: "Start Date", width: "3%", align: "left" },
-    { id: "closureDate", label: "Closure Date", width: "3%", align: "left" },
+    { id: "semester", label: "Semester", width: "15%", align: "left" },
+    { id: "department", label: "Department", width: "15%", align: "left" },
+    { id: "startDate", label: "Start Date", width: "10%", align: "left" },
+    { id: "closureDate", label: "Closure Date", width: "10%", align: "left" },
     { id: "finalDate", label: "Final Date", width: "13%", align: "left" },
 ];
 

@@ -56,13 +56,15 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const authCtx = useContext(AuthContext);
 
+    console.log(isAuthenticated + 'isAuthenticated')
+
     useEffect(() => {
         if (authCtx.isLoggedIn == true) {
             setIsAuthenticated(true)
         } else {
             setIsAuthenticated(false)
         }
-    }, []);
+    }, [authCtx]);
 
     const openModalHandler = () => {
         setIsOpenModal((prevIsOpenModal) => !prevIsOpenModal);
@@ -70,8 +72,7 @@ function App() {
 
     return (
         <Fragment>
-            {console.log(authCtx.isLoggedIn)}
-            {isAuthenticated == false ? (
+            {isAuthenticated == true ? (
                 <PrivateRoute
                     openModalHandler={openModalHandler}
                     isOpenModal={isOpenModal}>
