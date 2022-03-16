@@ -5,18 +5,54 @@ import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
 import axios from "axios";
-import { IdeaUrl, Authen } from "../api/EndPoint";
+import { DepartmentUrl, Authen } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
-import { Columns, Data } from "./dummy-data/department-page";
+import { Columns } from "./dummy-data/department-page";
 
-const handleSubmit = async (values) => {
-    var formData = new FormData();
-    formData.append("departmentName", values.departmentName);
-
+const handleSubmit = async (values, setIsSubmiting) => {
     const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .post(DepartmentUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
         .then(() => {
             console.log("Create success")
+            setIsSubmiting(false)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    console.log(values)
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    const response = await axios
+        .get(DepartmentUrl.get, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages
+            }
+            var tableData = res.data.data.content.map((content) => {
+                return {
+                    id: content.id,
+                    department: content.department,
+                }
+            })
+            setReturnData(tableData)
+            setPagination(pagination)
+
         })
         .catch((error) => {
             if (error && error.response) {
@@ -26,7 +62,7 @@ const handleSubmit = async (values) => {
 };
 
 const initialValues = {
-    departmentName: "",
+    department: "",
 };
 
 const checkPermission = async (setPermission) => {
@@ -49,6 +85,14 @@ const checkPermission = async (setPermission) => {
 
 function Department() {
     const [permission, setPermission] = useState(true);
+    const [returnData, setReturnData] = useState([]);
+    const [returnPagination, setPagination] = useState({});
+    const [isSubmiting, setIsSubmiting] = useState(false);
+
+    if (isSubmiting === false) {
+        handleGet(null, setReturnData, returnData, setPagination)
+        setIsSubmiting(true)
+    }
 
     if (permission) {
         return (
@@ -59,7 +103,7 @@ function Department() {
                         initialValues={initialValues}
                         validationSchema={DepartmentSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values);
+                            handleSubmit(values , setIsSubmiting);
                         }}>
                         {({
                             isSubmiting,
@@ -76,7 +120,7 @@ function Department() {
                                     <div className="input-section label-mark">
                                         <TextField
                                             label={"Department Name"}
-                                            name='departmentName'
+                                            name='department'
                                             type='text'
                                             placeholder='Type...'
                                         />
@@ -84,9 +128,7 @@ function Department() {
                                 </div>
                                 <hr />
                                 <div className="list-button">
-                                    {/* <button className={"btn btn-warning"} type="button">
-                                        Search
-                                    </button> */}
+
                                     <button
                                         className={'btn btn-info'}
                                         type='reset'
@@ -104,10 +146,11 @@ function Department() {
                 <div className="layout-table">
                     <EnhancedTable
                         columns={Columns}
-                        rows={Data}
+                        rows={returnData}
                         hasEditedBtn={false}
-                        hasDeletedBtn={true}
-                        hasDisabledBtn={true}
+                        hasDeletedBtn={false}
+                        hasDisabledBtn={false}
+                        totalPages={returnPagination.totalPages}
                     />
                 </div>
             </div>

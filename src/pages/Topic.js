@@ -7,24 +7,18 @@ import { TopicSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
 import { YearOptions } from "./dummy-data/years-page";
-import { SemesterOptions, Columns, Data } from "./dummy-data/topic-page";
+import { Columns } from "./dummy-data/topic-page";
 import { Departments } from "../components/Navbar/dropdown/DropdownItems";
-import { IdeaUrl, Authen } from "../api/EndPoint";
+import { TopicUrl, Authen, AcademicUrl, DepartmentUrl } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
+import { convertDate, getFormattedDate } from "../function/library";
 
-const handleSubmit = async (values) => {
-    var formData = new FormData();
-    formData.append("yearId", values.yearId);
-    formData.append("semesterId", values.semesterId);
-    formData.append("departmentId", values.departmentId);
-    formData.append("topic", values.topic);
-    formData.append("closureDate", values.closureDate);
-    formData.append("finalDate", values.finalDate);
-
+const handleSubmit = async (values, setIsSubmiting) => {
     const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .post(TopicUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
         .then(() => {
             console.log("Create success")
+            setIsSubmiting(false)
         })
         .catch((error) => {
             if (error && error.response) {
@@ -33,14 +27,128 @@ const handleSubmit = async (values) => {
         });
 };
 
+const handleGet = async (values, setReturnData, setPagination) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    }
+    const response = await axios
+        .get(TopicUrl.get, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            // console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages
+            }
+            var tableData = res.data.data.content.map((content) => {
+                var startDate = getFormattedDate(convertDate(content.startDate))
+                var closureDate = getFormattedDate(convertDate(content.closureDate))
+                var finalDate = getFormattedDate(convertDate(content.finalDate))
+                return {
+                    id: content.id,
+                    year: content.year,
+                    semester: content.semester,
+                    department: content.department,
+                    topic: content.topic,
+                    startDate: startDate,
+                    closureDate: closureDate,
+                    finalDate: finalDate
+
+                }
+            })
+            setReturnData(tableData)
+            setPagination(pagination)
+
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getSemester = async (values, setSemesterOption) => {
+    const paramsValue = {
+        year: values,
+    }
+    const response = await axios
+        .get(AcademicUrl.getSemesterByYear, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            console.log(res)
+            var semesterOption = res.data.data.map((data) => {
+                return {
+                    value: data.id,
+                    label: data.semester,
+                    key: data.id,
+                }
+            })
+            // console.log(semesterOption)
+            setSemesterOption(semesterOption)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
+const getDepartment = async (values, setDepartmenOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    const response = await axios
+        .get(DepartmentUrl.get, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            console.log(res)
+            var departmentOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.department,
+                    key: content.id,
+                }
+            })
+            setDepartmenOption(departmentOption)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
 const initialValues = {
-    yearId: 0,
-    semesterId: 0,
+    // year: 0,
+    academicId: 0,
     departmentId: 0,
     topic: "",
-    closureDate: "",
-    finalDate: "",
+    endDate: "",
+    finalEndDate: "",
 };
+
+// const submitValues = {
+//     academicId: 0,
+//     departmentId: 0,
+//     topic: "",
+//     endDate: "",
+//     finalEndDate: "",
+// }
 
 const checkPermission = async (setPermission) => {
     const response = await axios
@@ -62,6 +170,17 @@ const checkPermission = async (setPermission) => {
 
 function Topic() {
     const [permission, setPermission] = useState(true);
+    const [returnData, setReturnData] = useState([]);
+    const [returnPagination, setPagination] = useState({});
+    const [isSubmiting, setIsSubmiting] = useState(false);
+    const [semesterOption, setSemesterOption] = useState([]);
+    const [departmentOption, setDepartmentOption] = useState([]);
+
+    if (isSubmiting === false) {
+        handleGet(null, setReturnData, returnData, setPagination)
+        getDepartment(null, setDepartmentOption)
+        setIsSubmiting(true)
+    }
 
     if (permission) {
         return (<div className="department-page container">
@@ -71,8 +190,7 @@ function Topic() {
                     initialValues={initialValues}
                     validationSchema={TopicSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values);
-                        console.log(values);
+                        handleSubmit(values, setIsSubmiting);
                     }}>
                     {({
                         isSubmiting,
@@ -99,6 +217,8 @@ function Topic() {
                                         placeholder={"Select Year"}
                                         onChange={(selectOption) => {
                                             setFieldValue("yearId", selectOption.value);
+                                            getSemester(selectOption.value, setSemesterOption);
+                                            // setIsTest(selectOption.value);
                                         }}
                                         onBlur={() => {
                                             handleBlur({ target: { name: "year" } });
@@ -112,7 +232,7 @@ function Topic() {
                                         className='select'
                                         name='semesterId'
                                         id='semester'
-                                        options={SemesterOptions}
+                                        options={semesterOption}
                                         placeholder={"Select Semester"}
                                         onChange={(selectOption) => {
                                             setFieldValue("semesterId", selectOption.value);
@@ -128,8 +248,8 @@ function Topic() {
                                     <Select
                                         className='select'
                                         name='departmentId'
-                                        id='department'
-                                        options={Departments}
+                                        id='departmentId'
+                                        options={departmentOption}
                                         placeholder={"Select Department"}
                                         onChange={(selectOption) => {
                                             setFieldValue("departmentId", selectOption.value);
@@ -152,14 +272,14 @@ function Topic() {
                                     <div className="input-section label-mark time first">
                                         <TextField
                                             label={"Closure Date"}
-                                            name='closureDate'
+                                            name='endDate'
                                             type='date'
                                         />
                                     </div>
                                     <div className="input-section label-mark time second">
                                         <TextField
                                             label={"Final Closure Date"}
-                                            name='finalDate'
+                                            name='finalEndDate'
                                             type='date'
                                         />
                                     </div>
@@ -167,9 +287,6 @@ function Topic() {
                             </div>
                             <hr />
                             <div className="list-button">
-                                {/* <button className={"btn btn-warning"} type="submit">
-                                Search
-                            </button> */}
                                 <button className={'btn btn-info'} type='reset'>
                                     Refresh
                                 </button>
@@ -184,10 +301,11 @@ function Topic() {
             <div className="layout-table">
                 <EnhancedTable
                     columns={Columns}
-                    rows={Data}
+                    rows={returnData}
                     hasEditedBtn={false}
                     hasDeletedBtn={false}
                     hasDisabledBtn={false}
+                    totalPages={returnPagination.totalPages}
                 />
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -6,8 +6,8 @@ import { EnhancedTable } from "../components/UI/Table/Table";
 import { AcademicYearSchema } from "../validation";
 import axios from "axios";
 import Select from "react-select";
-import { YearOptions, Columns, Data } from "./dummy-data/years-page";
-import { AcademicUrl, Authen, BASE_URL } from "../api/EndPoint";
+import { YearOptions, Columns } from "./dummy-data/years-page";
+import { AcademicUrl, Authen } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
 import { convertDate, getFormattedDate } from "../function/library";
 
@@ -102,22 +102,6 @@ function AcademicYear() {
         handleGet(null, setReturnData, returnData, setPagination)
         setIsSubmiting(true)
     }
-    // useEffect(()=>{handleGet(null, setReturnData, returnData)},[handleGet, isSubmiting])
-
-    // handleGet(null, setReturnData, returnData)
-    // console.log(returnData)
-
-    // const {id, year, semester, startDate, endDate, ...response} = handleGet();
-
-    // useEffect(()=>{
-    //     setTableData(id, year, semester, startDate, endDate)
-    // }, [handleGet])
-
-    // console.log(returnPagination)
-    // console.log(returnData)
-    // var dataAPI = "2021-06-01T04:00:00.000+00:00";
-    // console.log(convertDate(dataAPI))
-
 
     if (permission) {
         return (<div className="department-page container">
@@ -188,9 +172,6 @@ function AcademicYear() {
                             </div>
                             <hr />
                             <div className="list-button">
-                                {/* <button className={"btn btn-warning"} type="submit">
-                                Search
-                            </button> */}
                                 <button className={'btn btn-info'} type='reset'>
                                     Refresh
                                 </button>

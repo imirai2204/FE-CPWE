@@ -1,4 +1,4 @@
-export const BASE_URL = "http://7912-27-64-142-237.ngrok.io";
+export const BASE_URL = "http://072b-27-64-142-237.ngrok.io";
 
 export const Authen = {
     login: BASE_URL + "/authen/signin",
@@ -11,12 +11,13 @@ export const IdeaUrl = {
 
 export const AcademicUrl = {
     create: BASE_URL + "/academic-year/create",
-    get: BASE_URL + "/academic-year/get"
+    get: BASE_URL + "/academic-year/get",
+    getSemesterByYear:  BASE_URL + "/academic-year/get-semester-by-year"
 }
 
 export const TopicUrl = {
     create: BASE_URL + "/topic/create",
-    get: BASE_URL + "/topic/get"
+    get: BASE_URL + "/topic/get",
 }
 
 export const CategoryUrl = {

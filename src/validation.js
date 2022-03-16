@@ -6,7 +6,7 @@ export const SignInSchema = Yup.object().shape({
 });
 
 export const DepartmentSchema = Yup.object().shape({
-    departmentName: Yup.string().required("Sorry, Department name is required"),
+    department: Yup.string().required("Sorry, Department name is required"),
 });
 
 export const TagSchema = Yup.object().shape({
@@ -22,12 +22,12 @@ export const AcademicYearSchema = Yup.object().shape({
 });
 
 export const TopicSchema = Yup.object().shape({
-    yearId: Yup.number().min(1, "Sorry, Year is required"),
+    // yearId: Yup.number().min(1, "Sorry, Year is required"),
     semesterId: Yup.number().min(1, "Sorry, Semester is required"),
     departmentId: Yup.number().min(1, "Sorry, Department is required"),
     topic: Yup.string().required("Sorry, Topic Name is required"),
-    closureDate: Yup.date().required("Sorry, Closure Date is required"),
-    finalDate: Yup.date().required("Sorry, Final Date is required").min(Yup.ref('closureDate')),
+    endDate: Yup.date().required("Sorry, Closure Date is required"),
+    finalEndDate: Yup.date().required("Sorry, Final Date is required").min(Yup.ref('endDate')),
 });
 
 export const IdeaSchema = Yup.object().shape({
