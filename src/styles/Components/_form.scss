@@ -29,8 +29,8 @@
 }
 
 .checkbox {
-    font-size: 15px;
-    margin-inline-end: auto;
+  font-size: 15px;
+  margin-inline-end: auto;
 
   input {
     display: none;
@@ -48,11 +48,11 @@
 }
 
 [type="checkbox"]:checked + span:before {
-    content: "✔";
-    position: absolute;
-    top: 0px;
-    left: 4px;
-    color: $color-green;
+  content: "✔";
+  position: absolute;
+  top: 0px;
+  left: 4px;
+  color: $color-green;
 }
 
 .password-icon {
@@ -234,18 +234,56 @@
 }
 
 .container--idea--submit {
-    padding: 0px 24px 10px !important;
+  padding: 0px 24px 10px !important;
 
-    label {
-        font-weight: 500;
+  label {
+    font-weight: 500;
+  }
+
+  .btn {
+    font-size: 15px;
+    font-weight: 600;
+
+    &-noline:hover {
+      text-decoration: underline;
     }
+  }
+}
 
-    .btn {
-        font-size: 15px;
-        font-weight: 600;
+#information-box {
+  border-radius: 20px;
+  border: 1px solid #cfcece;
+  background: blue;
+  margin-left: 20px;
+  padding: 20px 40px;
 
-        &-noline:hover {
-            text-decoration: underline;
-        }
-    }
+  h1{
+    font-style: inherit;
+    color: #fff;
+  }
+
+  h4{
+    color: #fff;
+    font-weight: bold;
+  }
+}
+
+.info-content {
+  border-radius: 20px;
+  border: 1px solid #cfcece;
+  background: #fff;
+  padding: 35px;
+  margin: 18px;
+  right: 50px;
+
+  label {
+    color: red;
+    display: inline-block;
+    width: 150px;
+  }
+
+  p {
+    color: black;
+    font-weight: bold;
+  }
 }
