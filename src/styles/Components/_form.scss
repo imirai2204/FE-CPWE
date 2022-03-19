@@ -1,289 +1,251 @@
 .input-section {
-  margin-bottom: 13px;
-  margin-top: 25px;
-  position: relative;
+    margin-bottom: 13px;
+    margin-top: 25px;
+    position: relative;
 
-  input {
-    display: flex;
-    align-items: center;
-  }
+    input {
+        display: flex;
+        align-items: center;
+    }
 }
 
 .form-control {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-bottom: 2px solid $color-black-70;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  padding-top: 5px;
-  padding-left: 0;
-  padding-bottom: 5px;
-  font-size: 15px;
-  color: $color-black-70;
-  padding-right: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid $color-black-70;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding-top: 5px;
+    padding-left: 0;
+    padding-bottom: 5px;
+    font-size: 15px;
+    color: $color-black-70;
+    padding-right: 30px;
 
-  &:hover {
-    border-bottom: 2px solid $color-blue-B8;
-  }
+    &:hover {
+        border-bottom: 2px solid $color-blue-B8;
+    }
 }
 
 .checkbox {
-  font-size: 15px;
-  margin-inline-end: auto;
+    font-size: 15px;
+    margin-inline-end: auto;
 
-  input {
-    display: none;
-  }
+    input {
+        display: none;
+    }
 }
 
 .checkbox span {
-  height: 24px;
-  width: 24px;
-  border: 2px solid grey;
-  display: inline-block;
-  position: relative;
-  bottom: -5px;
-  margin-right: 10px;
+    height: 24px;
+    width: 24px;
+    border: 2px solid grey;
+    display: inline-block;
+    position: relative;
+    bottom: -5px;
+    margin-right: 10px;
 }
 
 [type="checkbox"]:checked + span:before {
-  content: "✔";
-  position: absolute;
-  top: 0px;
-  left: 4px;
-  color: $color-green;
+    content: "✔";
+    position: absolute;
+    top: 0px;
+    left: 4px;
+    color: $color-green;
 }
 
 .password-icon {
-  position: absolute;
-  top: 20px;
-  right: 5px;
+    position: absolute;
+    top: 20px;
+    right: 5px;
 }
 
 .error {
-  color: $color-red;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 22px;
+    color: $color-red;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 22px;
 }
 
 .form-control.is-invalid,
 .was-validated .form-control:invalid {
-  background-image: none !important;
+    background-image: none !important;
 }
 
 .select {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  border: 2px solid $color-black-70;
-  font-size: 15px;
-  color: $color-black-70;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 2px solid $color-black-70;
+    font-size: 15px;
+    color: $color-black-70;
 
-  &:hover {
-    border: 2px solid $color-blue-B8;
-  }
+    &:hover {
+        border: 2px solid $color-blue-B8;
+    }
 }
 
 .textarea {
-  border: 2px solid $color-black-70;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 5px 10px;
-  font-size: 15px;
-  color: $color-black-70;
-  text-align: justify;
+    border: 2px solid $color-black-70;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    font-size: 15px;
+    color: $color-black-70;
+    text-align: justify;
 
-  &:hover {
-    border: 2px solid $color-blue-B8;
-  }
+    &:hover {
+        border: 2px solid $color-blue-B8;
+    }
 }
 
 .label-mark {
-  .label {
-    &:after {
-      content: "*";
-      color: $color-red;
-      font-size: 25px;
+    .label {
+        &:after {
+            content: "*";
+            color: $color-red;
+            font-size: 25px;
 
-      @media screen and (max-width: 1095px) {
-        font-size: 17px;
-      }
+            @media screen and (max-width: 1095px) {
+                font-size: 17px;
+            }
+        }
     }
-  }
 }
 
 //reset Mui form
 .css-1s2u09g-control {
-  border: none !important;
-  border-radius: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
 }
 
 .css-1insrsq-control {
-  border: none !important;
-  border-radius: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
 }
 
 .css-1pahdxg-control:hover {
-  border: none !important;
+    border: none !important;
 }
 
 .css-1pahdxg-control {
-  box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 .MuiDropzoneArea-root {
-  min-height: 140px !important;
-  border: 2px dotted !important;
-  border-color: $color-black-70 !important;
+    min-height: 140px !important;
+    border: 2px dotted !important;
+    border-color: $color-black-70 !important;
 
-  &:hover {
-    border-color: $color-blue-B8 !important;
-  }
+    &:hover {
+        border-color: $color-blue-B8 !important;
+    }
 }
 
 .MuiDropzonePreviewList-removeButton {
-  top: 15px !important;
-  right: 20px !important;
+    top: 15px !important;
+    right: 20px !important;
 }
 
 .MuiTypography-subtitle1,
 .MuiTypography-body1 {
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  line-height: 28px !important;
-  word-break: break-all;
-  white-space: normal;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 28px !important;
+    word-break: break-all;
+    white-space: normal;
 }
 
 .MuiGrid-container {
-  width: 100% !important;
-  margin: 0 !important;
-
-  .MuiDropzonePreviewList-image {
     width: 100% !important;
-    height: 70% !important;
-    background-color: $color-white !important;
-    @media screen and (max-width: 1095px) {
-      height: 50% !important;
+    margin: 0 !important;
+
+    .MuiDropzonePreviewList-image {
+        width: 100% !important;
+        height: 70% !important;
+        background-color: $color-white !important;
+        @media screen and (max-width: 1095px) {
+            height: 50% !important;
+        }
     }
-  }
 }
 
 .MuiDropzonePreviewList-imageContainer:hover .MuiDropzonePreviewList-image {
-  opacity: 1 !important;
+    opacity: 1 !important;
 }
 
 .MuiGrid-spacing-xs-8 .MuiGrid-item {
-  padding: 16px !important;
+    padding: 16px !important;
 }
 
 .MuiGrid-grid-xs-4 {
-  max-width: 20% !important;
-  flex-basis: 20% !important;
-  height: 20rem;
+    max-width: 20% !important;
+    flex-basis: 20% !important;
+    height: 20rem;
 }
 
 @media screen and (max-width: 1095px) {
-  .MuiTypography-subtitle1,
-  .MuiTypography-body1 {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+    .MuiTypography-subtitle1,
+    .MuiTypography-body1 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 }
 
 .layout-form {
-  margin-bottom: 5rem;
-  .form-container {
-    margin: 0 20rem 2rem;
-  }
-
-  @media screen and (max-width: 1095px) {
-    margin-bottom: 3rem;
-
+    margin-bottom: 5rem;
     .form-container {
-      margin: 0 0 2rem;
+        margin: 0 20rem 2rem;
     }
-  }
+
+    @media screen and (max-width: 1095px) {
+        margin-bottom: 3rem;
+
+        .form-container {
+            margin: 0 0 2rem;
+        }
+    }
 }
 
 .editing-form {
-  width: 100%;
-  font-size: 18px;
-  text-align: center;
-  padding: 5px;
-  max-width: 600px;
-  min-width: 500px;
-  padding: 14px 28px;
-  border-radius: 12px;
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+    padding: 5px;
+    max-width: 600px;
+    min-width: 500px;
+    padding: 14px 28px;
+    border-radius: 12px;
 
-  .editcloseBtn {
-    cursor: pointer;
-    position: absolute;
-    display: block;
-    padding: 2px 5px;
-    line-height: 20px;
-    right: 7px;
-    top: 5px;
-    font-size: 20px;
-    background: #ffffff;
-    border-radius: 18px;
-    border: 1px solid #cfcece;
-  }
+    .editcloseBtn {
+        cursor: pointer;
+        position: absolute;
+        display: block;
+        padding: 2px 5px;
+        line-height: 20px;
+        right: 7px;
+        top: 5px;
+        font-size: 20px;
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #cfcece;
+    }
 }
 
 .container--idea--submit {
-  padding: 0px 24px 10px !important;
+    padding: 0px 24px 10px !important;
 
-  label {
-    font-weight: 500;
-  }
-
-  .btn {
-    font-size: 15px;
-    font-weight: 600;
-
-    &-noline:hover {
-      text-decoration: underline;
+    label {
+        font-weight: 500;
     }
-  }
-}
 
-#information-box {
-  border-radius: 20px;
-  border: 1px solid #cfcece;
-  background: blue;
-  margin-left: 20px;
-  padding: 20px 40px;
+    .btn {
+        font-size: 15px;
+        font-weight: 600;
 
-  h1{
-    font-style: inherit;
-    color: #fff;
-  }
-
-  h4{
-    color: #fff;
-    font-weight: bold;
-  }
-}
-
-.info-content {
-  border-radius: 20px;
-  border: 1px solid #cfcece;
-  background: #fff;
-  padding: 35px;
-  margin: 18px;
-  right: 50px;
-
-  label {
-    color: red;
-    display: inline-block;
-    width: 150px;
-  }
-
-  p {
-    color: black;
-    font-weight: bold;
-  }
+        &-noline:hover {
+            text-decoration: underline;
+        }
+    }
 }

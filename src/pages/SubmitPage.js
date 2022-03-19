@@ -75,8 +75,13 @@ const initialValues = {
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
     const [permission, setPermission] = useState(true);
+    const [topicName, setTopicName] = useState("")
 
     // checkPermission(setPermission);
+
+    const changeTopicName = (topic) => {
+        setTopicName(topic);
+    }
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -140,6 +145,7 @@ const SubmitPage = (props) => {
                                             onChange={
                                                 selectOption => {
                                                     setFieldValue("topicId", selectOption.value)
+                                                    changeTopicName(selectOption.label)
                                                 }
                                             }
                                             onBlur={() => {
@@ -170,23 +176,24 @@ const SubmitPage = (props) => {
                                         <ErrorMessage component='div' name={'categoryId'} className='error' />
                                     </div>
                                 </div>
-                                <div className='layout-1--right'
-                                id="information-box">
-                                    <h1>Information</h1>
-                                    <h4>of {Topics.name}</h4>
-                                    <div className="info-content">
-                                    <div className="input-section">
-                                        <label>Start Date: </label>
-                                        <p>01/01/2022</p>
-                                    </div>
-                                    <div className="input-section">
-                                        <label>End Date: </label>
-                                        <p>01/01/2022</p>
-                                    </div>
-                                    <div className="input-section">
-                                        <label>Final End Date: </label>
-                                        <p>01/01/2022</p>
-                                    </div>
+                                <div className='layout-1--right'>
+                                    <div className="information-box">
+                                        <h2>Information</h2>
+                                        <h4>of {topicName}</h4>
+                                        <div className="info-content">
+                                            <div className="time">
+                                                <label>Start Date: </label>
+                                                <p>01/01/2022</p>
+                                            </div>
+                                            <div className="time">
+                                                <label>End Date: </label>
+                                                <p>01/01/2022</p>
+                                            </div>
+                                            <div className="time">
+                                                <label>Final End Date: </label>
+                                                <p>01/01/2022</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

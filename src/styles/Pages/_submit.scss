@@ -19,7 +19,11 @@
                         font-weight: 600;
                         line-height: 28px;
                         margin-right: 10px;
-                        width: 75px;
+                        width: 12rem;
+                        color: $color-red-09;
+                    }
+                    p {
+                        font-weight: 600;
                     }
                 }
             }
@@ -52,6 +56,24 @@
 .terms-link {
     text-decoration: underline;
     color: $color-blue-B8;
+}
+
+.information-box {
+    border-radius: 8%;
+    background: $color-blue-CC;
+    padding: 40px 30px;
+    width: 34rem;
+
+    h2, h4 {
+        color: $color-white;
+    }
+}
+
+.info-content {
+    border-radius: 15px;
+    background: $color-white;
+    padding: 20px;
+    margin-top: 18px;
 }
 
 @media screen and (max-width: 1095px) {
