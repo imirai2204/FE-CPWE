@@ -14,7 +14,7 @@ import {
     Contributor,
 } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from "material-ui-dropzone";
-import { IdeaUrl, Authen } from "../api/EndPoint";
+import { IdeaUrl, Authen, DepartmentUrl } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
 
 const handleSubmit = async (values) => {
@@ -43,6 +43,37 @@ const handleSubmit = async (values) => {
             }
         });
 };
+
+const getDepartment = async (values, setDepartmenOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    const response = await axios
+        .get(DepartmentUrl.get, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            // console.log(res)
+            var departmentOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.department,
+                    key: content.id,
+                }
+            })
+            setDepartmenOption(departmentOption)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
 
 const checkPermission = async (setPermission) => {
     const response = await axios
@@ -76,6 +107,9 @@ const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
     const [permission, setPermission] = useState(true);
     const [topicName, setTopicName] = useState("")
+    const [departmentOption, setDepartmentOption] = useState([]);
+
+    getDepartment(null, setDepartmentOption)
 
     // checkPermission(setPermission);
 
@@ -118,7 +152,7 @@ const SubmitPage = (props) => {
                                             className='select'
                                             name='department'
                                             id='department'
-                                            options={Departments}
+                                            options={departmentOption}
                                             placeholder={"Select depertment"}
                                             isDisabled={false}
                                             onChange={
