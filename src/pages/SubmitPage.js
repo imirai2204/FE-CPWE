@@ -27,7 +27,7 @@ const handleSubmit = async (values) => {
     formData.append("contributor", values.contributor);
 
     if (values.files.length > 0) {
-        for ( var i = 0; i < values.files.length; i++) {
+        for (var i = 0; i < values.files.length; i++) {
             formData.append("files", values.files[i]);
         }
     }
@@ -75,8 +75,13 @@ const initialValues = {
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
     const [permission, setPermission] = useState(true);
+    const [topicName, setTopicName] = useState("")
 
     // checkPermission(setPermission);
+
+    const changeTopicName = (topic) => {
+        setTopicName(topic);
+    }
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -140,6 +145,7 @@ const SubmitPage = (props) => {
                                             onChange={
                                                 selectOption => {
                                                     setFieldValue("topicId", selectOption.value)
+                                                    changeTopicName(selectOption.label)
                                                 }
                                             }
                                             onBlur={() => {
@@ -171,13 +177,23 @@ const SubmitPage = (props) => {
                                     </div>
                                 </div>
                                 <div className='layout-1--right'>
-                                    <div className='time'>
-                                        <label>Start date: </label>
-                                        <p>01/03/2022</p>
-                                    </div>
-                                    <div className='time'>
-                                        <label>End date: </label>
-                                        <p>31/03/2022</p>
+                                    <div className="information-box">
+                                        <h2>Information</h2>
+                                        <h4>of {topicName}</h4>
+                                        <div className="info-content">
+                                            <div className="time">
+                                                <label>Start Date: </label>
+                                                <p>01/01/2022</p>
+                                            </div>
+                                            <div className="time">
+                                                <label>End Date: </label>
+                                                <p>01/01/2022</p>
+                                            </div>
+                                            <div className="time">
+                                                <label>Final End Date: </label>
+                                                <p>01/01/2022</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -200,14 +216,15 @@ const SubmitPage = (props) => {
                             </div>
                             <div className='input-section contributor'>
                                 <label className='label' htmlFor='contributor'>
-                                    Contributor
+                                    Post Status
                                 </label>
                                 <Select
                                     className='select'
                                     name='contributor'
                                     id="contributor"
                                     options={Contributor}
-                                    placeholder={"Select contributor"}
+                                    defaultValue={Contributor[0]}
+                                    placeholder={"Select state of the post"}
                                     onChange={
                                         selectOption => {
                                             setFieldValue("contributor", selectOption.value)
