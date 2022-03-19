@@ -7,18 +7,15 @@ import { TagSchema } from "../validation";
 import axios from "axios";
 import { TagsData, TableColumns, TopicOptions } from "./dummy-data/tags-page";
 import Select from "react-select";
-import { IdeaUrl, Authen } from "../api/EndPoint";
+import { CategoryUrl, Authen, TopicUrl } from "../api/EndPoint";
 import { RequestHeader } from "../api/AxiosComponent";
 
-const handleSubmit = async (values) => {
-    var formData = new FormData();
-    formData.append("tagName", values.tagName);
-    formData.append("topicId", values.topicId);
-
+const handleSubmit = async (values, setIsSubmiting) => {
     const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+        .post(CategoryUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
         .then(() => {
             console.log("Create success")
+            setIsSubmiting(false)
         })
         .catch((error) => {
             if (error && error.response) {
@@ -27,9 +24,78 @@ const handleSubmit = async (values) => {
         });
 };
 
+const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    console.log(values)
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    const response = await axios
+        .get(CategoryUrl.get, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages
+            }
+            // var tableData = res.data.data.content.map((content) => {
+            //     return {
+            //         id: content.id,
+            //         topicLabel: content.topic,
+            //         tagLabel: content.category
+            //     }
+            // })
+            // setReturnData(tableData)
+            setPagination(pagination)
+
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getTopic = async (values, setTopicOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? "" : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    const response = await axios
+        .get(TopicUrl.get, {
+            headers: RequestHeader.checkAuthHeaders,
+            params: paramsValue
+        })
+        .then((res) => {
+            var topicOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.topic,
+                    key: content.id,
+                }
+            })
+            setTopicOption(topicOption)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
 const initialValues = {
-    tagName: "",
     topicId: 0,
+    category: "",
 };
 
 const checkPermission = async (setPermission) => {
@@ -52,6 +118,16 @@ const checkPermission = async (setPermission) => {
 
 const Tags = (props) => {
     const [permission, setPermission] = useState(true);
+    const [returnData, setReturnData] = useState([]);
+    const [returnPagination, setPagination] = useState({});
+    const [isSubmiting, setIsSubmiting] = useState(false);
+    const [topicOption, setTopicOption] = useState([]);
+
+    if (isSubmiting === false) {
+        handleGet(null, setReturnData, returnData, setPagination)
+        getTopic(null, setTopicOption)
+        setIsSubmiting(true)
+    }
 
     if (permission) {
         return (
@@ -62,7 +138,7 @@ const Tags = (props) => {
                         initialValues={initialValues}
                         validationSchema={TagSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values);
+                            handleSubmit(values, setIsSubmiting);
                         }}>
                         {({
                             isSubmiting,
@@ -79,7 +155,7 @@ const Tags = (props) => {
                                     <div className='input-section label-mark'>
                                         <TextField
                                             label={"Tag"}
-                                            name='tagName'
+                                            name='category'
                                             type='text'
                                             placeholder='Tag name...'
                                         />
@@ -90,7 +166,7 @@ const Tags = (props) => {
                                             className='select'
                                             name='topicId'
                                             id='topic'
-                                            options={TopicOptions}
+                                            options={topicOption}
                                             placeholder={"Select topic"}
                                             onChange={(selectOption) => {
                                                 setFieldValue("topicId", selectOption.value);
@@ -113,9 +189,6 @@ const Tags = (props) => {
                                 </div>
                                 <hr />
                                 <div className='list-button'>
-                                    {/* <button className='btn btn-warning' type='button'>
-                                        Search
-                                    </button> */}
                                     <button className='btn btn-info' type='reset'>
                                         Refresh
                                     </button>
@@ -130,10 +203,11 @@ const Tags = (props) => {
                 <div className='layout-table'>
                     <EnhancedTable
                         columns={TableColumns}
-                        rows={TagsData}
+                        rows={returnData}
                         hasEditedBtn={false}
                         hasDeletedBtn={true}
-                        hasDisabledBtn={true}
+                        hasDisabledBtn={false}
+                        totalPages={returnPagination.totalPages}
                     />
                 </div>
             </div>

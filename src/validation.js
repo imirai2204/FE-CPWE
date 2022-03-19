@@ -10,7 +10,7 @@ export const DepartmentSchema = Yup.object().shape({
 });
 
 export const TagSchema = Yup.object().shape({
-    tagName: Yup.string().required("Sorry, Tag name is required"),
+    category: Yup.string().required("Sorry, Tag name is required"),
     topicId: Yup.number().min(1, "Sorry, Topic name is required"),
 });
 

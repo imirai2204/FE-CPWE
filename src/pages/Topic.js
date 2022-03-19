@@ -27,7 +27,7 @@ const handleSubmit = async (values, setIsSubmiting) => {
         });
 };
 
-const handleGet = async (values, setReturnData, setPagination) => {
+const handleGet = async (values, setReturnData, returnData, setPagination) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -41,7 +41,7 @@ const handleGet = async (values, setReturnData, setPagination) => {
             params: paramsValue
         })
         .then((res) => {
-            // console.log(res)
+            console.log(res)
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
@@ -60,7 +60,6 @@ const handleGet = async (values, setReturnData, setPagination) => {
                     startDate: startDate,
                     closureDate: closureDate,
                     finalDate: finalDate
-
                 }
             })
             setReturnData(tableData)
@@ -116,7 +115,7 @@ const getDepartment = async (values, setDepartmenOption) => {
             params: paramsValue
         })
         .then((res) => {
-            console.log(res)
+            // console.log(res)
             var departmentOption = res.data.data.content.map((content) => {
                 return {
                     value: content.id,
@@ -141,14 +140,6 @@ const initialValues = {
     endDate: "",
     finalEndDate: "",
 };
-
-// const submitValues = {
-//     academicId: 0,
-//     departmentId: 0,
-//     topic: "",
-//     endDate: "",
-//     finalEndDate: "",
-// }
 
 const checkPermission = async (setPermission) => {
     const response = await axios
@@ -230,18 +221,18 @@ function Topic() {
                                     <label className='label'>Semester</label>
                                     <Select
                                         className='select'
-                                        name='semesterId'
-                                        id='semester'
+                                        name='academicId'
+                                        id='academicId'
                                         options={semesterOption}
                                         placeholder={"Select Semester"}
                                         onChange={(selectOption) => {
-                                            setFieldValue("semesterId", selectOption.value);
+                                            setFieldValue("academicId", selectOption.value);
                                         }}
                                         onBlur={() => {
-                                            handleBlur({ target: { name: "semester" } });
+                                            handleBlur({ target: { name: "academicId" } });
                                         }}
                                     />
-                                    <ErrorMessage component='div' name={"semesterId"} className='error' />
+                                    <ErrorMessage component='div' name={"academicId"} className='error' />
                                 </div>
                                 <div className='input-section label-mark'>
                                     <label className='label'>Department</label>

@@ -103,7 +103,7 @@ function Department() {
                         initialValues={initialValues}
                         validationSchema={DepartmentSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values , setIsSubmiting);
+                            handleSubmit(values, setIsSubmiting);
                         }}>
                         {({
                             isSubmiting,
