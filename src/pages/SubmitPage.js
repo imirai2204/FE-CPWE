@@ -109,7 +109,7 @@ const SubmitPage = (props) => {
     const [topicName, setTopicName] = useState("")
     const [departmentOption, setDepartmentOption] = useState([]);
 
-    getDepartment(null, setDepartmentOption)
+    // getDepartment(null, setDepartmentOption)
 
     // checkPermission(setPermission);
 

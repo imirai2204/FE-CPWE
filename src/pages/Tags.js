@@ -45,14 +45,14 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
                 size: res.data.data.size,
                 totalPages: res.data.data.totalPages
             }
-            // var tableData = res.data.data.content.map((content) => {
-            //     return {
-            //         id: content.id,
-            //         topicLabel: content.topic,
-            //         tagLabel: content.category
-            //     }
-            // })
-            // setReturnData(tableData)
+            var tableData = res.data.data.content.map((content) => {
+                return {
+                    id: content.id,
+                    topicLabel: content.topic,
+                    tagLabel: content.category
+                }
+            })
+            setReturnData(tableData)
             setPagination(pagination)
 
         })

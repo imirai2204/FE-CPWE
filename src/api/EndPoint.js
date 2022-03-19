@@ -1,4 +1,4 @@
-export const BASE_URL = "http://a432-27-64-142-237.ngrok.io";
+export const BASE_URL = "http://851d-27-64-142-237.ngrok.io";
 
 export const Authen = {
     login: BASE_URL + "/authen/signin",
