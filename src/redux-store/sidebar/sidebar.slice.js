@@ -9,17 +9,11 @@ const sideBarSlice = createSlice({
     name: "side-bar",
     initialState: initialState,
     reducers: {
-        showCategory(state) {
-            state.isCategoryShown = true;
+        toggleCategory(state, action) {
+            state.isCategoryShown = action.payload;
         },
-        hideCategory(state) {
-            state.isCategoryShown = false;
-        },
-        showAccount(state) {
-            state.isAccountShown = true;
-        },
-        hideAccount(state) {
-            state.isAccountShown = false;
+        toggleUserCardMobile(state, action) {
+            state.isAccountShown = action.payload;
         },
     },
 });

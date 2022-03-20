@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../../redux-store/user/user.slice";
+import { sideBarActions } from "../../../redux-store/sidebar/sideBar.slice";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import SideBarContext from "../../../store/side-bar-context";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
@@ -13,19 +13,22 @@ import AuthContext from "../../../store/auth-context";
 
 const UserMobile = (props) => {
     const dispatch = useDispatch();
-    const categoryMobileCtx = useContext(SideBarContext);
+    const isUserCardShown = useSelector((state) => state.sideBar.isAccountShown);
     const authCtx = useContext(AuthContext);
 
-    const accountClassName = categoryMobileCtx.isAccountShown
+    const accountClassName = isUserCardShown
         ? "user-card-mobile active"
         : "user-card-mobile";
 
     const logOutHandler = () => {
         /** Logic to set user logout */
-        // userCardCtx.closeUserCard();
         dispatch(userActions.toggleUserCard(false));
         authCtx.onLogout();
         props.onClick();
+    };
+
+    const clickArrowIconHandler = () => {
+        dispatch(sideBarActions.toggleUserCardMobile(false));
     };
 
     return (
@@ -62,7 +65,7 @@ const UserMobile = (props) => {
                     </div>
                 </Paper>
             </Box>
-            <button className='return' onClick={categoryMobileCtx.onCloseAccount}>
+            <button className='return' onClick={clickArrowIconHandler}>
                 <ArrowCircleLeftIcon />
             </button>
         </div>
