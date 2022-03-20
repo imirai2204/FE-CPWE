@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { useDispatch } from "react-redux";
+import { userActions } from "../../../redux-store/user/user.slice";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
@@ -7,13 +9,11 @@ import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
 import UserCard from "./UserCard";
-import UserCardContext from "../../../store/user-card-context";
 import AuthContext from "../../../store/auth-context";
-import Button from "@mui/material/Button";
 
 const UserMobile = (props) => {
+    const dispatch = useDispatch();
     const categoryMobileCtx = useContext(SideBarContext);
-    const userCardCtx = useContext(UserCardContext);
     const authCtx = useContext(AuthContext);
 
     const accountClassName = categoryMobileCtx.isAccountShown
@@ -22,7 +22,8 @@ const UserMobile = (props) => {
 
     const logOutHandler = () => {
         /** Logic to set user logout */
-        userCardCtx.closeUserCard();
+        // userCardCtx.closeUserCard();
+        dispatch(userActions.toggleUserCard(false));
         authCtx.onLogout();
         props.onClick();
     };
@@ -51,7 +52,10 @@ const UserMobile = (props) => {
                             </Link>
                         </div>
                         <div className='log-out-btn'>
-                            <Link className='log-out' to='/login' onClick={logOutHandler}>
+                            <Link
+                                className='log-out'
+                                to='/login'
+                                onClick={logOutHandler}>
                                 Logout <LogoutIcon />
                             </Link>
                         </div>
@@ -66,22 +70,3 @@ const UserMobile = (props) => {
 };
 
 export default UserMobile;
-
-/**                    <div className='card--info--button'>
-                        <div className='user-settings-btn'>
-                            <Button onClick={props.onClick} size='small'>
-                                <Link to='/user/user-settings'>User Settings</Link>
-                            </Button>
-                        </div>
-                        <div className='log-out-btn'>
-                            <Button
-                                size='small'
-                                color='error'
-                                endIcon={<LogoutIcon />}
-                                onClick={logOutHandler}>
-                                <Link className='log-out' to='/login'>
-                                    Logout
-                                </Link>
-                            </Button>
-                        </div>
-                    </div> */

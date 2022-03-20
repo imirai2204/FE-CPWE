@@ -1,4 +1,6 @@
 import React, { useState, useContext, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../../redux-store/user/user.slice";
 import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
@@ -6,14 +8,15 @@ import Dropdown from "./dropdown/Dropdown";
 import DropdownSide from "./dropdown/DropdownSide";
 import User from "./greeting/User";
 import UserMobile from "./greeting/UserMobile";
-import UserCardContext from "../../store/user-card-context";
 import SideBarContext from "../../store/side-bar-context";
 
 const Navbar = (props) => {
+    const dispatch = useDispatch();
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
     const sideBarCtx = useContext(SideBarContext);
-    const userCardCtx = useContext(UserCardContext);
+    const isCardShow = useSelector((state) => state.user.isCardOpen);
+    const userData = useSelector((state) => state.user.userInfo);
 
     const isMobileSize = window.innerWidth < 1100 ? true : false;
     const clickIconHandler = () => {
@@ -21,22 +24,18 @@ const Navbar = (props) => {
             sideBarCtx.onCloseCategory();
             sideBarCtx.onCloseAccount();
         }
-        if (userCardCtx.isCardOpen) {
-            userCardCtx.closeUserCard();
+        if (isCardShow) {
+            dispatch(userActions.toggleUserCard(false));
         }
         setIsClicked(!isClicked);
     };
 
     const closeMobileMenu = () => {
         setIsClicked(false);
-        if (
-            userCardCtx.isCardOpen ||
-            sideBarCtx.isAccountShown ||
-            sideBarCtx.isCategoryShown
-        ) {
+        if (isCardShow || sideBarCtx.isAccountShown || sideBarCtx.isCategoryShown) {
             sideBarCtx.onCloseAccount();
             sideBarCtx.onCloseCategory();
-            userCardCtx.closeUserCard();
+            dispatch(userActions.toggleUserCard(false));
         }
     };
     const onMouseEnter = () => setShowDropdown(!isMobileSize);
@@ -101,13 +100,10 @@ const Navbar = (props) => {
                         <Button onClick={props.onClickCreateBtn}>CREATE</Button>
                     </div>
                 </ul>
-                <User
-                    userName={userCardCtx.userInfo.fullName}
-                    src={userCardCtx.userInfo.avatar}
-                />
+                <User userName={userData.fullName} src={userData.avatar} />
             </nav>
             <DropdownSide onClick={closeMobileMenu} />
-            <UserMobile onClick={closeMobileMenu} src={userCardCtx.userInfo.avatar} />
+            <UserMobile onClick={closeMobileMenu} src={userData.avatar} />
         </Fragment>
     );
 };
