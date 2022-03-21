@@ -1,5 +1,6 @@
-import { useState, Fragment, useContext } from "react";
+import { useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../redux-store/auth/auth.slice";
 import { userActions } from "../../../redux-store/user/user.slice";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
@@ -10,13 +11,11 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import UserCard from "./UserCard";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AuthContext from "../../../store/auth-context";
 
 const User = (props) => {
     const dispatch = useDispatch();
     const isCardShow = useSelector((state) => state.user.isCardOpen);
     const [toggleDisplay, setToggleDisplay] = useState(null);
-    const authCtx = useContext(AuthContext);
 
     const onClickHandler = (event) => {
         setToggleDisplay(event.currentTarget);
@@ -33,9 +32,8 @@ const User = (props) => {
     };
 
     const logOutHandler = () => {
-        /** Logic to set user logout */
         dispatch(userActions.toggleUserCard(false));
-        authCtx.onLogout();
+        dispatch(authActions.logout());
     };
 
     const canBeOpen = isCardShow && Boolean(toggleDisplay);

@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { saveState, getState } from "../localStorage";
+
+const currentUserInfo = getState("userData");
 
 const initialState = {
     isCardOpen: false,
-    userInfo: {
-        fullName: "Redux User",
-        userId: "REDUX",
-        email: "Redux@email.com",
-        department: "Testing Redux",
-        userRole: "User Test",
-        avatar: "/default-avatar.png",
-    },
+    userInfo:
+        currentUserInfo !== undefined
+            ? currentUserInfo
+            : {
+                  fullName: "",
+                  userId: "",
+                  email: "",
+                  department: "",
+                  userRole: "",
+                  avatar: "",
+              },
 };
 
 const userSlice = createSlice({
@@ -17,7 +23,13 @@ const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         updateUserInfo(state, action) {
-            state.userInfo = action.payload.userInfo;
+            state.userInfo.fullName = action.payload.userInfo.fullName;
+            state.userInfo.userId = action.payload.userInfo.userId;
+            state.userInfo.email = action.payload.userInfo.email;
+            state.userInfo.department = action.payload.userInfo.department;
+            state.userInfo.userRole = action.payload.userInfo.userRole;
+            state.userInfo.avatar = action.payload.userInfo.avatar;
+            saveState("userData", state.userInfo);
         },
         toggleUserCard(state, action) {
             state.isCardOpen = action.payload;

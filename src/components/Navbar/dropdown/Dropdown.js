@@ -1,16 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../../../redux-store/user/user.slice";
 import { Link } from "react-router-dom";
 import { DropdownItems } from "./DropdownItems";
-import UserCardContext from "../../../store/user-card-context";
 
 const Dropdown = () => {
+    const dispatch = useDispatch();
     const [isClicked, setIsClicked] = useState(false);
-    const userCardCtx = useContext(UserCardContext);
+    const isUserCardOpen = useSelector((state) => state.user.isCardOpen);
 
     const clickHandler = () => {
         setIsClicked(!isClicked);
-        if (userCardCtx.isCardOpen) {
-            userCardCtx.closeUserCard();
+        if (isUserCardOpen) {
+            dispatch(userActions.toggleUserCard(false));
         }
     };
 

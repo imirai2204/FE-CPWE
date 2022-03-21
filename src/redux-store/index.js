@@ -8,9 +8,9 @@ import sideBarSlice from "./sidebar/sideBar.slice";
 
 const store = configureStore({
     reducer: {
+        auth: authSlice.reducer,
         sideBar: sideBarSlice.reducer,
         user: userSlice.reducer,
-        auth: authSlice.reducer,
     },
 });
 

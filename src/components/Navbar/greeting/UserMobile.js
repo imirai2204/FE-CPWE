@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../redux-store/auth/auth.slice";
 import { userActions } from "../../../redux-store/user/user.slice";
 import { sideBarActions } from "../../../redux-store/sidebar/sideBar.slice";
 import Box from "@mui/material/Box";
@@ -9,21 +10,18 @@ import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
 import UserCard from "./UserCard";
-import AuthContext from "../../../store/auth-context";
 
 const UserMobile = (props) => {
     const dispatch = useDispatch();
     const isUserCardShown = useSelector((state) => state.sideBar.isAccountShown);
-    const authCtx = useContext(AuthContext);
 
     const accountClassName = isUserCardShown
         ? "user-card-mobile active"
         : "user-card-mobile";
 
     const logOutHandler = () => {
-        /** Logic to set user logout */
         dispatch(userActions.toggleUserCard(false));
-        authCtx.onLogout();
+        dispatch(authActions.logout());
         props.onClick();
     };
 

@@ -11,6 +11,7 @@ import User from "./greeting/User";
 import UserMobile from "./greeting/UserMobile";
 
 const Navbar = (props) => {
+    /** Call hooks to get data from redux-store */
     const dispatch = useDispatch();
     const [isClicked, setIsClicked] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -20,6 +21,8 @@ const Navbar = (props) => {
     const userData = useSelector((state) => state.user.userInfo);
 
     const isMobileSize = window.innerWidth < 1100 ? true : false;
+
+    /** Hand Icon Click on Navbar */
     const clickIconHandler = () => {
         if (isCategoryListShown || isAccountCardShown) {
             dispatch(sideBarActions.toggleCategory(false));
@@ -46,19 +49,19 @@ const Navbar = (props) => {
     };
 
     const onClickAccountHandler = () => {
-        console.log("click!");
         dispatch(sideBarActions.toggleUserCardMobile(true));
     };
 
     const onClickCategoryHandler = () => {
-        console.log("click!");
         dispatch(sideBarActions.toggleCategory(true));
     };
     /** For Mobile Size */
 
+    /** Event listener for Category dropdown */
     const onMouseEnter = () => setShowDropdown(!isMobileSize);
     const onMouseLeave = () => setShowDropdown(false);
 
+    /** Retrieve navbar items from MenuItems.js and render on Navbar */
     const mapMenuItems = MenuItems.map((item, index) => {
         if (item.hasDropdown) {
             return (
@@ -101,6 +104,7 @@ const Navbar = (props) => {
     const menuIconClasses = isClicked ? "fas fa-times" : "fas fa-bars";
     const navMenuClasses = !isClicked ? "nav-menu" : "nav-menu active";
 
+    /** Return ready navbar component */
     return (
         <Fragment>
             <nav className='NavbarItems'>
