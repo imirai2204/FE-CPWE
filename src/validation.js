@@ -14,10 +14,13 @@ export const TagSchema = Yup.object().shape({
     topicId: Yup.number().min(1, "Sorry, Topic name is required"),
 });
 
+var date = new Date();
+date.setHours(0,0,0,0);
+
 export const AcademicYearSchema = Yup.object().shape({
     year: Yup.string().required("Sorry, Year is required"),
     semester: Yup.string().required("Sorry, Semester name is required"),
-    startDate: Yup.date().required("Sorry, Start Date is required").min(new Date(Date.now())),
+    startDate: Yup.date().required("Sorry, Start Date is required").min(date),
     endDate: Yup.date().required("Sorry, End Date is required").min(Yup.ref('startDate')),
 });
 
@@ -26,7 +29,7 @@ export const TopicSchema = Yup.object().shape({
     semesterId: Yup.number().min(1, "Sorry, Semester is required"),
     departmentId: Yup.number().min(1, "Sorry, Department is required"),
     topic: Yup.string().required("Sorry, Topic Name is required"),
-    endDate: Yup.date().required("Sorry, Closure Date is required"),
+    endDate: Yup.date().required("Sorry, Closure Date is required").min(date),
     finalEndDate: Yup.date().required("Sorry, Final Date is required").min(Yup.ref('endDate')),
 });
 
