@@ -1,7 +1,7 @@
 export const DropdownItems = [
     {
-        title: "Academic Year",
-        path: "/category/academic-year",
+        title: "Semester",
+        path: "/category/semester",
         cName: "dropdown-link",
     },
     {

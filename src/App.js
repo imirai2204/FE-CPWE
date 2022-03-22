@@ -60,11 +60,7 @@ function App() {
                     <Route path='/login' exact element={<Navigate to='/' />} />
                     <Route path='/dashboard' exact element={<Dashboard />} />
                     <Route path='/manage-user' exact element={<ManageUser />} />
-                    <Route
-                        path='/category/academic-year'
-                        exact
-                        element={<AcademicYear />}
-                    />
+                    <Route path='/category/semester' exact element={<AcademicYear />} />
                     <Route path='/category/department' exact element={<Department />} />
                     <Route path='/category/tags' exact element={<Tags />} />
                     <Route path='/category/topic' exact element={<Topic />} />
@@ -82,7 +78,7 @@ function App() {
                     <Route path='/login' exact element={<Login />} />
                     <Route path='/dashboard' exact element={<Navigate to='/login' />} />
                     <Route path='/manage-user' exact element={<Navigate to='/login' />} />
-                    <Route path='/category/academic-year'exact element={<Navigate to='/login' />}/>
+                    <Route path='/category/semester'exact element={<Navigate to='/login' />}/>
                     <Route path='/category/department' exact element={<Navigate to='/login' />} />
                     <Route path='/category/tags' exact element={<Navigate to='/login' />} />
                     <Route path='/category/topic' exact element={<Navigate to='/login' />} />
