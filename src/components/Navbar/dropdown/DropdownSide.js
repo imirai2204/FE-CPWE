@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sideBarActions } from "../../../redux-store/sidebar/sideBar.slice";
+import { sideBarActions } from "../../../redux-store/sidebar/sidebar.slice";
 import { Link } from "react-router-dom";
 import { DropdownItems } from "./DropdownItems";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../redux-store/auth/auth.slice";
 import { userActions } from "../../../redux-store/user/user.slice";
-import { sideBarActions } from "../../../redux-store/sidebar/sideBar.slice";
+import { sideBarActions } from "../../../redux-store/sidebar/sidebar.slice";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
