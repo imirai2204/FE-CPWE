@@ -104,7 +104,7 @@ function AcademicYear() {
 
     if (permission) {
         return (<div className="department-page container">
-            <h2 className="page-title">Academic Year</h2>
+            <h2 className="page-title">Semester</h2>
             <div className="layout-form">
                 <Formik
                     initialValues={initialValues}

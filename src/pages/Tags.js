@@ -156,7 +156,7 @@ const Tags = (props) => {
                                             label={"Tag"}
                                             name='category'
                                             type='text'
-                                            placeholder='Tag name...'
+                                            placeholder='Tag Name...'
                                         />
                                     </div>
                                     <div className='input-section label-mark'>
@@ -166,7 +166,7 @@ const Tags = (props) => {
                                             name='topicId'
                                             id='topic'
                                             options={topicOption}
-                                            placeholder={"Select topic"}
+                                            placeholder={"Select Topic"}
                                             onChange={(selectOption) => {
                                                 setFieldValue("topicId", selectOption.value);
                                             }}
