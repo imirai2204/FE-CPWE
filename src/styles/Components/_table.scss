@@ -70,6 +70,7 @@
     input {
         border: 2px solid $color-black-70;
         padding-right: 40px;
+        border-radius: 10px;
 
         &:hover {
             border-color: $color-blue-B8;
