@@ -4,15 +4,14 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { TagSchema } from "../validation";
-import axios from "axios";
-import { TagsData, TableColumns, TopicOptions } from "./dummy-data/tags-page";
+import { TableColumns } from "./dummy-data/tags-page";
 import Select from "react-select";
 import { CategoryUrl, Authen, TopicUrl } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
+import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    const response = await axios
-        .post(CategoryUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
+    await AxiosInstance
+        .post(CategoryUrl.create, values, { headers: requestHeader.checkAuth })
         .then(() => {
             console.log("Create success")
             setIsSubmiting(false)
@@ -33,9 +32,9 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     } 
-    const response = await axios
+    await AxiosInstance
         .get(CategoryUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -71,9 +70,9 @@ const getTopic = async (values, setTopicOption) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     } 
-    const response = await axios
+    await AxiosInstance
         .get(TopicUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -99,8 +98,8 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance
+        .post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -157,7 +156,7 @@ const Tags = (props) => {
                                             label={"Tag"}
                                             name='category'
                                             type='text'
-                                            placeholder='Tag name...'
+                                            placeholder='Tag Name...'
                                         />
                                     </div>
                                     <div className='input-section label-mark'>
@@ -167,7 +166,7 @@ const Tags = (props) => {
                                             name='topicId'
                                             id='topic'
                                             options={topicOption}
-                                            placeholder={"Select topic"}
+                                            placeholder={"Select Topic"}
                                             onChange={(selectOption) => {
                                                 setFieldValue("topicId", selectOption.value);
                                             }}

@@ -4,18 +4,16 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { TextArea } from "../components/UI/Form/TextArea";
 import { IdeaSchema } from "../validation";
-import axios from "axios";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import {
-    Departments,
     Topics,
     Tags,
     Contributor,
 } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from "material-ui-dropzone";
 import { IdeaUrl, Authen, DepartmentUrl } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
+import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 
 const handleSubmit = async (values) => {
     var formData = new FormData();
@@ -32,8 +30,8 @@ const handleSubmit = async (values) => {
         }
     }
 
-    const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+    await AxiosInstance
+        .post(IdeaUrl.create, formData, { headers: requestHeader.checkAuth })
         .then(() => {
             console.log("Create success")
         })
@@ -52,9 +50,9 @@ const getDepartment = async (values, setDepartmenOption) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     } 
-    const response = await axios
+    await AxiosInstance
         .get(DepartmentUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -76,8 +74,8 @@ const getDepartment = async (values, setDepartmenOption) => {
 }
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance
+        .post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);

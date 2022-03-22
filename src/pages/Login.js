@@ -1,11 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../redux-store/auth/auth.actions";
 import "../styles/style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
 import ErrorMessage from "../components/UI/Modal/ErrorMessage";
-import AuthContext from "../store/auth-context";
 
 const style = {
     display: "block",
@@ -20,9 +21,19 @@ const initialValues = {
 };
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+    const [loginData, setLoginData] = useState(null);
     const [passwordShown, setPasswordShown] = useState(false);
     const [hasError, setHasError] = useState(false);
-    const authCtx = useContext(AuthContext);
+
+    useEffect(() => {
+        if (loginData === null) {
+            return;
+        }
+        dispatch(userLogin(loginData));
+        setLoginData(null);
+    }, [loginData, auth, dispatch]);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
@@ -43,7 +54,7 @@ const Login = () => {
     };
 
     const handleSubmit = async (values) => {
-        authCtx.onLogIn(values);
+        setLoginData(values);
     };
 
     return (
@@ -99,13 +110,13 @@ const Login = () => {
                                     LOGIN
                                 </button>
                             </div>
-                            {authCtx.isLoggedIn && <p>Login Success!</p>}
+                            {auth.isLoggedIn && <p>Login Success!</p>}
                         </Form>
                     )}
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {authCtx.hasError && <ErrorMessage closebtn={setHasError} />}
+            {auth.hasError && <ErrorMessage closebtn={setHasError} />}
         </div>
     );
 };

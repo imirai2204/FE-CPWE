@@ -13,6 +13,8 @@ const SearchBar = () => {
                     width: "100%",
                     justifyContent: "center",
                     height: "60px",
+                    marginTop: "5px",
+                    marginBottom: "5px"
                 }}>
                 <SearchIcon
                     color='red'

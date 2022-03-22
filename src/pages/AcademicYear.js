@@ -4,16 +4,15 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { AcademicYearSchema } from "../validation";
-import axios from "axios";
 import Select from "react-select";
 import { YearOptions, Columns } from "./dummy-data/years-page";
 import { AcademicUrl, Authen } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
 import { convertDate, getFormattedDate } from "../function/library";
+import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    const response = await axios
-        .post(AcademicUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
+    await AxiosInstance
+        .post(AcademicUrl.create, values, { headers: requestHeader.checkAuth })
         .then(() => {
             console.log("Create success")
             setIsSubmiting(false)
@@ -33,9 +32,9 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     } 
-    const response = await axios
+    await AxiosInstance
         .get(AcademicUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -75,8 +74,8 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance
+        .post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -105,7 +104,7 @@ function AcademicYear() {
 
     if (permission) {
         return (<div className="department-page container">
-            <h2 className="page-title">Academic Year</h2>
+            <h2 className="page-title">Semester</h2>
             <div className="layout-form">
                 <Formik
                     initialValues={initialValues}

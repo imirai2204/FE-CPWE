@@ -1,4 +1,7 @@
-import { useState, Fragment, useContext } from "react";
+import { useState, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../redux-store/auth/auth.slice";
+import { userActions } from "../../../redux-store/user/user.slice";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
 import Fade from "@mui/material/Fade";
@@ -8,35 +11,32 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import UserCard from "./UserCard";
 import LogoutIcon from "@mui/icons-material/Logout";
-import UserCardContext from "../../../store/user-card-context";
-import AuthContext from "../../../store/auth-context";
 
 const User = (props) => {
+    const dispatch = useDispatch();
+    const isCardShow = useSelector((state) => state.user.isCardOpen);
     const [toggleDisplay, setToggleDisplay] = useState(null);
-    const userCardCtx = useContext(UserCardContext);
-    const authCtx = useContext(AuthContext);
 
     const onClickHandler = (event) => {
         setToggleDisplay(event.currentTarget);
 
-        if (userCardCtx.isCardOpen === true) {
-            userCardCtx.closeUserCard();
+        if (isCardShow === true) {
+            dispatch(userActions.toggleUserCard(false));
         } else {
-            userCardCtx.showUserCard();
+            dispatch(userActions.toggleUserCard(true));
         }
     };
 
     const closeCardHandler = () => {
-        userCardCtx.closeUserCard();
+        dispatch(userActions.toggleUserCard(false));
     };
 
     const logOutHandler = () => {
-        /** Logic to set user logout */
-        userCardCtx.closeUserCard();
-        authCtx.onLogout();
+        dispatch(userActions.toggleUserCard(false));
+        dispatch(authActions.logout());
     };
 
-    const canBeOpen = userCardCtx.isCardOpen && Boolean(toggleDisplay);
+    const canBeOpen = isCardShow && Boolean(toggleDisplay);
     const id = canBeOpen ? "transition-popper" : undefined;
 
     return (
@@ -45,11 +45,7 @@ const User = (props) => {
                 <Greeting userName={props.userName} />
                 <Avatar id='user-avatar-navbar' src={props.src} />
             </Button>
-            <Popper
-                id={id}
-                open={userCardCtx.isCardOpen}
-                anchorEl={toggleDisplay}
-                transition>
+            <Popper id={id} open={isCardShow} anchorEl={toggleDisplay} transition>
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={250}>
                         <Box
