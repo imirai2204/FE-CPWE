@@ -4,18 +4,16 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { TopicSchema } from "../validation";
-import axios from "axios";
 import Select from "react-select";
 import { YearOptions } from "./dummy-data/years-page";
 import { Columns } from "./dummy-data/topic-page";
-import { Departments } from "../components/Navbar/dropdown/DropdownItems";
 import { TopicUrl, Authen, AcademicUrl, DepartmentUrl } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
 import { convertDate, getFormattedDate } from "../function/library";
+import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    const response = await axios
-        .post(TopicUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
+    await AxiosInstance
+        .post(TopicUrl.create, values, { headers: requestHeader.checkAuth })
         .then(() => {
             console.log("Create success")
             setIsSubmiting(false)
@@ -35,9 +33,9 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     }
-    const response = await axios
+    await AxiosInstance
         .get(TopicUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -77,9 +75,9 @@ const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
         year: values,
     }
-    const response = await axios
+    await AxiosInstance
         .get(AcademicUrl.getSemesterByYear, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -109,9 +107,9 @@ const getDepartment = async (values, setDepartmenOption) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     } 
-    const response = await axios
+    await AxiosInstance
         .get(DepartmentUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -142,8 +140,8 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance
+        .post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);

@@ -4,14 +4,13 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
-import axios from "axios";
 import { DepartmentUrl, Authen } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
 import { Columns } from "./dummy-data/department-page";
+import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    const response = await axios
-        .post(DepartmentUrl.create, values, { headers: RequestHeader.checkAuthHeaders })
+    await AxiosInstance
+        .post(DepartmentUrl.create, values, { headers: requestHeader.checkAuth })
         .then(() => {
             console.log("Create success")
             setIsSubmiting(false)
@@ -24,7 +23,6 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
-    console.log(values)
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -32,9 +30,9 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     } 
-    const response = await axios
+    await AxiosInstance
         .get(DepartmentUrl.get, {
-            headers: RequestHeader.checkAuthHeaders,
+            headers: requestHeader.checkAuth,
             params: paramsValue
         })
         .then((res) => {
@@ -66,8 +64,8 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance
+        .post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -122,7 +120,7 @@ function Department() {
                                             label={"Department Name"}
                                             name='department'
                                             type='text'
-                                            placeholder='Type...'
+                                            placeholder='Department Name…'
                                         />
                                     </div>
                                 </div>

@@ -17,7 +17,7 @@ import AccountSetting from "./pages/AccountSetting";
 import UserSettings from "./pages/UserSettings";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
-// import PageNotFound from "./404";
+import PageNotFound from "./404";
 
 function GlobalRoute({ children, ...props }) {
     return (
@@ -72,17 +72,15 @@ function App() {
                     <Route path='/account-settings' exact element={<AccountSetting />} />
                     <Route path='/user/user-settings' exact element={<UserSettings />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
-                    {/* <Route path="*" element={<Navigate to='/404' />} /> */}
-                    {/* <Route path='/404' exact element={<PageNotFound />} /> */}
+                    <Route path="*" element={<Navigate to='/404' />} />
+                    <Route path='/404' exact element={<PageNotFound />} />
                 </PrivateRoute>
             )}
             {!isLoggedIn && (
                 <GlobalRoute>
                     <Route path='/' exact element={<Navigate to='/login' />} />
                     <Route path='/login' exact element={<Login />} />
-                    {/* <Route path="/*" element={<Navigate to='/404' />} />
-                    <Route path='/404' exact element={<PageNotFound />} /> */}
-                    {/* <Route path='/dashboard' exact element={<Navigate to='/login' />} />
+                    <Route path='/dashboard' exact element={<Navigate to='/login' />} />
                     <Route path='/manage-user' exact element={<Navigate to='/login' />} />
                     <Route path='/category/academic-year'exact element={<Navigate to='/login' />}/>
                     <Route path='/category/department' exact element={<Navigate to='/login' />} />
@@ -93,7 +91,7 @@ function App() {
                     <Route path='/user/user-settings' exact element={<Navigate to='/login' />} />
                     <Route path='/terms-conditions' exact element={<Navigate to='/login' />} />
                     <Route path="*" element={<Navigate to='/404' />} />
-                    <Route path='/404' exact element={<PageNotFound />} /> */}
+                    <Route path='/404' exact element={<PageNotFound />} />
                 </GlobalRoute>
             )}
         </Fragment>
