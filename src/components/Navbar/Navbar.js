@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../redux-store/user/user.slice";
-import { sideBarActions } from "../../redux-store/sidebar/sideBar.slice";
+import { sideBarActions } from "../../redux-store/sidebar/sidebar.slice";
 import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
