@@ -43,6 +43,7 @@ const initialValues = {
     phone: "",
     departmentId: 0,
     userRole: 0,
+    userID: "",
 };
 
 const checkPermission = async (setPermission) => {
@@ -66,6 +67,8 @@ const checkPermission = async (setPermission) => {
 function ManageUser() {
     const [permission, setPermission] = useState(true);
 
+    var test = "test user id";
+
     if (permission) {
         return (<div className="manageUser-page container">
             <h2 className="page-title">Manage User</h2>
@@ -75,7 +78,7 @@ function ManageUser() {
                     validationSchema={UserSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         handleSubmit(values);
-                        console.log(values);
+                        console.log(values)
                     }}>
                     {({
                         isSubmiting,
@@ -153,6 +156,17 @@ function ManageUser() {
                                     </div>
                                 </div>
                                 <hr />
+                                <div className="input-section">
+                                    <TextField
+                                        label={"User ID"}
+                                        name='userID'
+                                        type='text'
+                                        placeholder='userID'
+                                        readOnly
+                                        // onChange={}
+                                        value= {values.userID}
+                                    />
+                                </div>
                                 <div className="user-form">
                                     <div className="layout-left">
                                         <div className='input-section label-mark'>
@@ -196,9 +210,6 @@ function ManageUser() {
                             </div>
                             <hr />
                             <div className="list-button">
-                                {/* <button className={"btn btn-warning"} type="submit">
-                                Search
-                            </button> */}
                                 <button className={'btn btn-info'} type='reset'>
                                     Refresh
                                 </button>

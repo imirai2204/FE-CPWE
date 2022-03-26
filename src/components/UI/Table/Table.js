@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -21,6 +21,8 @@ import EditPopup from "../Modal/EditPopup";
 import EditForm from "./EditForm";
 import SearchBar from "../SearchBar/SearchBar";
 import Stack from "@mui/material/Stack";
+import { useDispatch, useSelector } from "react-redux";
+import { tableLoad } from "../../../redux-store/table/table.actions";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -124,11 +126,26 @@ EnhancedTableHead.propTypes = {
 };
 
 export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
+    const dispatch = useDispatch();
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("ID");
-    const [page, setPage] = React.useState(1);
-    const [countPage, setCountPage] = React.useState(3);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [currentLimit, setCurrentLimit] = React.useState(5);
+    
+    const tableData = {
+        page: currentPage,
+        rowsPerPage: currentLimit,
+    }
+
+    useEffect(() => {
+        if (currentLimit === 0 && currentPage === 0) {
+            return;
+        }
+        dispatch(tableLoad(tableData));
+        setCurrentPage(currentPage);
+        setCurrentLimit(currentLimit);
+    }, [tableData, dispatch]);
+
     const [confirmDialog, setConfirmDialog] = useState({
         isOpen: false,
         title: "",
@@ -144,17 +161,15 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
     };
 
     const handleChangePage = (event, newPage) => {
-        console.log(newPage)
-        setPage(newPage);
+        setCurrentPage(newPage)
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(1);
-        setCountPage(2);
+        setCurrentLimit(parseInt(event.target.value, 10));
+        setCurrentPage(1)
     };
 
-    const emptyRows = (page - 1) > 0 ? Math.max(0, page * rowsPerPage - rows.length) : 0;
+    // const emptyRows = (currentPage - 1) > 0 ? Math.max(0, currentPage * currentLimit - rows.length) : 0;
 
     return (
         <Fragment>
@@ -173,10 +188,10 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                         />
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy))
-                                .slice(
-                                    (page - 1) * rowsPerPage,
-                                    (page - 1) * rowsPerPage + rowsPerPage
-                                )
+                                // .slice(
+                                //     (currentPage- 1) * currentLimit,
+                                //     (currentPage - 1) * currentLimit + currentLimit
+                                // )
                                 .map((row, index) => {
                                     return (
                                         <TableRow
@@ -261,11 +276,11 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                                         </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (
+                            {/* {emptyRows > 0 && (
                                 <TableRow>
                                     <TableCell colSpan={6} />
                                 </TableRow>
-                            )}
+                            )} */}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -279,10 +294,10 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                 >
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
+                        rowsPerPage={currentLimit}
                         component='div'
-                        count={rows.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
+                        count={-1}
+                        page={currentPage}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         ActionsComponent={() => {
@@ -294,8 +309,8 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                     />
                     <Pagination
                         onChange={handleChangePage}
-                        // count={countPage}
                         count={totalPages}
+                        page={currentPage}
                         color="primary"
                         variant="outlined"
                         shape="rounded"
@@ -310,11 +325,12 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
             </Paper>
 
             <EditPopup
-                title='Edit Department'
+                title='Edit'
                 openPopup={openPopup}
                 setOpenpopup={setOpenpopup}>
                 <EditForm props={setOpenpopup} />
             </EditPopup>
+
         </Fragment >
     );
 };

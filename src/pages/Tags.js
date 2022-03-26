@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -8,6 +8,7 @@ import { TableColumns } from "./dummy-data/tags-page";
 import Select from "react-select";
 import { CategoryUrl, Authen, TopicUrl } from "../api/EndPoint";
 import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
     await AxiosInstance
@@ -121,6 +122,20 @@ const Tags = (props) => {
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [topicOption, setTopicOption] = useState([]);
+    const currentPage = useSelector((state) => state.table.page);
+    const currentLimit = useSelector((state) => state.table.rowsPerPage);
+
+    const tableDatas = {
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
+        sortBy: null,
+        sortType: null,
+    }
+
+    useEffect(() => {
+        handleGet(tableDatas, setReturnData, returnData, setPagination)
+    }, [currentPage, currentLimit]);
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination)
@@ -203,9 +218,7 @@ const Tags = (props) => {
                     <EnhancedTable
                         columns={TableColumns}
                         rows={returnData}
-                        hasEditedBtn={false}
                         hasDeletedBtn={true}
-                        hasDisabledBtn={false}
                         totalPages={returnPagination.totalPages}
                     />
                 </div>

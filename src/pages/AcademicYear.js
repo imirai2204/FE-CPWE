@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -9,6 +9,7 @@ import { YearOptions, Columns } from "./dummy-data/years-page";
 import { AcademicUrl, Authen } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
 import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
     await AxiosInstance
@@ -96,6 +97,20 @@ function AcademicYear() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false)
+    const currentPage = useSelector((state) => state.table.page);
+    const currentLimit = useSelector((state) => state.table.rowsPerPage);
+
+    const tableDatas = {
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
+        sortBy: null,
+        sortType: null,
+    }
+
+    useEffect(() => {
+        handleGet(tableDatas, setReturnData, returnData, setPagination)
+    }, [currentPage, currentLimit]);
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination)
@@ -186,9 +201,6 @@ function AcademicYear() {
                 <EnhancedTable
                     columns={Columns}
                     rows={returnData}
-                    hasEditedBtn={false}
-                    hasDeletedBtn={false}
-                    hasDisabledBtn={false}
                     totalPages={returnPagination.totalPages}
                 />
             </div>

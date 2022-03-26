@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -7,6 +7,7 @@ import { DepartmentSchema } from "../validation";
 import { DepartmentUrl, Authen } from "../api/EndPoint";
 import { Columns } from "./dummy-data/department-page";
 import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
     await AxiosInstance
@@ -23,6 +24,7 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    // console.log(values)
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -36,11 +38,11 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
             params: paramsValue
         })
         .then((res) => {
-            console.log(res)
+            // console.log(res)
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
-                totalPages: res.data.data.totalPages
+                totalPages: res.data.data.totalPages,
             }
             var tableData = res.data.data.content.map((content) => {
                 return {
@@ -86,9 +88,25 @@ function Department() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const currentPage = useSelector((state) => state.table.page);
+    const currentLimit = useSelector((state) => state.table.rowsPerPage);
+
+    // console.log(returnData)
+
+    const tableDatas = {
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
+        sortBy: null,
+        sortType: null,
+    }
+
+    useEffect(() => {
+        handleGet(tableDatas, setReturnData, returnData, setPagination)
+    }, [currentPage, currentLimit]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination)
+        handleGet(tableDatas, setReturnData, returnData, setPagination)
         setIsSubmiting(true)
     }
 
@@ -145,9 +163,6 @@ function Department() {
                     <EnhancedTable
                         columns={Columns}
                         rows={returnData}
-                        hasEditedBtn={false}
-                        hasDeletedBtn={false}
-                        hasDisabledBtn={false}
                         totalPages={returnPagination.totalPages}
                     />
                 </div>

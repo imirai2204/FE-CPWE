@@ -6,7 +6,7 @@ import axios from "axios";
 /*************************************************************************/
 
 const BASE_URL =
-    "http://7ac2-27-64-142-250.ngrok.io";
+    "http://04e1-27-64-142-250.ngrok.io";
 
 export const AxiosInstance = axios.create({
     baseURL: BASE_URL,
