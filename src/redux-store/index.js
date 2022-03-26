@@ -5,6 +5,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./auth/auth.slice";
 import userSlice from "./user/user.slice";
 import sideBarSlice from "./sidebar/sidebar.slice";
+import tableSlice from "./table/table.slice";
 
 const store = configureStore({
     reducer: {
