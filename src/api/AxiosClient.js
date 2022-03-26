@@ -1,8 +1,7 @@
 import axios from "axios";
 
-/** testing with firebase, please make an update when integrating with BE */
-// const BASE_URL =
-//     "https://fir-login-c47fe-default-rtdb.asia-southeast1.firebasedatabase.app/";
+/** testing with mocklab.io, please make an update when integrating with BE */
+// const BASE_URL = "http://cpwe-test.mocklab.io";
 /*************************************************************************/
 
 const BASE_URL =

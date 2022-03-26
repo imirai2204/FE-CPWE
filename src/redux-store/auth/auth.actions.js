@@ -6,16 +6,16 @@ import { userActions } from "../user/user.slice";
 export const userLogin = (data) => {
     const { ...body } = data;
     return async (dispatch) => {
-        await AxiosInstance.get(Authen.login, body, requestHeader.login)
+        await AxiosInstance.post(Authen.login, body, requestHeader.login)
             .then((response) => {
-                let responseData = response.data;
-                console.log(responseData);
+                let responseData = response.data.data;
                 dispatch(
                     authActions.successLogin({
                         token: responseData.token,
                         isSuccess: true,
                     })
                 );
+                console.log(responseData.userInfo);
                 dispatch(
                     userActions.updateUserInfo({
                         userInfo: responseData.userInfo,

@@ -10,7 +10,7 @@ const initialState = {
             ? currentUserInfo
             : {
                   fullName: "",
-                  userId: "",
+                  userId: "000",
                   email: "",
                   department: "",
                   userRole: "",
@@ -23,11 +23,13 @@ const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         updateUserInfo(state, action) {
-            state.userInfo.fullName = action.payload.userInfo.fullName;
-            state.userInfo.userId = action.payload.userInfo.userId;
+            state.userInfo.fullName =
+                action.payload.userInfo.firstname +
+                " " +
+                action.payload.userInfo.lastname;
             state.userInfo.email = action.payload.userInfo.email;
             state.userInfo.department = action.payload.userInfo.department;
-            state.userInfo.userRole = action.payload.userInfo.userRole;
+            state.userInfo.userRole = action.payload.userInfo.role;
             state.userInfo.avatar = action.payload.userInfo.avatar;
             saveState("userData", state.userInfo);
         },

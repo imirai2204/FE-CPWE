@@ -1,10 +1,5 @@
-// export const BASE_URL = "http://851d-27-64-142-237.ngrok.io";
-
 export const Authen = {
-    /** testing with firebase, please make an update when integrating with BE */
-    login: "/authen/sign-in.json",
-    loginFail: "/authen/signin.json",
-    /***********************************/
+    login: "/authen/signin",
     checkPermission: "/authen/check-permission",
 };
 
