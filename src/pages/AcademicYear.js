@@ -12,11 +12,12 @@ import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    await AxiosInstance
-        .post(AcademicUrl.create, values, { headers: requestHeader.checkAuth })
+    await AxiosInstance.post(AcademicUrl.create, values, {
+        headers: requestHeader.checkAuth,
+    })
         .then(() => {
-            console.log("Create success")
-            setIsSubmiting(false)
+            console.log("Create success");
+            setIsSubmiting(false);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -32,33 +33,31 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    } 
-    await AxiosInstance
-        .get(AcademicUrl.get, {
-            headers: requestHeader.checkAuth,
-            params: paramsValue
-        })
+    };
+    await AxiosInstance.get(AcademicUrl.get, {
+        headers: requestHeader.checkAuth,
+        params: paramsValue,
+    })
         .then((res) => {
-            console.log(res)
+            console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
-                totalPages: res.data.data.totalPages
-            }
+                totalPages: res.data.data.totalPages,
+            };
             var tableData = res.data.data.content.map((content) => {
-                var startDate = getFormattedDate(convertDate(content.startDate))
-                var endDate = getFormattedDate(convertDate(content.endDate))
+                var startDate = getFormattedDate(convertDate(content.startDate));
+                var endDate = getFormattedDate(convertDate(content.endDate));
                 return {
                     id: content.id,
                     year: content.year,
                     semester: content.semester,
                     startDate: startDate,
-                    endDate: endDate
-                }
-            })
-            setReturnData(tableData)
-            setPagination(pagination)
-
+                    endDate: endDate,
+                };
+            });
+            setReturnData(tableData);
+            setPagination(pagination);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -75,8 +74,7 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    await AxiosInstance
-        .post(Authen.checkPermission, requestHeader.checkAuth)
+    await AxiosInstance.post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -96,116 +94,119 @@ function AcademicYear() {
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
-    const [isSubmiting, setIsSubmiting] = useState(false)
-    const currentPage = useSelector((state) => state.table.page);
-    const currentLimit = useSelector((state) => state.table.rowsPerPage);
+    const [isSubmiting, setIsSubmiting] = useState(false);
+    const tableAttr = useSelector((state) => state.table);
 
     const tableDatas = {
-        searchKey: null,
-        limit: currentLimit,
-        page: currentPage,
+        searchKey: tableAttr.searchText,
+        limit: tableAttr.rowsPerPage,
+        page: tableAttr.page,
         sortBy: null,
         sortType: null,
-    }
+    };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination)
-    }, [currentPage, currentLimit]);
+        handleGet(tableDatas, setReturnData, returnData, setPagination);
+    }, [tableDatas]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination)
-        setIsSubmiting(true)
+        handleGet(null, setReturnData, returnData, setPagination);
+        setIsSubmiting(true);
     }
 
     if (permission) {
-        return (<div className="department-page container">
-            <h2 className="page-title">Semester</h2>
-            <div className="layout-form">
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={AcademicYearSchema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setIsSubmiting);
-                    }}>
-                    {({
-                        isSubmiting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                        setFieldValue,
-                    }) => (
-                        <Form className="submit-form">
-                            <div className="form-container">
-                                <div
-                                    className='input-section label-mark'
-                                    style={{ width: "45%" }}
-                                >
-                                    <label className='label'>Year</label>
-                                    <Select
-                                        className='select'
-                                        name='year'
-                                        id='year'
-                                        options={YearOptions}
-                                        placeholder={"Select Year"}
-                                        onChange={(selectOption) => {
-                                            setFieldValue("year", selectOption.value);
-                                        }}
-                                        onBlur={() => {
-                                            handleBlur({ target: { name: "year" } });
-                                        }}
-                                    />
-                                    <ErrorMessage component='div' name={"year"} className='error' />
-                                </div>
-                                <div className="input-section label-mark">
-                                    <TextField
-                                        label={"Semester Name"}
-                                        name='semester'
-                                        type='text'
-                                        placeholder='Semester Name...'
-                                    />
-                                </div>
-                                <div className="layout-date">
-                                    <div className="input-section label-mark time first">
-                                        <TextField
-                                            label={"Start Date"}
-                                            name='startDate'
-                                            type='date'
+        return (
+            <div className='department-page container'>
+                <h2 className='page-title'>Semester</h2>
+                <div className='layout-form'>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={AcademicYearSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleSubmit(values, setIsSubmiting);
+                        }}>
+                        {({
+                            isSubmiting,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                            setFieldValue,
+                        }) => (
+                            <Form className='submit-form'>
+                                <div className='form-container'>
+                                    <div
+                                        className='input-section label-mark'
+                                        style={{ width: "45%" }}>
+                                        <label className='label'>Year</label>
+                                        <Select
+                                            className='select'
+                                            name='year'
+                                            id='year'
+                                            options={YearOptions}
+                                            placeholder={"Select Year"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue("year", selectOption.value);
+                                            }}
+                                            onBlur={() => {
+                                                handleBlur({ target: { name: "year" } });
+                                            }}
+                                        />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"year"}
+                                            className='error'
                                         />
                                     </div>
-                                    <div className="input-section label-mark time second">
+                                    <div className='input-section label-mark'>
                                         <TextField
-                                            label={"End Date"}
-                                            name='endDate'
-                                            type='date'
+                                            label={"Semester Name"}
+                                            name='semester'
+                                            type='text'
+                                            placeholder='Semester Name...'
                                         />
                                     </div>
+                                    <div className='layout-date'>
+                                        <div className='input-section label-mark time first'>
+                                            <TextField
+                                                label={"Start Date"}
+                                                name='startDate'
+                                                type='date'
+                                            />
+                                        </div>
+                                        <div className='input-section label-mark time second'>
+                                            <TextField
+                                                label={"End Date"}
+                                                name='endDate'
+                                                type='date'
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr />
-                            <div className="list-button">
-                                <button className={'btn btn-info'} type='reset'>
-                                    Refresh
-                                </button>
-                                <button className={"btn btn-success"} type="submit">
-                                    Save
-                                </button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
+                                <hr />
+                                <div className='list-button'>
+                                    <button className={"btn btn-info"} type='reset'>
+                                        Refresh
+                                    </button>
+                                    <button className={"btn btn-success"} type='submit'>
+                                        Save
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className='layout-table'>
+                    <EnhancedTable
+                        columns={Columns}
+                        rows={returnData}
+                        totalPages={returnPagination.totalPages}
+                    />
+                </div>
             </div>
-            <div className="layout-table">
-                <EnhancedTable
-                    columns={Columns}
-                    rows={returnData}
-                    totalPages={returnPagination.totalPages}
-                />
-            </div>
-        </div>
-        )
+        );
     } else {
         return (
             <div>

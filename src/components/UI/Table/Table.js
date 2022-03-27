@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -16,13 +17,12 @@ import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from "../Modal/ConfirmDialog";
 import CloseIcon from "@mui/icons-material/Close";
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
 import EditPopup from "../Modal/EditPopup";
 import EditForm from "./EditForm";
 import SearchBar from "../SearchBar/SearchBar";
 import Stack from "@mui/material/Stack";
-import { useDispatch, useSelector } from "react-redux";
-import { tableLoad } from "../../../redux-store/table/table.actions";
+import { pageActions } from "../../../redux-store/table/table.slice";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -127,32 +127,37 @@ EnhancedTableHead.propTypes = {
 
 export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
     const dispatch = useDispatch();
-    const [order, setOrder] = React.useState("asc");
-    const [orderBy, setOrderBy] = React.useState("ID");
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [currentLimit, setCurrentLimit] = React.useState(5);
-    
-    const tableData = {
-        page: currentPage,
-        rowsPerPage: currentLimit,
-    }
+    const [order, setOrder] = useState("asc");
+    const [orderBy, setOrderBy] = useState("ID");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [currentLimit, setCurrentLimit] = useState(5);
+    const [searchKey, setSearchKey] = useState(null);
+    const [openPopup, setOpenpopup] = useState(false);
+
+    const searchDataHandler = (data) => {
+        setSearchKey(data);
+    };
 
     useEffect(() => {
         if (currentLimit === 0 && currentPage === 0) {
             return;
         }
-        dispatch(tableLoad(tableData));
+        dispatch(
+            pageActions.updateTableAttribute({
+                page: currentPage,
+                rowsPerPage: currentLimit,
+                searchText: searchKey,
+            })
+        );
         setCurrentPage(currentPage);
         setCurrentLimit(currentLimit);
-    }, [tableData, dispatch]);
+    }, [currentPage, currentLimit, searchKey]);
 
     const [confirmDialog, setConfirmDialog] = useState({
         isOpen: false,
         title: "",
         subTitle: "",
     });
-
-    const [openPopup, setOpenpopup] = useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -161,12 +166,12 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
     };
 
     const handleChangePage = (event, newPage) => {
-        setCurrentPage(newPage)
+        setCurrentPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
         setCurrentLimit(parseInt(event.target.value, 10));
-        setCurrentPage(1)
+        setCurrentPage(1);
     };
 
     // const emptyRows = (currentPage - 1) > 0 ? Math.max(0, currentPage * currentLimit - rows.length) : 0;
@@ -174,7 +179,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
     return (
         <Fragment>
             <Paper sx={{ width: "100%", overflow: "hidden" }}>
-                <SearchBar />
+                <SearchBar retrieveSearchKey={searchDataHandler} />
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label='sticky table'>
                         <EnhancedTableHead
@@ -206,7 +211,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                                                         key={column.id}
                                                         align={column.align}>
                                                         {column.format &&
-                                                            typeof value === "number"
+                                                        typeof value === "number"
                                                             ? column.format(value)
                                                             : value}
                                                     </TableCell>
@@ -221,7 +226,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                                                             fill: "#FFC20E",
                                                             fontSize: "20px",
                                                         }}
-                                                    // onClick={() => setOpenpopup(true)}
+                                                        // onClick={() => setOpenpopup(true)}
                                                     />
                                                 </TableCell>
                                             ) : (
@@ -285,13 +290,12 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                     </Table>
                 </TableContainer>
                 <Stack
-                    direction="row"
+                    direction='row'
                     spacing={2}
                     sx={{
-                        justifyContent: 'space-between',
-                        padding: '0px 55px'
-                    }}
-                >
+                        justifyContent: "space-between",
+                        padding: "0px 55px",
+                    }}>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         rowsPerPage={currentLimit}
@@ -301,22 +305,23 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         ActionsComponent={() => {
-                            return <></>
+                            return <Fragment />;
                         }}
                         labelDisplayedRows={() => {
-                            return <></>
+                            return <Fragment />;
                         }}
                     />
                     <Pagination
                         onChange={handleChangePage}
                         count={totalPages}
                         page={currentPage}
-                        color="primary"
-                        variant="outlined"
-                        shape="rounded"
+                        color='primary'
+                        variant='outlined'
+                        shape='rounded'
                         showFirstButton={true}
                         showLastButton={true}
-                        sx={{ alignSelf: 'center' }} />
+                        sx={{ alignSelf: "center" }}
+                    />
                 </Stack>
                 <ConfirmDialog
                     confirmDialog={confirmDialog}
@@ -324,13 +329,9 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                 />
             </Paper>
 
-            <EditPopup
-                title='Edit'
-                openPopup={openPopup}
-                setOpenpopup={setOpenpopup}>
+            <EditPopup title='Edit' openPopup={openPopup} setOpenpopup={setOpenpopup}>
                 <EditForm props={setOpenpopup} />
             </EditPopup>
-
-        </Fragment >
+        </Fragment>
     );
 };

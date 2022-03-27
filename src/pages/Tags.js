@@ -122,20 +122,19 @@ const Tags = (props) => {
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [topicOption, setTopicOption] = useState([]);
-    const currentPage = useSelector((state) => state.table.page);
-    const currentLimit = useSelector((state) => state.table.rowsPerPage);
+    const tableAttr = useSelector((state) => state.table);
 
     const tableDatas = {
-        searchKey: null,
-        limit: currentLimit,
-        page: currentPage,
+        searchKey: tableAttr.searchText,
+        limit: tableAttr.rowsPerPage,
+        page: tableAttr.page,
         sortBy: null,
         sortType: null,
-    }
+    };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination)
-    }, [currentPage, currentLimit]);
+        handleGet(tableDatas, setReturnData, returnData, setPagination);
+    }, [tableDatas]);
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination)
