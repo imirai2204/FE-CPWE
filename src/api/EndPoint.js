@@ -29,6 +29,10 @@ export const DepartmentUrl = {
 };
 
 export const UserUrl = {
-    create: "/department/create",
-    get: "/department/get",
+    create: "authen/signup",
+    get: "user/get",
+};
+
+export const RoleUrl = {
+    get: "/authen/get/roles",
 };

@@ -7,7 +7,7 @@ import { UserSchema } from "../validation";
 import Select from "react-select";
 import { Columns } from "./dummy-data/manage-page";
 import { Departments, UserRole, Gender } from "../components/Navbar/dropdown/DropdownItems";
-import { UserUrl, Authen, DepartmentUrl } from "../api/EndPoint";
+import { UserUrl, Authen, DepartmentUrl, RoleUrl } from "../api/EndPoint";
 import { AxiosInstance, requestHeader } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 
@@ -30,7 +30,7 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortBy: values === null || values.sortBy === null ? "userId" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     }
     await AxiosInstance
@@ -101,16 +101,47 @@ const getDepartment = async (values, setDepartmenOption) => {
         });
 }
 
+const getRole = async (values, setRoleOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    await AxiosInstance
+        .get(RoleUrl.get, {
+            headers: requestHeader.checkAuth,
+            params: paramsValue
+        })
+        .then((res) => {
+            // console.log(res)
+            var roleOption = res.data.data.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.name,
+                    key: content.id,
+                }
+            })
+            setRoleOption(roleOption)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
 const initialValues = {
     firstname: "",
     lastname: "",
     address: "",
-    gender: 0,
+    sex: 0,
     email: "",
     phone: "",
     departmentId: 0,
-    userRole: 0,
-    userID: "",
+    roleId: 0,
+    userId: "",
 };
 
 const checkPermission = async (setPermission) => {
@@ -136,8 +167,8 @@ function ManageUser() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
-    // const [semesterOption, setSemesterOption] = useState([]);
     const [departmentOption, setDepartmentOption] = useState([]);
+    const [roleOption, setRoleOption] = useState([]);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
 
@@ -156,6 +187,7 @@ function ManageUser() {
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination)
         getDepartment(null, setDepartmentOption)
+        getRole(null, setRoleOption)
         setIsSubmiting(true)
     }
 
@@ -167,7 +199,7 @@ function ManageUser() {
                     initialValues={initialValues}
                     validationSchema={UserSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values);
+                        handleSubmit(values, setIsSubmiting);
                     }}>
                     {({
                         isSubmiting,
@@ -229,18 +261,18 @@ function ManageUser() {
                                             <label className='label'>Gender</label>
                                             <Select
                                                 className='select'
-                                                name='gender'
-                                                id='gender'
+                                                name='sex'
+                                                id='sex'
                                                 options={Gender}
                                                 placeholder={"Select Gender"}
                                                 onChange={(selectOption) => {
-                                                    setFieldValue("gender", selectOption.value);
+                                                    setFieldValue("sex", selectOption.value);
                                                 }}
                                                 onBlur={() => {
-                                                    handleBlur({ target: { name: "gender" } });
+                                                    handleBlur({ target: { name: "sex" } });
                                                 }}
                                             />
-                                            <ErrorMessage component='div' name={"gender"} className='error' />
+                                            <ErrorMessage component='div' name={"sex"} className='error' />
                                         </div>
                                     </div>
                                 </div>
@@ -250,12 +282,12 @@ function ManageUser() {
                                 >
                                     <TextField
                                         label={"User ID"}
-                                        name='userID'
+                                        name='userId'
                                         type='text'
-                                        placeholder='userID'
+                                        placeholder='userId...'
                                         readOnly
                                         // onChange={}
-                                        value= {values.userID}
+                                        value= {values.userId}
                                     />
                                 </div>
                                 <div className="user-form">
@@ -283,18 +315,18 @@ function ManageUser() {
                                             <label className='label'>User Role</label>
                                             <Select
                                                 className='select'
-                                                name='userRole'
-                                                id='userRole'
-                                                options={UserRole}
+                                                name='roleId'
+                                                id='roleId'
+                                                options={roleOption}
                                                 placeholder={"Select User Role"}
                                                 onChange={(selectOption) => {
-                                                    setFieldValue("userRole", selectOption.value);
+                                                    setFieldValue("roleId", selectOption.value);
                                                 }}
                                                 onBlur={() => {
-                                                    handleBlur({ target: { name: "userRole" } });
+                                                    handleBlur({ target: { name: "roleId" } });
                                                 }}
                                             />
-                                            <ErrorMessage component='div' name={"userRole"} className='error' />
+                                            <ErrorMessage component='div' name={"roleId"} className='error' />
                                         </div>
                                     </div>
                                 </div>
