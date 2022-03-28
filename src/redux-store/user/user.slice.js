@@ -10,9 +10,9 @@ const initialState = {
             ? currentUserInfo
             : {
                   fullName: "",
-                  userId: "000",
                   email: "",
-                  department: "",
+                  departmentName: "",
+                  departmentId: "",
                   userRole: "",
                   avatar: "",
               },
@@ -28,7 +28,8 @@ const userSlice = createSlice({
                 " " +
                 action.payload.userInfo.lastname;
             state.userInfo.email = action.payload.userInfo.email;
-            state.userInfo.department = action.payload.userInfo.department;
+            state.userInfo.departmentName = action.payload.userInfo.departmentName;
+            state.userInfo.departmentId = action.payload.userInfo.departmentId;
             state.userInfo.userRole = action.payload.userInfo.role;
             state.userInfo.avatar = action.payload.userInfo.avatar;
             saveState("userData", state.userInfo);
