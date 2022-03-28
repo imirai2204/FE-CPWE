@@ -88,6 +88,7 @@ const Login = () => {
                                     name='password'
                                     type={passwordShown ? "text" : "password"}
                                     placeholder='Password'
+                                    style={{paddingRight: "30px"}}
                                 />
                                 <i
                                     className={`fa ${

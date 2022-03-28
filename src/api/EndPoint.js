@@ -27,3 +27,8 @@ export const DepartmentUrl = {
     create: "/department/create",
     get: "/department/get",
 };
+
+export const UserUrl = {
+    create: "/department/create",
+    get: "/department/get",
+};

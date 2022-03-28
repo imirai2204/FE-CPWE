@@ -1,31 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { UserSchema } from "../validation";
-import axios from "axios";
 import Select from "react-select";
-import { Columns, Data } from "./dummy-data/topic-page";
+import { Columns } from "./dummy-data/manage-page";
 import { Departments, UserRole, Gender } from "../components/Navbar/dropdown/DropdownItems";
-import { IdeaUrl, Authen } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
+import { UserUrl, Authen, DepartmentUrl } from "../api/EndPoint";
+import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { useSelector } from "react-redux";
 
-const handleSubmit = async (values) => {
-    var formData = new FormData();
-    formData.append("firstname", values.firstname);
-    formData.append("lastname", values.lastname);
-    formData.append("address", values.address);
-    formData.append("gender", values.gender);
-    formData.append("email", values.email);
-    formData.append("phone", values.phone);
-    formData.append("departmentId", values.departmentId);
-    formData.append("userRole", values.userRole);
-
-    const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+const handleSubmit = async (values, setIsSubmiting) => {
+    await AxiosInstance
+        .post(UserUrl.create, values, { headers: requestHeader.checkAuth })
         .then(() => {
             console.log("Create success")
+            setIsSubmiting(false)
         })
         .catch((error) => {
             if (error && error.response) {
@@ -33,6 +24,82 @@ const handleSubmit = async (values) => {
             }
         });
 };
+
+const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    }
+    await AxiosInstance
+        .get(UserUrl.get, {
+            headers: requestHeader.checkAuth,
+            params: paramsValue
+        })
+        .then((res) => {
+            console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages
+            }
+            var tableData = res.data.data.content.map((content) => {
+                var firstname = content.firstname
+                var lastname = content.lastname
+                var fullname = firstname + " " + lastname
+                return {
+                    id: content.userId,
+                    fullname: fullname,
+                    email: content.email,
+                    department: content.department,
+                    role: content.role,
+                    phone: content.phone,
+                    address: content.address,
+                }
+            })
+            setReturnData(tableData)
+            setPagination(pagination)
+
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getDepartment = async (values, setDepartmenOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    } 
+    await AxiosInstance
+        .get(DepartmentUrl.get, {
+            headers: requestHeader.checkAuth,
+            params: paramsValue
+        })
+        .then((res) => {
+            // console.log(res)
+            var departmentOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.department,
+                    key: content.id,
+                }
+            })
+            setDepartmenOption(departmentOption)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
 
 const initialValues = {
     firstname: "",
@@ -47,8 +114,8 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance
+        .post(Authen.checkPermission, requestHeader.checkAuth)
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -66,8 +133,31 @@ const checkPermission = async (setPermission) => {
 
 function ManageUser() {
     const [permission, setPermission] = useState(true);
+    const [returnData, setReturnData] = useState([]);
+    const [returnPagination, setPagination] = useState({});
+    const [isSubmiting, setIsSubmiting] = useState(false);
+    // const [semesterOption, setSemesterOption] = useState([]);
+    const [departmentOption, setDepartmentOption] = useState([]);
+    const currentPage = useSelector((state) => state.table.page);
+    const currentLimit = useSelector((state) => state.table.rowsPerPage);
 
-    var test = "test user id";
+    const tableDatas = {
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
+        sortBy: null,
+        sortType: null,
+    }
+
+    useEffect(() => {
+        handleGet(tableDatas, setReturnData, returnData, setPagination)
+    }, [currentPage, currentLimit]);
+
+    if (isSubmiting === false) {
+        handleGet(null, setReturnData, returnData, setPagination)
+        getDepartment(null, setDepartmentOption)
+        setIsSubmiting(true)
+    }
 
     if (permission) {
         return (<div className="manageUser-page container">
@@ -78,7 +168,6 @@ function ManageUser() {
                     validationSchema={UserSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         handleSubmit(values);
-                        console.log(values)
                     }}>
                     {({
                         isSubmiting,
@@ -156,7 +245,9 @@ function ManageUser() {
                                     </div>
                                 </div>
                                 <hr />
-                                <div className="input-section">
+                                <div className="input-section"
+                                     style={{width: "45%"}}
+                                >
                                     <TextField
                                         label={"User ID"}
                                         name='userID'
@@ -175,7 +266,7 @@ function ManageUser() {
                                                 className='select'
                                                 name='departmentId'
                                                 id='department'
-                                                options={Departments}
+                                                options={departmentOption}
                                                 placeholder={"Select Department"}
                                                 onChange={(selectOption) => {
                                                     setFieldValue("departmentId", selectOption.value);
@@ -210,11 +301,14 @@ function ManageUser() {
                             </div>
                             <hr />
                             <div className="list-button">
+                                <button className={'btn btn-warning'} type='update'>
+                                    Update
+                                </button>
                                 <button className={'btn btn-info'} type='reset'>
                                     Refresh
                                 </button>
                                 <button className={"btn btn-success"} type="submit">
-                                    Save
+                                    Create
                                 </button>
                             </div>
                         </Form>
@@ -224,10 +318,9 @@ function ManageUser() {
             <div className="layout-table">
                 <EnhancedTable
                     columns={Columns}
-                    rows={Data}
-                    hasEditedBtn={false}
-                    hasDeletedBtn={true}
-                    hasDisabledBtn={true}
+                    rows={returnData}
+                    hasEditedBtn={true}
+                    totalPages={returnPagination.totalPages}
                 />
             </div>
         </div>
