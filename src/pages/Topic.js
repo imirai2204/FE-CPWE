@@ -9,15 +9,16 @@ import { YearOptions } from "./dummy-data/years-page";
 import { Columns } from "./dummy-data/topic-page";
 import { TopicUrl, Authen, AcademicUrl, DepartmentUrl } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
-import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    await AxiosInstance
-        .post(TopicUrl.create, values, { headers: requestHeader.checkAuth })
+    await AxiosInstance.post(TopicUrl.create, values, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then(() => {
-            console.log("Create success")
-            setIsSubmiting(false)
+            console.log("Create success");
+            setIsSubmiting(false);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -33,23 +34,22 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    }
-    await AxiosInstance
-        .get(TopicUrl.get, {
-            headers: requestHeader.checkAuth,
-            params: paramsValue
-        })
+    };
+    await AxiosInstance.get(TopicUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
         .then((res) => {
-            console.log(res)
+            console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
-                totalPages: res.data.data.totalPages
-            }
+                totalPages: res.data.data.totalPages,
+            };
             var tableData = res.data.data.content.map((content) => {
-                var startDate = getFormattedDate(convertDate(content.startDate))
-                var closureDate = getFormattedDate(convertDate(content.closureDate))
-                var finalDate = getFormattedDate(convertDate(content.finalDate))
+                var startDate = getFormattedDate(convertDate(content.startDate));
+                var closureDate = getFormattedDate(convertDate(content.closureDate));
+                var finalDate = getFormattedDate(convertDate(content.finalDate));
                 return {
                     id: content.id,
                     year: content.year,
@@ -58,12 +58,11 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
                     topic: content.topic,
                     startDate: startDate,
                     closureDate: closureDate,
-                    finalDate: finalDate
-                }
-            })
-            setReturnData(tableData)
-            setPagination(pagination)
-
+                    finalDate: finalDate,
+                };
+            });
+            setReturnData(tableData);
+            setPagination(pagination);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -75,30 +74,29 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
 const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
         year: values,
-    }
-    await AxiosInstance
-        .get(AcademicUrl.getSemesterByYear, {
-            headers: requestHeader.checkAuth,
-            params: paramsValue
-        })
+    };
+    await AxiosInstance.get(AcademicUrl.getSemesterByYear, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
         .then((res) => {
-            console.log(res)
+            console.log(res);
             var semesterOption = res.data.data.map((data) => {
                 return {
                     value: data.id,
                     label: data.semester,
                     key: data.id,
-                }
-            })
+                };
+            });
             // console.log(semesterOption)
-            setSemesterOption(semesterOption)
+            setSemesterOption(semesterOption);
         })
         .catch((error) => {
             if (error && error.response) {
                 console.log("Error: ", error);
             }
         });
-}
+};
 
 const getDepartment = async (values, setDepartmenOption) => {
     const paramsValue = {
@@ -107,12 +105,11 @@ const getDepartment = async (values, setDepartmenOption) => {
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    } 
-    await AxiosInstance
-        .get(DepartmentUrl.get, {
-            headers: requestHeader.checkAuth,
-            params: paramsValue
-        })
+    };
+    await AxiosInstance.get(DepartmentUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
         .then((res) => {
             // console.log(res)
             var departmentOption = res.data.data.content.map((content) => {
@@ -120,16 +117,16 @@ const getDepartment = async (values, setDepartmenOption) => {
                     value: content.id,
                     label: content.department,
                     key: content.id,
-                }
-            })
-            setDepartmenOption(departmentOption)
+                };
+            });
+            setDepartmenOption(departmentOption);
         })
         .catch((error) => {
             if (error && error.response) {
                 console.log("Error: ", error);
             }
         });
-}
+};
 
 const initialValues = {
     // year: 0,
@@ -141,8 +138,9 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    await AxiosInstance
-        .post(Authen.checkPermission, requestHeader.checkAuth)
+    await AxiosInstance.post(Authen.checkPermission, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -180,139 +178,167 @@ function Topic() {
     }, [tableDatas]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination)
-        getDepartment(null, setDepartmentOption)
-        setIsSubmiting(true)
+        handleGet(null, setReturnData, returnData, setPagination);
+        getDepartment(null, setDepartmentOption);
+        setIsSubmiting(true);
     }
 
     if (permission) {
-        return (<div className="department-page container">
-            <h2 className="page-title">Topic</h2>
-            <div className="layout-form">
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={TopicSchema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setIsSubmiting);
-                    }}>
-                    {({
-                        isSubmiting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                        setFieldValue,
-                    }) => (
-                        <Form className="submit-form">
-                            <div className="form-container">
-                                <div
-                                    className='input-section label-mark'
-                                    style={{ width: "45%" }}
-                                >
-                                    <label className='label'>Year</label>
-                                    <Select
-                                        className='select'
-                                        name='yearId'
-                                        id='year'
-                                        options={YearOptions}
-                                        placeholder={"Select Year"}
-                                        onChange={(selectOption) => {
-                                            setFieldValue("yearId", selectOption.value);
-                                            getSemester(selectOption.value, setSemesterOption);
-                                            // setIsTest(selectOption.value);
-                                        }}
-                                        onBlur={() => {
-                                            handleBlur({ target: { name: "year" } });
-                                        }}
-                                    />
-                                    <ErrorMessage component='div' name={"yearId"} className='error' />
-                                </div>
-                                <div className='input-section label-mark'>
-                                    <label className='label'>Semester</label>
-                                    <Select
-                                        className='select'
-                                        name='academicId'
-                                        id='academicId'
-                                        options={semesterOption}
-                                        placeholder={"Select Semester"}
-                                        onChange={(selectOption) => {
-                                            setFieldValue("academicId", selectOption.value);
-                                        }}
-                                        onBlur={() => {
-                                            handleBlur({ target: { name: "academicId" } });
-                                        }}
-                                    />
-                                    <ErrorMessage component='div' name={"academicId"} className='error' />
-                                </div>
-                                <div className='input-section label-mark'>
-                                    <label className='label'>Department</label>
-                                    <Select
-                                        className='select'
-                                        name='departmentId'
-                                        id='departmentId'
-                                        options={departmentOption}
-                                        placeholder={"Select Department"}
-                                        onChange={(selectOption) => {
-                                            setFieldValue("departmentId", selectOption.value);
-                                        }}
-                                        onBlur={() => {
-                                            handleBlur({ target: { name: "department" } });
-                                        }}
-                                    />
-                                    <ErrorMessage component='div' name={"departmentId"} className='error' />
-                                </div>
-                                <div className="input-section label-mark">
-                                    <TextField
-                                        label={"Topic Name"}
-                                        name='topic'
-                                        type='text'
-                                        placeholder='Topic Name...'
-                                    />
-                                </div>
-                                <div className="layout-date">
-                                    <div className="input-section label-mark time first">
-                                        <TextField
-                                            label={"Closure Date"}
-                                            name='endDate'
-                                            type='date'
+        return (
+            <div className='department-page container'>
+                <h2 className='page-title'>Topic</h2>
+                <div className='layout-form'>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={TopicSchema}
+                        onSubmit={(values, { setSubmitting }) => {
+                            handleSubmit(values, setIsSubmiting);
+                        }}>
+                        {({
+                            isSubmiting,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                            setFieldValue,
+                        }) => (
+                            <Form className='submit-form'>
+                                <div className='form-container'>
+                                    <div
+                                        className='input-section label-mark'
+                                        style={{ width: "45%" }}>
+                                        <label className='label'>Year</label>
+                                        <Select
+                                            className='select'
+                                            name='yearId'
+                                            id='year'
+                                            options={YearOptions}
+                                            placeholder={"Select Year"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "yearId",
+                                                    selectOption.value
+                                                );
+                                                getSemester(
+                                                    selectOption.value,
+                                                    setSemesterOption
+                                                );
+                                                // setIsTest(selectOption.value);
+                                            }}
+                                            onBlur={() => {
+                                                handleBlur({ target: { name: "year" } });
+                                            }}
+                                        />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"yearId"}
+                                            className='error'
                                         />
                                     </div>
-                                    <div className="input-section label-mark time second">
-                                        <TextField
-                                            label={"Final Closure Date"}
-                                            name='finalEndDate'
-                                            type='date'
+                                    <div className='input-section label-mark'>
+                                        <label className='label'>Semester</label>
+                                        <Select
+                                            className='select'
+                                            name='academicId'
+                                            id='academicId'
+                                            options={semesterOption}
+                                            placeholder={"Select Semester"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "academicId",
+                                                    selectOption.value
+                                                );
+                                            }}
+                                            onBlur={() => {
+                                                handleBlur({
+                                                    target: { name: "academicId" },
+                                                });
+                                            }}
+                                        />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"academicId"}
+                                            className='error'
                                         />
                                     </div>
+                                    <div className='input-section label-mark'>
+                                        <label className='label'>Department</label>
+                                        <Select
+                                            className='select'
+                                            name='departmentId'
+                                            id='departmentId'
+                                            options={departmentOption}
+                                            placeholder={"Select Department"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "departmentId",
+                                                    selectOption.value
+                                                );
+                                            }}
+                                            onBlur={() => {
+                                                handleBlur({
+                                                    target: { name: "department" },
+                                                });
+                                            }}
+                                        />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"departmentId"}
+                                            className='error'
+                                        />
+                                    </div>
+                                    <div className='input-section label-mark'>
+                                        <TextField
+                                            label={"Topic Name"}
+                                            name='topic'
+                                            type='text'
+                                            placeholder='Topic Name...'
+                                        />
+                                    </div>
+                                    <div className='layout-date'>
+                                        <div className='input-section label-mark time first'>
+                                            <TextField
+                                                label={"Closure Date"}
+                                                name='endDate'
+                                                type='date'
+                                            />
+                                        </div>
+                                        <div className='input-section label-mark time second'>
+                                            <TextField
+                                                label={"Final Closure Date"}
+                                                name='finalEndDate'
+                                                type='date'
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr />
-                            <div className="list-button">
-                                <button className={'btn btn-info'} type='reset'>
-                                    Refresh
-                                </button>
-                                <button className={"btn btn-success"} type="submit">
-                                    Save
-                                </button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
+                                <hr />
+                                <div className='list-button'>
+                                    <button className={"btn btn-info"} type='reset'>
+                                        Refresh
+                                    </button>
+                                    <button className={"btn btn-success"} type='submit'>
+                                        Save
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+                <div className='layout-table'>
+                    <EnhancedTable
+                        columns={Columns}
+                        rows={returnData}
+                        hasEditedBtn={false}
+                        hasDeletedBtn={false}
+                        hasDisabledBtn={false}
+                        totalPages={returnPagination.totalPages}
+                    />
+                </div>
             </div>
-            <div className="layout-table">
-                <EnhancedTable
-                    columns={Columns}
-                    rows={returnData}
-                    hasEditedBtn={false}
-                    hasDeletedBtn={false}
-                    hasDisabledBtn={false}
-                    totalPages={returnPagination.totalPages}
-                />
-            </div>
-        </div>
-        )
+        );
     } else {
         return (
             <div>

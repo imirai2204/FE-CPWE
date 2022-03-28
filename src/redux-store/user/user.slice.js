@@ -3,6 +3,17 @@ import { saveState, getState } from "../localStorage";
 
 const currentUserInfo = getState("userData");
 
+export const isEmpty = (value) => {
+    return (
+        // null or undefined
+        value == null ||
+        // has length and it's zero
+        (value.hasOwnProperty("length") && value.length === 0) ||
+        // is an Object and has no keys
+        (value.constructor === Object && Object.keys(value).length === 0)
+    );
+};
+
 const initialState = {
     isCardOpen: false,
     userInfo:
@@ -31,7 +42,11 @@ const userSlice = createSlice({
             state.userInfo.departmentName = action.payload.userInfo.departmentName;
             state.userInfo.departmentId = action.payload.userInfo.departmentId;
             state.userInfo.userRole = action.payload.userInfo.role;
-            state.userInfo.avatar = action.payload.userInfo.avatar;
+            if (isEmpty(action.payload.userInfo.avatar)) {
+                state.userInfo.avatar = "/default-avatar.png";
+            } else {
+                state.userInfo.avatar = action.payload.userInfo.avatar;
+            }
             saveState("userData", state.userInfo);
         },
         toggleUserCard(state, action) {

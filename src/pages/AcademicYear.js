@@ -8,12 +8,12 @@ import Select from "react-select";
 import { YearOptions, Columns } from "./dummy-data/years-page";
 import { AcademicUrl, Authen } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
-import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
     await AxiosInstance.post(AcademicUrl.create, values, {
-        headers: requestHeader.checkAuth,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then(() => {
             console.log("Create success");
@@ -35,7 +35,7 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     };
     await AxiosInstance.get(AcademicUrl.get, {
-        headers: requestHeader.checkAuth,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         params: paramsValue,
     })
         .then((res) => {
@@ -74,7 +74,9 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, requestHeader.checkAuth)
+    await AxiosInstance.post(Authen.checkPermission, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);

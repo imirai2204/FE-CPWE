@@ -7,15 +7,16 @@ import { TagSchema } from "../validation";
 import { TableColumns } from "./dummy-data/tags-page";
 import Select from "react-select";
 import { CategoryUrl, Authen, TopicUrl } from "../api/EndPoint";
-import { AxiosInstance, requestHeader } from "../api/AxiosClient";
+import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    await AxiosInstance
-        .post(CategoryUrl.create, values, { headers: requestHeader.checkAuth })
+    await AxiosInstance.post(CategoryUrl.create, values, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then(() => {
-            console.log("Create success")
-            setIsSubmiting(false)
+            console.log("Create success");
+            setIsSubmiting(false);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -25,36 +26,34 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
-    console.log(values)
+    console.log(values);
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    } 
-    await AxiosInstance
-        .get(CategoryUrl.get, {
-            headers: requestHeader.checkAuth,
-            params: paramsValue
-        })
+    };
+    await AxiosInstance.get(CategoryUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
         .then((res) => {
-            console.log(res)
+            console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
-                totalPages: res.data.data.totalPages
-            }
+                totalPages: res.data.data.totalPages,
+            };
             var tableData = res.data.data.content.map((content) => {
                 return {
                     id: content.id,
                     topicLabel: content.topic,
-                    tagLabel: content.category
-                }
-            })
-            setReturnData(tableData)
-            setPagination(pagination)
-
+                    tagLabel: content.category,
+                };
+            });
+            setReturnData(tableData);
+            setPagination(pagination);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -70,28 +69,27 @@ const getTopic = async (values, setTopicOption) => {
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    } 
-    await AxiosInstance
-        .get(TopicUrl.get, {
-            headers: requestHeader.checkAuth,
-            params: paramsValue
-        })
+    };
+    await AxiosInstance.get(TopicUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
         .then((res) => {
             var topicOption = res.data.data.content.map((content) => {
                 return {
                     value: content.id,
                     label: content.topic,
                     key: content.id,
-                }
-            })
-            setTopicOption(topicOption)
+                };
+            });
+            setTopicOption(topicOption);
         })
         .catch((error) => {
             if (error && error.response) {
                 console.log("Error: ", error);
             }
         });
-}
+};
 
 const initialValues = {
     topicId: 0,
@@ -99,8 +97,9 @@ const initialValues = {
 };
 
 const checkPermission = async (setPermission) => {
-    await AxiosInstance
-        .post(Authen.checkPermission, requestHeader.checkAuth)
+    await AxiosInstance.post(Authen.checkPermission, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -137,9 +136,9 @@ const Tags = (props) => {
     }, [tableDatas]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination)
-        getTopic(null, setTopicOption)
-        setIsSubmiting(true)
+        handleGet(null, setReturnData, returnData, setPagination);
+        getTopic(null, setTopicOption);
+        setIsSubmiting(true);
     }
 
     if (permission) {
@@ -182,15 +181,24 @@ const Tags = (props) => {
                                             options={topicOption}
                                             placeholder={"Select Topic"}
                                             onChange={(selectOption) => {
-                                                setFieldValue("topicId", selectOption.value);
+                                                setFieldValue(
+                                                    "topicId",
+                                                    selectOption.value
+                                                );
                                             }}
                                             onBlur={() => {
                                                 handleBlur({ target: { name: "topic" } });
                                             }}
                                             menuPortalTarget={document.body}
                                             styles={{
-                                                menuPortal: base => ({ ...base, zIndex: 9999 }),
-                                                menu: base => ({ ...base, fontSize: '15px' })
+                                                menuPortal: (base) => ({
+                                                    ...base,
+                                                    zIndex: 9999,
+                                                }),
+                                                menu: (base) => ({
+                                                    ...base,
+                                                    fontSize: "15px",
+                                                }),
                                             }}
                                         />
                                         <ErrorMessage
@@ -222,7 +230,7 @@ const Tags = (props) => {
                     />
                 </div>
             </div>
-        )
+        );
     } else {
         return (
             <div>
