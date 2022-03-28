@@ -1,4 +1,4 @@
-import { AxiosInstance, requestHeader } from "../../api/AxiosClient";
+import { AxiosInstance } from "../../api/AxiosClient";
 import { Authen } from "../../api/EndPoint";
 import { authActions } from "./auth.slice";
 import { userActions } from "../user/user.slice";
@@ -6,7 +6,7 @@ import { userActions } from "../user/user.slice";
 export const userLogin = (data) => {
     const { ...body } = data;
     return async (dispatch) => {
-        await AxiosInstance.post(Authen.login, body, requestHeader.login)
+        await AxiosInstance.post(Authen.login, body)
             .then((response) => {
                 let responseData = response.data.data;
                 dispatch(

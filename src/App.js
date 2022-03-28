@@ -14,7 +14,7 @@ import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import SubmitPage from "./pages/SubmitPage";
 import AccountSetting from "./pages/AccountSetting";
-import UserSettings from "./pages/UserSettings";
+import UserDetails from "./pages/UserDetails";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
 import PageNotFound from "./404";
@@ -66,9 +66,9 @@ function App() {
                     <Route path='/category/topic' exact element={<Topic />} />
                     <Route path='/submit-page' exact element={<SubmitPage />} />
                     <Route path='/account-settings' exact element={<AccountSetting />} />
-                    <Route path='/user/user-settings' exact element={<UserSettings />} />
+                    <Route path='/user/user-settings' exact element={<UserDetails />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
-                    <Route path="*" element={<Navigate to='/404' />} />
+                    <Route path='*' element={<Navigate to='/404' />} />
                     <Route path='/404' exact element={<PageNotFound />} />
                 </PrivateRoute>
             )}
@@ -78,15 +78,43 @@ function App() {
                     <Route path='/login' exact element={<Login />} />
                     <Route path='/dashboard' exact element={<Navigate to='/login' />} />
                     <Route path='/manage-user' exact element={<Navigate to='/login' />} />
-                    <Route path='/category/semester'exact element={<Navigate to='/login' />}/>
-                    <Route path='/category/department' exact element={<Navigate to='/login' />} />
-                    <Route path='/category/tags' exact element={<Navigate to='/login' />} />
-                    <Route path='/category/topic' exact element={<Navigate to='/login' />} />
+                    <Route
+                        path='/category/semester'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
+                    <Route
+                        path='/category/department'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
+                    <Route
+                        path='/category/tags'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
+                    <Route
+                        path='/category/topic'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
                     <Route path='/submit-page' exact element={<Navigate to='/login' />} />
-                    <Route path='/account-settings' exact element={<Navigate to='/login' />} />
-                    <Route path='/user/user-settings' exact element={<Navigate to='/login' />} />
-                    <Route path='/terms-conditions' exact element={<Navigate to='/login' />} />
-                    <Route path="*" element={<Navigate to='/404' />} />
+                    <Route
+                        path='/account-settings'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
+                    <Route
+                        path='/user/user-settings'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
+                    <Route
+                        path='/terms-conditions'
+                        exact
+                        element={<Navigate to='/login' />}
+                    />
+                    <Route path='*' element={<Navigate to='/404' />} />
                     <Route path='/404' exact element={<PageNotFound />} />
                 </GlobalRoute>
             )}
