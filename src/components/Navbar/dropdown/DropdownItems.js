@@ -1,4 +1,5 @@
 export const DropdownItems = [
+    //Category drop down
     {
         title: "Semester",
         path: "/category/semester",
@@ -19,6 +20,11 @@ export const DropdownItems = [
         path: "/category/tags",
         cName: "dropdown-link",
     },
+    {
+        title: "Permissions",
+        path: "/manage-user/permission-management",
+        cName: "dropdown-link",
+    }
 ];
 
 export const Departments = [
@@ -40,7 +46,7 @@ export const Tags = [
 ]
 
 export const Contributor = [
-    { value: false, label: 'Public', key: '1'},
+    { value: false, label: 'Public', key: '1' },
     { value: true, label: 'Anonymous', key: '2' }
 ]
 

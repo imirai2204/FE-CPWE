@@ -10,6 +10,7 @@ import AcademicYear from "./pages/AcademicYear";
 import Department from "./pages/Department";
 import Dashboard from "./pages/Dashboard";
 import ManageUser from "./pages/ManageUser";
+import PermissionManagement from "./pages/PermissionManagement"
 import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import SubmitPage from "./pages/SubmitPage";
@@ -60,6 +61,7 @@ function App() {
                     <Route path='/login' exact element={<Navigate to='/' />} />
                     <Route path='/dashboard' exact element={<Dashboard />} />
                     <Route path='/manage-user' exact element={<ManageUser />} />
+                    <Route path='/permission-management' exact element={<PermissionManagement />} />
                     <Route path='/category/semester' exact element={<AcademicYear />} />
                     <Route path='/category/department' exact element={<Department />} />
                     <Route path='/category/tags' exact element={<Tags />} />

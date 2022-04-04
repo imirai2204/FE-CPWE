@@ -9,6 +9,11 @@ export const DepartmentSchema = Yup.object().shape({
     department: Yup.string().required("Sorry, Department name is required"),
 });
 
+export const PermissionSchema = Yup.object().shape({
+    permissionName: Yup.string().required("Sorry, Permission name is required"),
+    permissionURL: Yup.string().required("Sorry, Link URL is required"),
+});
+
 export const TagSchema = Yup.object().shape({
     category: Yup.string().required("Sorry, Tag name is required"),
     topicId: Yup.number().min(1, "Sorry, Topic name is required"),
