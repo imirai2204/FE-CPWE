@@ -1,8 +1,8 @@
 export const DropdownItems = [
     //Category drop down
     {
-        title: "Academic Year",
-        path: "/category/academic-year",
+        title: "Semester",
+        path: "/category/semester",
         cName: "dropdown-link",
     },
     {
@@ -48,4 +48,16 @@ export const Tags = [
 export const Contributor = [
     { value: false, label: 'Public', key: '1' },
     { value: true, label: 'Anonymous', key: '2' }
+]
+
+export const Gender = [
+    { value: 'male', label: 'Male', key: '1' },
+    { value: 'female', label: 'Female', key: '2' },
+    { value: 'other', label: 'Other', key: '3' }
+]
+
+export const UserRole = [
+    { value: 1, label: 'Admin', key: '1' },
+    { value: 2, label: 'QA coordinator', key: '2' },
+    { value: 3, label: 'Staff', key: '3' }
 ]

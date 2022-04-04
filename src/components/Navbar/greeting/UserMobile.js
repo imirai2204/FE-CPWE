@@ -1,30 +1,32 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../redux-store/auth/auth.slice";
+import { userActions } from "../../../redux-store/user/user.slice";
+import { sideBarActions } from "../../../redux-store/sidebar/sidebar.slice";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import SideBarContext from "../../../store/side-bar-context";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
 import UserCard from "./UserCard";
-import UserCardContext from "../../../store/user-card-context";
-import AuthContext from "../../../store/auth-context";
-import Button from "@mui/material/Button";
 
 const UserMobile = (props) => {
-    const categoryMobileCtx = useContext(SideBarContext);
-    const userCardCtx = useContext(UserCardContext);
-    const authCtx = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const isUserCardShown = useSelector((state) => state.sideBar.isAccountShown);
 
-    const accountClassName = categoryMobileCtx.isAccountShown
+    const accountClassName = isUserCardShown
         ? "user-card-mobile active"
         : "user-card-mobile";
 
     const logOutHandler = () => {
-        /** Logic to set user logout */
-        userCardCtx.closeUserCard();
-        authCtx.onLogout();
+        dispatch(userActions.toggleUserCard(false));
+        dispatch(authActions.logout());
         props.onClick();
+    };
+
+    const clickArrowIconHandler = () => {
+        dispatch(sideBarActions.toggleUserCardMobile(false));
     };
 
     return (
@@ -51,14 +53,17 @@ const UserMobile = (props) => {
                             </Link>
                         </div>
                         <div className='log-out-btn'>
-                            <Link className='log-out' to='/login' onClick={logOutHandler}>
+                            <Link
+                                className='log-out'
+                                to='/login'
+                                onClick={logOutHandler}>
                                 Logout <LogoutIcon />
                             </Link>
                         </div>
                     </div>
                 </Paper>
             </Box>
-            <button className='return' onClick={categoryMobileCtx.onCloseAccount}>
+            <button className='return' onClick={clickArrowIconHandler}>
                 <ArrowCircleLeftIcon />
             </button>
         </div>
@@ -66,22 +71,3 @@ const UserMobile = (props) => {
 };
 
 export default UserMobile;
-
-/**                    <div className='card--info--button'>
-                        <div className='user-settings-btn'>
-                            <Button onClick={props.onClick} size='small'>
-                                <Link to='/user/user-settings'>User Settings</Link>
-                            </Button>
-                        </div>
-                        <div className='log-out-btn'>
-                            <Button
-                                size='small'
-                                color='error'
-                                endIcon={<LogoutIcon />}
-                                onClick={logOutHandler}>
-                                <Link className='log-out' to='/login'>
-                                    Logout
-                                </Link>
-                            </Button>
-                        </div>
-                    </div> */

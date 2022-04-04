@@ -4,18 +4,12 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { TextArea } from "../components/UI/Form/TextArea";
 import { IdeaSchema } from "../validation";
-import axios from "axios";
 import Select from "react-select";
 import { Link } from "react-router-dom";
-import {
-    Departments,
-    Topics,
-    Tags,
-    Contributor,
-} from "../components/Navbar/dropdown/DropdownItems";
+import { Topics, Tags, Contributor } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from "material-ui-dropzone";
-import { IdeaUrl, Authen } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
+import { IdeaUrl, Authen, DepartmentUrl } from "../api/EndPoint";
+import { AxiosInstance } from "../api/AxiosClient";
 
 const handleSubmit = async (values) => {
     var formData = new FormData();
@@ -32,10 +26,41 @@ const handleSubmit = async (values) => {
         }
     }
 
-    const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+    await AxiosInstance.post(IdeaUrl.create, formData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then(() => {
-            console.log("Create success")
+            console.log("Create success");
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getDepartment = async (values, setDepartmenOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    };
+    await AxiosInstance.get(DepartmentUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
+        .then((res) => {
+            // console.log(res)
+            var departmentOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.department,
+                    key: content.id,
+                };
+            });
+            setDepartmenOption(departmentOption);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -45,8 +70,9 @@ const handleSubmit = async (values) => {
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance.post(Authen.checkPermission, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -69,19 +95,22 @@ const initialValues = {
     title: "",
     description: "",
     contributor: false,
-    files: []
+    files: [],
 };
 
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
     const [permission, setPermission] = useState(true);
-    const [topicName, setTopicName] = useState("")
+    const [topicName, setTopicName] = useState("");
+    const [departmentOption, setDepartmentOption] = useState([]);
+
+    // getDepartment(null, setDepartmentOption)
 
     // checkPermission(setPermission);
 
     const changeTopicName = (topic) => {
         setTopicName(topic);
-    }
+    };
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -118,19 +147,26 @@ const SubmitPage = (props) => {
                                             className='select'
                                             name='department'
                                             id='department'
-                                            options={Departments}
+                                            options={departmentOption}
                                             placeholder={"Select depertment"}
                                             isDisabled={false}
-                                            onChange={
-                                                selectOption => {
-                                                    setFieldValue("departmentId", selectOption.value)
-                                                }
-                                            }
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "departmentId",
+                                                    selectOption.value
+                                                );
+                                            }}
                                             onBlur={() => {
-                                                handleBlur({ target: { name: 'department' } });
+                                                handleBlur({
+                                                    target: { name: "department" },
+                                                });
                                             }}
                                         />
-                                        <ErrorMessage component='div' name={'departmentId'} className='error' />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"departmentId"}
+                                            className='error'
+                                        />
                                     </div>
                                     <div className='input-section label-mark'>
                                         <label className='label' htmlFor='topic'>
@@ -142,17 +178,22 @@ const SubmitPage = (props) => {
                                             id='topic'
                                             options={Topics}
                                             placeholder={"Select topic"}
-                                            onChange={
-                                                selectOption => {
-                                                    setFieldValue("topicId", selectOption.value)
-                                                    changeTopicName(selectOption.label)
-                                                }
-                                            }
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "topicId",
+                                                    selectOption.value
+                                                );
+                                                changeTopicName(selectOption.label);
+                                            }}
                                             onBlur={() => {
-                                                handleBlur({ target: { name: 'topic' } });
+                                                handleBlur({ target: { name: "topic" } });
                                             }}
                                         />
-                                        <ErrorMessage component='div' name={'topicId'} className='error' />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"topicId"}
+                                            className='error'
+                                        />
                                     </div>
                                     <div className='input-section label-mark'>
                                         <label className='label' htmlFor='tag'>
@@ -164,32 +205,37 @@ const SubmitPage = (props) => {
                                             id='tag'
                                             options={Tags}
                                             placeholder={"Select tag"}
-                                            onChange={
-                                                selectOption => {
-                                                    setFieldValue("categoryId", selectOption.value)
-                                                }
-                                            }
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "categoryId",
+                                                    selectOption.value
+                                                );
+                                            }}
                                             onBlur={() => {
-                                                handleBlur({ target: { name: 'tag' } });
+                                                handleBlur({ target: { name: "tag" } });
                                             }}
                                         />
-                                        <ErrorMessage component='div' name={'categoryId'} className='error' />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"categoryId"}
+                                            className='error'
+                                        />
                                     </div>
                                 </div>
                                 <div className='layout-1--right'>
-                                    <div className="information-box">
+                                    <div className='information-box'>
                                         <h2>Information</h2>
                                         <h4>of {topicName}</h4>
-                                        <div className="info-content">
-                                            <div className="time">
+                                        <div className='info-content'>
+                                            <div className='time'>
                                                 <label>Start Date: </label>
                                                 <p>01/01/2022</p>
                                             </div>
-                                            <div className="time">
+                                            <div className='time'>
                                                 <label>End Date: </label>
                                                 <p>01/01/2022</p>
                                             </div>
-                                            <div className="time">
+                                            <div className='time'>
                                                 <label>Final End Date: </label>
                                                 <p>01/01/2022</p>
                                             </div>
@@ -221,20 +267,22 @@ const SubmitPage = (props) => {
                                 <Select
                                     className='select'
                                     name='contributor'
-                                    id="contributor"
+                                    id='contributor'
                                     options={Contributor}
                                     defaultValue={Contributor[0]}
                                     placeholder={"Select state of the post"}
-                                    onChange={
-                                        selectOption => {
-                                            setFieldValue("contributor", selectOption.value)
-                                        }
-                                    }
+                                    onChange={(selectOption) => {
+                                        setFieldValue("contributor", selectOption.value);
+                                    }}
                                     onBlur={() => {
-                                        handleBlur({ target: { name: 'contributor' } });
+                                        handleBlur({ target: { name: "contributor" } });
                                     }}
                                 />
-                                <ErrorMessage component='div' name={'contributor'} className='error' />
+                                <ErrorMessage
+                                    component='div'
+                                    name={"contributor"}
+                                    className='error'
+                                />
                             </div>
                             <div className='input-section attachment'>
                                 <label className='label' htmlFor='file'>
@@ -253,15 +301,15 @@ const SubmitPage = (props) => {
                                     showPreviewsInDropzone={false}
                                     showAlerts={false}
                                     name='file'
-                                    id="attachment"
-                                    onDrop={dropFiles => {
+                                    id='attachment'
+                                    onDrop={(dropFiles) => {
                                         let event = {
                                             target: {
-                                                name: 'files',
-                                                value: dropFiles
-                                            }
-                                        }
-                                        handleChange(event)
+                                                name: "files",
+                                                value: dropFiles,
+                                            },
+                                        };
+                                        handleChange(event);
                                     }}
                                 />
                             </div>
@@ -284,8 +332,9 @@ const SubmitPage = (props) => {
                                     Cancel
                                 </button>
                                 <button
-                                    className={`btn btn--medium ${buttonShown ? "" : "disabled"
-                                        }`}
+                                    className={`btn btn--medium ${
+                                        buttonShown ? "" : "disabled"
+                                    }`}
                                     type='submit'>
                                     Submit
                                 </button>

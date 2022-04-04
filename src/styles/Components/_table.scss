@@ -47,3 +47,37 @@
 .MuiTableSortLabel-icon {
     color: $color-red-24 !important;
 }
+.MuiPagination-outlined {
+    button {
+        font-size: 15px !important;
+    }
+}
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    font-size: 15px !important;
+}
+
+.MuiTablePagination-toolbar {
+//     flex-flow: wrap !important;
+//     justify-content: center !important;
+    padding: 0 !important;
+}
+
+// // .MuiPagination-outlined {
+// //     margin-left: 17rem;
+// // }
+
+.search--bar {
+    input {
+        border: 2px solid $color-black-B3;
+        padding-right: 40px;
+        border-radius: 10px;
+
+        &:hover {
+            border-color: $color-blue-B8;
+        }
+    }
+
+    fieldset {
+        display: none;
+    }
+}

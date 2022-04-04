@@ -1,22 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
-import axios from "axios";
-import { IdeaUrl, Authen } from "../api/EndPoint";
-import { RequestHeader } from "../api/AxiosComponent";
-import { Columns, Data } from "./dummy-data/department-page";
+import { DepartmentUrl, Authen } from "../api/EndPoint";
+import { Columns } from "./dummy-data/department-page";
+import { AxiosInstance } from "../api/AxiosClient";
+import { useSelector } from "react-redux";
 
-const handleSubmit = async (values) => {
-    var formData = new FormData();
-    formData.append("departmentName", values.departmentName);
-
-    const response = await axios
-        .post(IdeaUrl.create, formData, { headers: RequestHeader.checkAuthHeaders })
+const handleSubmit = async (values, setIsSubmiting) => {
+    await AxiosInstance.post(DepartmentUrl.create, values, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then(() => {
-            console.log("Create success")
+            console.log("Create success");
+            setIsSubmiting(false);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    // console.log(values)
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    };
+    await AxiosInstance.get(DepartmentUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
+        .then((res) => {
+            // console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages,
+            };
+            var tableData = res.data.data.content.map((content) => {
+                return {
+                    id: content.id,
+                    department: content.department,
+                };
+            });
+            setReturnData(tableData);
+            setPagination(pagination);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -26,12 +61,13 @@ const handleSubmit = async (values) => {
 };
 
 const initialValues = {
-    departmentName: "",
+    department: "",
 };
 
 const checkPermission = async (setPermission) => {
-    const response = await axios
-        .post(Authen.checkPermission, RequestHeader.checkAuthHeaders)
+    await AxiosInstance.post(Authen.checkPermission, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
         .then((response) => {
             if (response.data.code === 1) {
                 setPermission(true);
@@ -49,17 +85,40 @@ const checkPermission = async (setPermission) => {
 
 function Department() {
     const [permission, setPermission] = useState(true);
+    const [returnData, setReturnData] = useState([]);
+    const [returnPagination, setPagination] = useState({});
+    const [isSubmiting, setIsSubmiting] = useState(false);
+    const tableAttr = useSelector((state) => state.table);
+
+    // console.log(returnData)
+
+    const tableDatas = {
+        searchKey: tableAttr.searchText,
+        limit: tableAttr.rowsPerPage,
+        page: tableAttr.page,
+        sortBy: null,
+        sortType: null,
+    };
+
+    useEffect(() => {
+        handleGet(tableDatas, setReturnData, returnData, setPagination);
+    }, [tableDatas]);
+
+    if (isSubmiting === false) {
+        handleGet(tableDatas, setReturnData, returnData, setPagination);
+        setIsSubmiting(true);
+    }
 
     if (permission) {
         return (
-            <div className="department-page container">
-                <h2 className="page-title">Department</h2>
-                <div className="layout-form">
+            <div className='department-page container'>
+                <h2 className='page-title'>Department</h2>
+                <div className='layout-form'>
                     <Formik
                         initialValues={initialValues}
                         validationSchema={DepartmentSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values);
+                            handleSubmit(values, setIsSubmiting);
                         }}>
                         {({
                             isSubmiting,
@@ -71,29 +130,23 @@ function Department() {
                             touched,
                             setFieldValue,
                         }) => (
-                            <Form className="submit-form">
-                                <div className="form-container">
-                                    <div className="input-section label-mark">
+                            <Form className='submit-form'>
+                                <div className='form-container'>
+                                    <div className='input-section label-mark'>
                                         <TextField
                                             label={"Department Name"}
-                                            name='departmentName'
+                                            name='department'
                                             type='text'
-                                            placeholder='Type...'
+                                            placeholder='Department Name…'
                                         />
                                     </div>
                                 </div>
                                 <hr />
-                                <div className="list-button">
-                                    {/* <button className={"btn btn-warning"} type="button">
-                                        Search
-                                    </button> */}
-                                    <button
-                                        className={'btn btn-info'}
-                                        type='reset'
-                                    >
+                                <div className='list-button'>
+                                    <button className={"btn btn-info"} type='reset'>
                                         Refresh
                                     </button>
-                                    <button className={"btn btn-success"} type="submit">
+                                    <button className={"btn btn-success"} type='submit'>
                                         Save
                                     </button>
                                 </div>
@@ -101,13 +154,11 @@ function Department() {
                         )}
                     </Formik>
                 </div>
-                <div className="layout-table">
+                <div className='layout-table'>
                     <EnhancedTable
                         columns={Columns}
-                        rows={Data}
-                        hasEditedBtn={false}
-                        hasDeletedBtn={true}
-                        hasDisabledBtn={true}
+                        rows={returnData}
+                        totalPages={returnPagination.totalPages}
                     />
                 </div>
             </div>

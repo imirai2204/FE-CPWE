@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import UserCardContext from "../../../store/user-card-context";
 
 const dash = (
     <Box
@@ -19,38 +18,40 @@ const dash = (
 
 const UserCard = (props) => {
     /**
-     * Get user info from useContext Hooks to pass:
+     * Get user info from Redux Store to retrieve:
      * Full Name
      * UserId
      * Email
      * Department
      * Role
-     * after user has login successfully
+     * After user has login successfully
      */
-    const userCardCtx = useContext(UserCardContext);
+    const userData = useSelector((state) => state.user.userInfo);
 
-    const fullName = userCardCtx.userInfo.fullName;
-    const userId = userCardCtx.userInfo.userId;
-    const email = userCardCtx.userInfo.email;
-    const department = userCardCtx.userInfo.department;
-    const role = userCardCtx.userInfo.userRole;
+    const fullName = userData.fullName;
+    const email = userData.email;
+    const departmentName = userData.departmentName;
+    const role = userData.userRole;
 
     return (
         <Card sx={{ boxShadow: 0, textAlign: "center" }}>
             <CardContent sx={{ height: 170, mt: 1, lineHeight: 4 }}>
                 <Typography variant='h4' color='text.main' component='div'>
                     {fullName}
-                    {dash}
-                    {userId}
                 </Typography>
                 <Typography variant='h5' sx={{ pt: 1.5 }} color='text.secondary'>
                     {email}
                 </Typography>
                 <Typography
                     variant='h5'
-                    sx={{ pt: 1.8, lineHeight: 1.8, fontSize: "1.6rem", fontWeight: 500 }}
+                    sx={{
+                        pt: 1.8,
+                        lineHeight: 1.8,
+                        fontSize: "1.6rem",
+                        fontWeight: 500,
+                    }}
                     color='text.secondary'>
-                    {department}
+                    {departmentName}
                     <br />
                     {role}
                 </Typography>

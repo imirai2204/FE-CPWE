@@ -1,7 +1,7 @@
 export const YearOptions = [
-    { value: 1, label: "Year 2022", key: "1" },
-    { value: 2, label: "Year 2023", key: "2" },
-    { value: 3, label: "Year 2024", key: "3" },
+    { value: "2022", label: "Year 2022", key: "1" },
+    { value: "2023", label: "Year 2023", key: "2" },
+    { value: "2024", label: "Year 2024", key: "3" },
 ];
 
 export const Columns = [
