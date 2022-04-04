@@ -15,6 +15,22 @@
         .layout-right {
             flex: 45%;
             margin-left: 5%;
+
+            .MuiGrid-grid-xs-4 {
+                max-width: 50% !important;
+                flex-basis: 50% !important;
+                height: 20rem;
+            }
+        }
+    }
+
+    .password-icon {
+        position: absolute;
+        top: 50px;
+        right: 5px;
+
+        @media screen and (max-width: 1095px) {
+            top: 45px;
         }
     }
 }

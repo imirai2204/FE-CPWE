@@ -4,6 +4,7 @@ const initialState = {
     page: 1,
     rowsPerPage: 5,
     searchText: null,
+    itemIndex: null
 };
 
 const pageSlice = createSlice({
@@ -15,6 +16,9 @@ const pageSlice = createSlice({
             state.rowsPerPage = action.payload.rowsPerPage;
             state.searchText = action.payload.searchText;
         },
+        updateItemIndex(state, action) {
+            state.itemIndex = action.payload.itemIndex;
+        }
     },
 });
 

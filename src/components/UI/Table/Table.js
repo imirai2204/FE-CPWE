@@ -125,7 +125,7 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
 
-export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
+export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formikValue, ...props }) => {
     const dispatch = useDispatch();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("ID");
@@ -133,6 +133,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
     const [currentLimit, setCurrentLimit] = useState(5);
     const [searchKey, setSearchKey] = useState(null);
     const [openPopup, setOpenpopup] = useState(false);
+    const [itemIndex, setItemIndex] = useState(null);
 
     const searchDataHandler = (data) => {
         setSearchKey(data);
@@ -152,6 +153,17 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
         setCurrentPage(currentPage);
         setCurrentLimit(currentLimit);
     }, [currentPage, currentLimit, searchKey]);
+
+    useEffect(() => {
+        if (itemIndex === null) {
+            return;
+        }
+        dispatch(
+            pageActions.updateItemIndex({
+                itemIndex: itemIndex,
+            })
+        );
+    }, [itemIndex]);
 
     const [confirmDialog, setConfirmDialog] = useState({
         isOpen: false,
@@ -174,7 +186,17 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
         setCurrentPage(1);
     };
 
-    // const emptyRows = (currentPage - 1) > 0 ? Math.max(0, currentPage * currentLimit - rows.length) : 0;
+    const handleEditUser = (setFieldValue, index) => {
+        setFieldValue("firstname", rows[index].firstname)
+        setFieldValue("lastname", rows[index].lastname)
+        setFieldValue("address", rows[index].address)
+        setFieldValue("sex", rows[index].sex)
+        setFieldValue("email", rows[index].email)
+        setFieldValue("phone", rows[index].phone)
+        setFieldValue("departmentId", rows[index].departmentId)
+        setFieldValue("roleId", rows[index].roleId)
+        setFieldValue("userId", rows[index].id)
+    }
 
     return (
         <Fragment>
@@ -193,10 +215,6 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                         />
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy))
-                                // .slice(
-                                //     (currentPage- 1) * currentLimit,
-                                //     (currentPage - 1) * currentLimit + currentLimit
-                                // )
                                 .map((row, index) => {
                                     return (
                                         <TableRow
@@ -211,7 +229,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                                                         key={column.id}
                                                         align={column.align}>
                                                         {column.format &&
-                                                        typeof value === "number"
+                                                            typeof value === "number"
                                                             ? column.format(value)
                                                             : value}
                                                     </TableCell>
@@ -226,7 +244,10 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                                                             fill: "#FFC20E",
                                                             fontSize: "20px",
                                                         }}
-                                                        // onClick={() => setOpenpopup(true)}
+                                                        onClick={() => {
+                                                            handleEditUser(setFieldValue, index);
+                                                            setItemIndex(index);
+                                                        }}
                                                     />
                                                 </TableCell>
                                             ) : (
@@ -281,11 +302,6 @@ export const EnhancedTable = ({ columns, rows, totalPages, ...props }) => {
                                         </TableRow>
                                     );
                                 })}
-                            {/* {emptyRows > 0 && (
-                                <TableRow>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )} */}
                         </TableBody>
                     </Table>
                 </TableContainer>

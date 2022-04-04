@@ -7,3 +7,34 @@ export const Columns = [
     { id: "phone", label: "Phone", width: "10%", align: "left" },
     { id: "address", label: "Address", width: "25%", align: "left" },
 ];
+
+export const Data = [
+    {
+        id: 1,
+        firstname: "Halloween 1",
+        lastname: "Hallo 1",
+        fullname: "test 1",
+        email: "test1@gmail.com",
+        department: "Technology Department",
+        role: "staff",
+        phone: "0900001234",
+        address: "address test",
+        departmentId: 1,
+        roleId: 1,
+        sex: "male"
+    },
+    {
+        id: 2,
+        firstname: "Halloween 2",
+        lastname: "Hallo 2",
+        fullname: "test 2",
+        email: "test2@gmail.com",
+        department: "Technology Department",
+        role: "admin",
+        phone: "0900001234",
+        address: "address test",
+        departmentId: 2,
+        roleId: 2,
+        sex: "female"
+    },
+]

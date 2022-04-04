@@ -15,7 +15,7 @@ export const TagSchema = Yup.object().shape({
 });
 
 var date = new Date();
-date.setHours(0,0,0,0);
+date.setHours(0, 0, 0, 0);
 
 export const AcademicYearSchema = Yup.object().shape({
     year: Yup.string().required("Sorry, Year is required"),
@@ -59,7 +59,15 @@ export const UserSchema = Yup.object().shape({
         .matches(/^(\\+[1-9]{1,4}[ \\-]*)|([0-9]{2,4}[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Sorry, Phone number is not valid')
         .max(12, "Phone number should have less than 12 characters"),
     departmentId: Yup.number().min(1, "Sorry, Department is required"),
-    userRole: Yup.number().min(1, "Sorry, User Role is required"),
+    roleId: Yup.number().min(1, "Sorry, User Role is required"),
+});
+
+export const PasswordSchema = Yup.object().shape({
+    oldPassword: Yup.string().required("Sorry, Old Password is required"),
+    newPassword: Yup.string().required("Sorry, New Password is required"),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('newPassword')], 'Confirm Password does not match')
+        .required("Sorry, Confirm Password is required"),
 });
 
 

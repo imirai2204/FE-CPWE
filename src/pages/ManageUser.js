@@ -5,15 +5,12 @@ import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { UserSchema } from "../validation";
 import Select from "react-select";
-import { Columns } from "./dummy-data/manage-page";
-import {
-    Departments,
-    UserRole,
-    Gender,
-} from "../components/Navbar/dropdown/DropdownItems";
+import { Columns, Data } from "./dummy-data/manage-page";
+import { Gender } from "../components/Navbar/dropdown/DropdownItems";
 import { UserUrl, Authen, DepartmentUrl, RoleUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { pageActions } from "../redux-store/table/table.slice"
 
 const handleSubmit = async (values, setIsSubmiting) => {
     await AxiosInstance.post(UserUrl.create, values, {
@@ -21,6 +18,21 @@ const handleSubmit = async (values, setIsSubmiting) => {
     })
         .then(() => {
             console.log("Create success");
+            setIsSubmiting(false);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const handelUpdate = async (values, setIsSubmiting) => {
+    await AxiosInstance.post(UserUrl.update + values.userId, values, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then(() => {
+            console.log("Update success");
             setIsSubmiting(false);
         })
         .catch((error) => {
@@ -52,15 +64,19 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
             var tableData = res.data.data.content.map((content) => {
                 var firstname = content.firstname;
                 var lastname = content.lastname;
-                var fullname = firstname + " " + lastname;
                 return {
                     id: content.userId,
-                    fullname: fullname,
+                    firstname: firstname,
+                    lastname: lastname,
+                    fullname: firstname + " " + lastname,
                     email: content.email,
                     department: content.department,
+                    departmentId: content.departmentId,
                     role: content.role,
+                    roleId: content.roleId,
                     phone: content.phone,
                     address: content.address,
+                    sex: content.sex,
                 };
             });
             setReturnData(tableData);
@@ -77,7 +93,7 @@ const getDepartment = async (values, setDepartmenOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     };
@@ -107,7 +123,7 @@ const getRole = async (values, setRoleOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     };
@@ -133,18 +149,6 @@ const getRole = async (values, setRoleOption) => {
         });
 };
 
-const initialValues = {
-    firstname: "",
-    lastname: "",
-    address: "",
-    sex: 0,
-    email: "",
-    phone: "",
-    departmentId: 0,
-    roleId: 0,
-    userId: "",
-};
-
 const checkPermission = async (setPermission) => {
     await AxiosInstance.post(Authen.checkPermission, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -164,7 +168,20 @@ const checkPermission = async (setPermission) => {
         });
 };
 
+const initialValue = {
+    firstname: "",
+    lastname: "",
+    address: "",
+    sex: "",
+    email: "",
+    phone: "",
+    departmentId: 0,
+    roleId: 0,
+    userId: "",
+};
+
 function ManageUser() {
+    const dispatch = useDispatch();
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
@@ -173,6 +190,8 @@ function ManageUser() {
     const [roleOption, setRoleOption] = useState([]);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
+    const itemIndex = useSelector((state) => state.table.itemIndex);
+    const [isResetting, setIsResetting] = useState(false);
 
     const tableDatas = {
         searchKey: null,
@@ -185,6 +204,15 @@ function ManageUser() {
     useEffect(() => {
         handleGet(tableDatas, setReturnData, returnData, setPagination);
     }, [currentPage, currentLimit]);
+
+    if (isResetting === true) {
+        dispatch(
+            pageActions.updateItemIndex({
+                itemIndex: null,
+            })
+        );
+        setIsResetting(false);
+    }
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination);
@@ -199,10 +227,12 @@ function ManageUser() {
                 <h2 className='page-title'>Manage User</h2>
                 <div className='layout-form'>
                     <Formik
-                        initialValues={initialValues}
+                        enableReinitialize
+                        initialValues={initialValue}
                         validationSchema={UserSchema}
                         onSubmit={(values, { setSubmitting }) => {
                             handleSubmit(values, setIsSubmiting);
+                            console.log(values)
                         }}>
                         {({
                             isSubmiting,
@@ -213,6 +243,7 @@ function ManageUser() {
                             errors,
                             touched,
                             setFieldValue,
+                            isValid,
                         }) => (
                             <Form className='submit-form'>
                                 <div className='form-container'>
@@ -224,6 +255,7 @@ function ManageUser() {
                                                     name='firstname'
                                                     type='text'
                                                     placeholder='First Name...'
+                                                    value={values.firstname}
                                                 />
                                             </div>
                                             <div className='input-section'>
@@ -232,6 +264,7 @@ function ManageUser() {
                                                     name='address'
                                                     type='text'
                                                     placeholder='Address...'
+                                                    value={values.address}
                                                 />
                                             </div>
                                             <div className='input-section label-mark'>
@@ -258,6 +291,7 @@ function ManageUser() {
                                                     name='lastname'
                                                     type='text'
                                                     placeholder='Last Name...'
+                                                    value={values.lastname}
                                                 />
                                             </div>
                                             <div className='input-section'>
@@ -279,6 +313,13 @@ function ManageUser() {
                                                             target: { name: "sex" },
                                                         });
                                                     }}
+                                                    value={
+                                                        Gender.filter(option => {
+                                                            return option.value === values.sex
+                                                        })
+                                                    }
+                                                    defaultValue={Gender[0]}
+                                                    maxMenuHeight={200}
                                                 />
                                                 <ErrorMessage
                                                     component='div'
@@ -298,7 +339,6 @@ function ManageUser() {
                                             type='text'
                                             placeholder='userId...'
                                             readOnly
-                                            // onChange={}
                                             value={values.userId}
                                         />
                                     </div>
@@ -327,6 +367,12 @@ function ManageUser() {
                                                             },
                                                         });
                                                     }}
+                                                    value={
+                                                        departmentOption.filter(option => {
+                                                            return option.value === values.departmentId
+                                                        })
+                                                    }
+                                                    maxMenuHeight={200}
                                                 />
                                                 <ErrorMessage
                                                     component='div'
@@ -355,6 +401,12 @@ function ManageUser() {
                                                             target: { name: "roleId" },
                                                         });
                                                     }}
+                                                    value={
+                                                        roleOption.filter(option => {
+                                                            return option.value === values.roleId
+                                                        })
+                                                    }
+                                                    maxMenuHeight={200}
                                                 />
                                                 <ErrorMessage
                                                     component='div'
@@ -367,27 +419,49 @@ function ManageUser() {
                                 </div>
                                 <hr />
                                 <div className='list-button'>
-                                    <button className={"btn btn-warning"} type='update'>
+                                    <button
+                                        className={"btn btn-warning"}
+                                        type='button'
+                                        disabled={itemIndex === null ? true : false}
+                                        onClick={
+                                            () => isValid === true ?
+                                                handelUpdate(values, setIsSubmiting) :
+                                                console.log("update fail")
+                                        }
+                                    >
                                         Update
                                     </button>
-                                    <button className={"btn btn-info"} type='reset'>
+                                    <button
+                                        className={"btn btn-info"}
+                                        type='reset'
+                                        onClick={() => setIsResetting(true)}
+                                    >
                                         Refresh
                                     </button>
-                                    <button className={"btn btn-success"} type='submit'>
+                                    <button
+                                        className={"btn btn-success"}
+                                        type='submit'
+                                        disabled={itemIndex === null ? false : true}
+                                    >
                                         Create
                                     </button>
+                                </div>
+                                <div className='layout-table'
+                                    style={{ marginTop: "5rem" }}
+                                >
+                                    <EnhancedTable
+                                        columns={Columns}
+                                        // rows={returnData}
+                                        rows={Data}
+                                        hasEditedBtn={true}
+                                        totalPages={returnPagination.totalPages}
+                                        setFieldValue={setFieldValue}
+                                        formikValue={values}
+                                    />
                                 </div>
                             </Form>
                         )}
                     </Formik>
-                </div>
-                <div className='layout-table'>
-                    <EnhancedTable
-                        columns={Columns}
-                        rows={returnData}
-                        hasEditedBtn={true}
-                        totalPages={returnPagination.totalPages}
-                    />
                 </div>
             </div>
         );

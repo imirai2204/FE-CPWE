@@ -45,9 +45,9 @@ export const Contributor = [
 ]
 
 export const Gender = [
-    { value: 1, label: 'Male', key: '1' },
-    { value: 2, label: 'Female', key: '2' },
-    { value: 3, label: 'Other', key: '3' }
+    { value: 'male', label: 'Male', key: '1' },
+    { value: 'female', label: 'Female', key: '2' },
+    { value: 'other', label: 'Other', key: '3' }
 ]
 
 export const UserRole = [
