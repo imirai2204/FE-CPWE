@@ -11,7 +11,7 @@ export const DepartmentSchema = Yup.object().shape({
 
 export const PermissionSchema = Yup.object().shape({
     permissionName: Yup.string().required("Sorry, Permission name is required"),
-    permissionURL: Yup.string().required("Sorry, Link URL is required"),
+    permissionURL: Yup.string().required("Sorry, Screen URL is required"),
 });
 
 export const TagSchema = Yup.object().shape({
@@ -33,7 +33,7 @@ export const TopicSchema = Yup.object().shape({
     // yearId: Yup.number().min(1, "Sorry, Year is required"),
     semesterId: Yup.number().min(1, "Sorry, Semester is required"),
     departmentId: Yup.number().min(1, "Sorry, Department is required"),
-    topic: Yup.string().required("Sorry, Topic Name is required"),
+    topic: Yup.string().required("Sorry, Topic name is required"),
     endDate: Yup.date().required("Sorry, Closure Date is required").min(date),
     finalEndDate: Yup.date().required("Sorry, Final Date is required").min(Yup.ref('endDate')),
 });
@@ -53,8 +53,8 @@ export const IdeaSchema = Yup.object().shape({
 });
 
 export const UserSchema = Yup.object().shape({
-    firstname: Yup.string().required("Sorry, First name is required"),
-    lastname: Yup.string().required("Sorry, Last name is required"),
+    firstname: Yup.string().required("Sorry, Firstname is required"),
+    lastname: Yup.string().required("Sorry, Lastname is required"),
     address: Yup.string()
         .min(10, "Title should have at least 10 characters")
         .max(50, "Title should have less than 50 characters"),
@@ -68,11 +68,15 @@ export const UserSchema = Yup.object().shape({
 });
 
 export const PasswordSchema = Yup.object().shape({
-    oldPassword: Yup.string().required("Sorry, Old Password is required"),
-    newPassword: Yup.string().required("Sorry, New Password is required"),
+    oldPassword: Yup.string().required("Sorry, Old password is required"),
+    newPassword: Yup.string().required("Sorry, New password is required"),
     confirmPassword: Yup.string()
-        .oneOf([Yup.ref('newPassword')], 'Confirm Password does not match')
-        .required("Sorry, Confirm Password is required"),
+        .oneOf([Yup.ref('newPassword')], 'Confirm password does not match')
+        .required("Sorry, Confirm password is required"),
 });
 
+export const RoleSchema = Yup.object().shape({
+    roleName: Yup.string().required("Sorry, Role name is required"),
+    topicId: Yup.number().required(1, "Sorry, Topic name is required"),
+});
 

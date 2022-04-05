@@ -121,19 +121,22 @@ const Tags = (props) => {
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [topicOption, setTopicOption] = useState([]);
-    const tableAttr = useSelector((state) => state.table);
+    // const tableAttr = useSelector((state) => state.table);
+    const currentPage = useSelector((state) => state.table.page);
+    const currentLimit = useSelector((state) => state.table.rowsPerPage);
 
     const tableDatas = {
-        searchKey: tableAttr.searchText,
-        limit: tableAttr.rowsPerPage,
-        page: tableAttr.page,
+        // searchKey: tableAttr.searchText,
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
         sortBy: null,
         sortType: null,
     };
 
     useEffect(() => {
         handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [tableDatas]);
+    }, [currentPage, currentLimit]);
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination);
@@ -198,8 +201,10 @@ const Tags = (props) => {
                                                 menu: (base) => ({
                                                     ...base,
                                                     fontSize: "15px",
+                                                    color: "#707070",
                                                 }),
                                             }}
+                                            maxMenuHeight={200}
                                         />
                                         <ErrorMessage
                                             component='div'

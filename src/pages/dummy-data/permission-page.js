@@ -1,6 +1,6 @@
 export const Columns = [
-    { id: "permissionName", label: "Permission Name", width: "50%", align: "center", style: { left: "13px" } },
-    { id: "permissionURL", label: "Screen URL", width: "50%", align: "left" },
+    { id: "permissionName", label: "Permission Name", width: "20%", align: "left" , style: { left: "13px" } },
+    { id: "permissionURL", label: "Screen URL", width: "30%", align: "left" },
 ];
 
 export const Data = [

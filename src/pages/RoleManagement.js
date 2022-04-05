@@ -3,16 +3,16 @@ import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
-import { AcademicYearSchema } from "../validation";
-import Select from "react-select";
-import { YearOptions, Columns } from "./dummy-data/years-page";
-import { AcademicUrl, Authen } from "../api/EndPoint";
-import { convertDate, getFormattedDate } from "../function/library";
+import { RoleSchema } from "../validation";
+import { Columns } from "./dummy-data/permission-page";
+import Select, { components } from "react-select";
+import { RoleUrl, Authen, PermissionUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
+import { Gender } from "../components/Navbar/dropdown/DropdownItems";
 
 const handleSubmit = async (values, setIsSubmiting) => {
-    await AxiosInstance.post(AcademicUrl.create, values, {
+    await AxiosInstance.post(RoleUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then(() => {
@@ -27,6 +27,7 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
+    console.log(values);
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -34,7 +35,7 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
     };
-    await AxiosInstance.get(AcademicUrl.get, {
+    await AxiosInstance.get(RoleUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         params: paramsValue,
     })
@@ -46,14 +47,8 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
                 totalPages: res.data.data.totalPages,
             };
             var tableData = res.data.data.content.map((content) => {
-                var startDate = getFormattedDate(convertDate(content.startDate));
-                var endDate = getFormattedDate(convertDate(content.endDate));
                 return {
-                    id: content.id,
-                    year: content.year,
-                    semester: content.semester,
-                    startDate: startDate,
-                    endDate: endDate,
+
                 };
             });
             setReturnData(tableData);
@@ -66,11 +61,34 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         });
 };
 
-const initialValues = {
-    year: "",
-    semester: "",
-    startDate: "",
-    endDate: "",
+const getPermission = async (values, setPermissionOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 100 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    };
+    await AxiosInstance.get(PermissionUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
+        .then((res) => {
+            // console.log(res)
+            var permissionOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.permission,
+                    key: content.id,
+                };
+            });
+            setPermissionOption(permissionOption);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
 };
 
 const checkPermission = async (setPermission) => {
@@ -92,17 +110,23 @@ const checkPermission = async (setPermission) => {
         });
 };
 
-function AcademicYear() {
+const initialValues = {
+    roleName: "",
+    permission: []
+};
+
+function RoleManagement() {
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
-    // const tableAttr = useSelector((state) => state.table);
+    const [permissionOption, setPermissionOption] = useState([]);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
+    const [isChecked, setIsChecked] = useState(false);
+    const [optionValues, setOptionValues] = useState([]);
 
     const tableDatas = {
-        // searchKey: tableAttr.searchText,
         searchKey: null,
         limit: currentLimit,
         page: currentPage,
@@ -110,23 +134,37 @@ function AcademicYear() {
         sortType: null,
     };
 
+    const onChangeCheckbox = () => {
+        setIsChecked(!isChecked)
+        setOptionValues(
+            !isChecked ? Gender : optionValues
+        )
+    }
+
+    const handleChangeOption = (option) => {
+        const allOptionsSelected = option.length === Gender.length;
+        setIsChecked(allOptionsSelected ? true : false)
+        setOptionValues(option)
+    }
+
     useEffect(() => {
         handleGet(tableDatas, setReturnData, returnData, setPagination);
     }, [currentPage, currentLimit]);
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination);
+        getPermission(null, setPermissionOption);
         setIsSubmiting(true);
     }
 
     if (permission) {
         return (
             <div className='department-page container'>
-                <h2 className='page-title'>Semester</h2>
+                <h2 className='page-title'>Role Management</h2>
                 <div className='layout-form'>
                     <Formik
                         initialValues={initialValues}
-                        validationSchema={AcademicYearSchema}
+                        validationSchema={RoleSchema}
                         onSubmit={(values, { setSubmitting }) => {
                             handleSubmit(values, setIsSubmiting);
                         }}>
@@ -142,52 +180,67 @@ function AcademicYear() {
                         }) => (
                             <Form className='submit-form'>
                                 <div className='form-container'>
-                                    <div
-                                        className='input-section label-mark'
-                                        style={{ width: "45%" }}>
-                                        <label className='label'>Year</label>
-                                        <Select
-                                            className='select'
-                                            name='year'
-                                            id='year'
-                                            options={YearOptions}
-                                            placeholder={"Select Year"}
-                                            onChange={(selectOption) => {
-                                                setFieldValue("year", selectOption.value);
-                                            }}
-                                            onBlur={() => {
-                                                handleBlur({ target: { name: "year" } });
-                                            }}
-                                        />
-                                        <ErrorMessage
-                                            component='div'
-                                            name={"year"}
-                                            className='error'
+                                    <div className='input-section label-mark'>
+                                        <TextField
+                                            label={"Role Name"}
+                                            name='roleName'
+                                            type='text'
+                                            placeholder='Role Name...'
                                         />
                                     </div>
                                     <div className='input-section label-mark'>
-                                        <TextField
-                                            label={"Semester Name"}
-                                            name='semester'
-                                            type='text'
-                                            placeholder='Semester Name...'
+                                        <label className='label'>Permission</label>
+                                        <Select
+                                            className='select'
+                                            name='permission'
+                                            id='permission'
+                                            isMulti
+                                            options={Gender}
+                                            placeholder={"Select Permission"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "permission",
+                                                    selectOption.value
+                                                );
+                                                handleChangeOption(selectOption);
+                                            }}
+                                            onBlur={() => {
+                                                handleBlur({
+                                                    target: { name: "permission" },
+                                                });
+                                            }}
+                                            // components={{ Option }}
+                                            closeMenuOnSelect={false}
+                                            hideSelectedOptions={false}
+                                            maxMenuHeight={200}
+                                            menuPortalTarget={document.body}
+                                            styles={{
+                                                menuPortal: (base) => ({
+                                                    ...base,
+                                                    zIndex: 9999,
+                                                }),
+                                                menu: (base) => ({
+                                                    ...base,
+                                                    fontSize: "15px",
+                                                    color: "#707070",
+                                                }),
+                                            }}
+                                            value={optionValues}
                                         />
-                                    </div>
-                                    <div className='layout-date'>
-                                        <div className='input-section label-mark time first'>
-                                            <TextField
-                                                label={"Start Date"}
-                                                name='startDate'
-                                                type='date'
+                                        <label className='checkbox'>
+                                            <input 
+                                            type='checkbox'
+                                            onChange={() => onChangeCheckbox()}
+                                            checked={isChecked}
                                             />
-                                        </div>
-                                        <div className='input-section label-mark time second'>
-                                            <TextField
-                                                label={"End Date"}
-                                                name='endDate'
-                                                type='date'
-                                            />
-                                        </div>
+                                            <span></span>
+                                            Select all
+                                        </label>
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"permission"}
+                                            className='error'
+                                        />
                                     </div>
                                 </div>
                                 <hr />
@@ -221,4 +274,4 @@ function AcademicYear() {
     }
 }
 
-export default AcademicYear;
+export default RoleManagement;

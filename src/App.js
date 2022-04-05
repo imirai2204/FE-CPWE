@@ -14,7 +14,7 @@ import PermissionManagement from "./pages/PermissionManagement"
 import Tags from "./pages/Tags";
 import Topic from "./pages/Topic";
 import SubmitPage from "./pages/SubmitPage";
-import AccountSetting from "./pages/AccountSetting";
+import RoleManagement from "./pages/RoleManagement";
 import UserDetails from "./pages/UserDetails";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
@@ -67,7 +67,7 @@ function App() {
                     <Route path='/category/tags' exact element={<Tags />} />
                     <Route path='/category/topic' exact element={<Topic />} />
                     <Route path='/submit-page' exact element={<SubmitPage />} />
-                    <Route path='/account-settings' exact element={<AccountSetting />} />
+                    <Route path='/role-management' exact element={<RoleManagement />} />
                     <Route path='/user/user-settings' exact element={<UserDetails />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
                     <Route path='*' element={<Navigate to='/404' />} />

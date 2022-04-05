@@ -97,11 +97,11 @@ const Login = () => {
                                     onClick={togglePassword}
                                 />
                             </div>
-                            <label className='checkbox'>
+                            {/* <label className='checkbox'>
                                 <input type='checkbox' onChange={handleCheckBox} />
                                 <span></span>
                                 Remember login
-                            </label>
+                            </label> */}
                             <div className='text-right'>
                                 <button
                                     className='btn btn--linear'

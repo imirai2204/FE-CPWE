@@ -56,17 +56,17 @@ const handleGet = async (values, setUserData) => {
         params: paramsValue,
     })
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             const userData = {
-                id: res.data.data.content.userId,
-                firstname: res.data.data.content.firstname,
-                lastname: res.data.data.content.lastname,
-                email: res.data.data.content.email,
-                department: res.data.data.content.department,
-                role: res.data.data.content.role,
-                phone: res.data.data.content.phone,
-                address: res.data.data.content.address,
-                sex: res.data.data.content.sex,
+                userId: res.data.data.content[0].userId,
+                firstname: res.data.data.content[0].firstname,
+                lastname: res.data.data.content[0].lastname,
+                email: res.data.data.content[0].email,
+                departmentId: res.data.data.content[0].departmentId,
+                roleId: res.data.data.content[0].roleId,
+                phone: res.data.data.content[0].phone,
+                address: res.data.data.content[0].address,
+                sex: res.data.data.content[0].sex,
             };
             setUserData(userData);
         })
@@ -156,22 +156,21 @@ const checkPermission = async (setPermission) => {
         });
 };
 
-const initialValue = {
-    firstname: "",
-    lastname: "",
-    address: "",
-    sex: "",
-    email: "",
-    phone: "",
-    departmentId: 0,
-    roleId: 0,
-    userId: "",
-};
+// const initialValue = {
+//     firstname: "",
+//     lastname: "",
+//     address: "",
+//     sex: "",
+//     email: "",
+//     phone: "",
+//     departmentId: 0,
+//     roleId: 0,
+//     userId: "",
+// }
 
 const initialPassword = {
     oldPassword: "",
     newPassword: "",
-    confirmPassword: "",
 };
 
 function UserDetails() {
@@ -182,15 +181,26 @@ function UserDetails() {
     const userInfo = useSelector((state) => state.user.userInfo)
     const [value, setValue] = React.useState("info");
     const [passwordShown, setPasswordShown] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
     };
 
+    const initialValue = {
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        address: userData.address,
+        sex: userData.sex,
+        email: userData.email,
+        phone: userData.phone,
+        departmentId: userData.departmentId,
+        roleId: userData.roleId,
+        userId: userData.userId,
+    }
+
     const data = {
         userEmail: userInfo.email,
-        userDepartment: userInfo.departmentName,
-        userRole: userInfo.userRole,
     }
 
     const dataEmail = {
@@ -202,7 +212,7 @@ function UserDetails() {
     };
 
     const dataDepartment = {
-        searchKey: data.userDepartment,
+        searchKey: initialValue.departmentId,
         limit: 1,
         page: 1,
         sortBy: null,
@@ -210,7 +220,7 @@ function UserDetails() {
     };
 
     const dataRole = {
-        searchKey: data.userRole,
+        searchKey: initialValue.roleId,
         limit: 1,
         page: 1,
         sortBy: null,
@@ -221,7 +231,8 @@ function UserDetails() {
         handleGet(dataEmail, setUserData);
         getDepartment(dataDepartment, setDepartmentOption);
         getRole(dataRole, setRoleOption);
-    }, [userData]);
+        setIsLoaded(true)
+    }, [userInfo]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -230,7 +241,7 @@ function UserDetails() {
     if (permission) {
         return (
             <div className='manageUser-page container'>
-                <h2 className='page-title'>Manage User</h2>
+                <h2 className='page-title'>User Detail</h2>
                 <TabContext value={value}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', marginTop: '2rem' }}>
                         <TabList onChange={handleChange}

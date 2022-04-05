@@ -232,7 +232,7 @@ function ManageUser() {
                         validationSchema={UserSchema}
                         onSubmit={(values, { setSubmitting }) => {
                             handleSubmit(values, setIsSubmiting);
-                            console.log(values)
+                            // console.log(values)
                         }}>
                         {({
                             isSubmiting,
@@ -363,7 +363,7 @@ function ManageUser() {
                                                     onBlur={() => {
                                                         handleBlur({
                                                             target: {
-                                                                name: "department",
+                                                                name: "departmentId",
                                                             },
                                                         });
                                                     }}
@@ -451,8 +451,8 @@ function ManageUser() {
                                 >
                                     <EnhancedTable
                                         columns={Columns}
-                                        // rows={returnData}
-                                        rows={Data}
+                                        rows={returnData}
+                                        // rows={Data}
                                         hasEditedBtn={true}
                                         totalPages={returnPagination.totalPages}
                                         setFieldValue={setFieldValue}

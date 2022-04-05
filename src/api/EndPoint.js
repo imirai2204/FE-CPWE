@@ -37,3 +37,13 @@ export const UserUrl = {
 export const RoleUrl = {
     get: "/authen/get/roles",
 };
+
+export const PermissionUrl = {
+    create: "/create",
+    get: "/role/get/permission",
+};
+
+export const RolenUrl = {
+    create: "/role/create",
+    get: "/role/get/role",
+};

@@ -20,11 +20,11 @@ export const DropdownItems = [
         path: "/category/tags",
         cName: "dropdown-link",
     },
-    {
-        title: "Permissions",
-        path: "/manage-user/permission-management",
-        cName: "dropdown-link",
-    }
+    // {
+    //     title: "Permissions",
+    //     path: "/permission-management",
+    //     cName: "dropdown-link",
+    // }
 ];
 
 export const Departments = [
@@ -53,7 +53,7 @@ export const Contributor = [
 export const Gender = [
     { value: 'male', label: 'Male', key: '1' },
     { value: 'female', label: 'Female', key: '2' },
-    { value: 'other', label: 'Other', key: '3' }
+    { value: 'other', label: 'Other', key: '3' },
 ]
 
 export const UserRole = [

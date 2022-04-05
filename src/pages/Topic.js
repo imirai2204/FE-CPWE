@@ -163,19 +163,22 @@ function Topic() {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [semesterOption, setSemesterOption] = useState([]);
     const [departmentOption, setDepartmentOption] = useState([]);
-    const tableAttr = useSelector((state) => state.table);
+    // const tableAttr = useSelector((state) => state.table);
+    const currentPage = useSelector((state) => state.table.page);
+    const currentLimit = useSelector((state) => state.table.rowsPerPage);
 
     const tableDatas = {
-        searchKey: tableAttr.searchText,
-        limit: tableAttr.rowsPerPage,
-        page: tableAttr.page,
+        // searchKey: tableAttr.searchText,
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
         sortBy: null,
         sortType: null,
     };
 
     useEffect(() => {
         handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [tableDatas]);
+    }, [currentPage, currentLimit]);
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, returnData, setPagination);
