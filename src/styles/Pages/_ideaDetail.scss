@@ -1,0 +1,39 @@
+.idea-detail-page {
+    background-color: $color-white;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin: 3rem 20rem 2rem;
+
+    .idea-title {
+        text-align: center;
+    }
+
+    .idea-body {
+        margin: 3rem 2rem 2rem;
+    }
+
+    .author {
+        display: flex;
+        width: 16rem;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+        padding: 5px;
+        border-bottom: 2px solid $color-black-B3;
+        border-right: 2px solid $color-black-B3;
+        border-radius: 5px;
+
+        &-avatar {
+            align-self: center;
+        }
+
+        &-info {
+            align-self: center;
+            margin-left: 16px;
+            height: 45px;
+        }
+    }
+
+    .idea-description {
+        margin-top: 2rem;
+        text-indent: 5rem;
+    }
+}

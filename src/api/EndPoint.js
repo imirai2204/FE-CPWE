@@ -32,18 +32,19 @@ export const UserUrl = {
     create: "authen/signup",
     get: "user/get",
     update: "user/update/",
+    changePass: "user/change-pass"
 };
 
-export const RoleUrl = {
-    get: "/authen/get/roles",
-};
+// export const RoleUrl = {
+//     get: "/authen/get/roles",
+// };
 
 export const PermissionUrl = {
     create: "/create",
-    get: "/role/get/permission",
+    get: "/role/permission/get",
 };
 
-export const RolenUrl = {
+export const RoleUrl = {
     create: "/role/create",
-    get: "/role/get/role",
+    get: "/role/get",
 };

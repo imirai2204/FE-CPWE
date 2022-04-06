@@ -11,8 +11,17 @@ import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import { Gender } from "../components/Navbar/dropdown/DropdownItems";
 
-const handleSubmit = async (values, setIsSubmiting) => {
-    await AxiosInstance.post(RoleUrl.create, values, {
+const handleSubmit = async (values, optionValues, setIsSubmiting) => {
+    let optionItem = optionValues.map((option) => {
+        return option.value
+    });
+
+    const body = {
+        name: values.roleName,
+        permission: optionItem
+    }
+
+    await AxiosInstance.post(RoleUrl.create, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then(() => {
@@ -27,7 +36,7 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
-    console.log(values);
+    // console.log(values);
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -40,7 +49,7 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         params: paramsValue,
     })
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
@@ -48,7 +57,8 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
             };
             var tableData = res.data.data.content.map((content) => {
                 return {
-
+                    roleName: content.name,
+                    key: content.id,
                 };
             });
             setReturnData(tableData);
@@ -75,10 +85,10 @@ const getPermission = async (values, setPermissionOption) => {
     })
         .then((res) => {
             // console.log(res)
-            var permissionOption = res.data.data.content.map((content) => {
+            var permissionOption = res.data.data.map((content) => {
                 return {
                     value: content.id,
-                    label: content.permission,
+                    label: content.name,
                     key: content.id,
                 };
             });
@@ -111,8 +121,7 @@ const checkPermission = async (setPermission) => {
 };
 
 const initialValues = {
-    roleName: "",
-    permission: []
+    roleName: ""
 };
 
 function RoleManagement() {
@@ -136,13 +145,11 @@ function RoleManagement() {
 
     const onChangeCheckbox = () => {
         setIsChecked(!isChecked)
-        setOptionValues(
-            !isChecked ? Gender : optionValues
-        )
+        setOptionValues(!isChecked ? permissionOption : optionValues)
     }
 
     const handleChangeOption = (option) => {
-        const allOptionsSelected = option.length === Gender.length;
+        const allOptionsSelected = option.length === permissionOption.length;
         setIsChecked(allOptionsSelected ? true : false)
         setOptionValues(option)
     }
@@ -166,7 +173,7 @@ function RoleManagement() {
                         initialValues={initialValues}
                         validationSchema={RoleSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, setIsSubmiting);
+                            handleSubmit(values, optionValues, setIsSubmiting);
                         }}>
                         {({
                             isSubmiting,
@@ -195,7 +202,7 @@ function RoleManagement() {
                                             name='permission'
                                             id='permission'
                                             isMulti
-                                            options={Gender}
+                                            options={permissionOption}
                                             placeholder={"Select Permission"}
                                             onChange={(selectOption) => {
                                                 setFieldValue(
@@ -228,10 +235,10 @@ function RoleManagement() {
                                             value={optionValues}
                                         />
                                         <label className='checkbox'>
-                                            <input 
-                                            type='checkbox'
-                                            onChange={() => onChangeCheckbox()}
-                                            checked={isChecked}
+                                            <input
+                                                type='checkbox'
+                                                onChange={() => onChangeCheckbox()}
+                                                checked={isChecked}
                                             />
                                             <span></span>
                                             Select all
@@ -261,6 +268,7 @@ function RoleManagement() {
                         columns={Columns}
                         rows={returnData}
                         hasViewBtn={true}
+                        hasEditedBtn={true}
                         totalPages={returnPagination.totalPages}
                     />
                 </div>

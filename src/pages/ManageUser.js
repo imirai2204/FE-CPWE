@@ -133,7 +133,7 @@ const getRole = async (values, setRoleOption) => {
     })
         .then((res) => {
             // console.log(res)
-            var roleOption = res.data.data.map((content) => {
+            var roleOption = res.data.data.content.map((content) => {
                 return {
                     value: content.id,
                     label: content.name,
@@ -273,6 +273,7 @@ function ManageUser() {
                                                     name='email'
                                                     type='email'
                                                     placeholder='Email...'
+                                                    disabled={itemIndex === null ? false : true}
                                                 />
                                             </div>
                                             <div className='input-section'>

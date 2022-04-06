@@ -30,7 +30,7 @@ const handelUpdate = async (values) => {
 };
 
 const handelUpdatePassword = async (values) => {
-    await AxiosInstance.post(UserUrl.update + values.userId, values, {
+    await AxiosInstance.post(UserUrl.changePass, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then(() => {
@@ -56,13 +56,14 @@ const handleGet = async (values, setUserData) => {
         params: paramsValue,
     })
         .then((res) => {
-            // console.log(res);
+            // console.log(res)
             const userData = {
                 userId: res.data.data.content[0].userId,
                 firstname: res.data.data.content[0].firstname,
                 lastname: res.data.data.content[0].lastname,
                 email: res.data.data.content[0].email,
                 departmentId: res.data.data.content[0].departmentId,
+                department: res.data.data.content[0].department,
                 roleId: res.data.data.content[0].roleId,
                 phone: res.data.data.content[0].phone,
                 address: res.data.data.content[0].address,
@@ -121,7 +122,7 @@ const getRole = async (values, setRoleOption) => {
     })
         .then((res) => {
             // console.log(res)
-            var roleOption = res.data.data.map((content) => {
+            var roleOption = res.data.data.content.map((content) => {
                 return {
                     value: content.id,
                     label: content.name,
@@ -188,15 +189,27 @@ function UserDetails() {
     };
 
     const initialValue = {
-        firstname: userData.firstname,
-        lastname: userData.lastname,
-        address: userData.address,
-        sex: userData.sex,
-        email: userData.email,
-        phone: userData.phone,
-        departmentId: userData.departmentId,
-        roleId: userData.roleId,
-        userId: userData.userId,
+        firstname: "",
+        lastname: "",
+        address: "",
+        sex: "",
+        email: "",
+        phone: "",
+        departmentId: 0,
+        roleId: 0,
+        userId: "",
+    }
+
+    if (isLoaded) {
+        initialValue.firstname = userData.firstname;
+        initialValue.lastname = userData.lastname;
+        initialValue.address = userData.address;
+        initialValue.sex = userData.sex;
+        initialValue.email = userData.email;
+        initialValue.phone = userData.phone;
+        initialValue.departmentId = userData.departmentId;
+        initialValue.roleId = userData.roleId;
+        initialValue.userId = userData.userId;
     }
 
     const data = {
@@ -212,7 +225,7 @@ function UserDetails() {
     };
 
     const dataDepartment = {
-        searchKey: initialValue.departmentId,
+        searchKey: userInfo.departmentName,
         limit: 1,
         page: 1,
         sortBy: null,
@@ -220,7 +233,7 @@ function UserDetails() {
     };
 
     const dataRole = {
-        searchKey: initialValue.roleId,
+        searchKey: userData.roleId,
         limit: 1,
         page: 1,
         sortBy: null,
@@ -510,10 +523,10 @@ function UserDetails() {
                                         <div className='form-container'>
                                             <div className='input-section label-mark'>
                                                 <TextField
-                                                    label={"Old Password"}
+                                                    label={"Current Password"}
                                                     name='oldPassword'
                                                     type={passwordShown ? "text" : "password"}
-                                                    placeholder='Old Password...'
+                                                    placeholder='Current Password...'
                                                     style={{ paddingRight: "30px" }}
                                                 />
                                                 <i

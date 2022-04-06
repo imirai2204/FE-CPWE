@@ -18,6 +18,7 @@ import RoleManagement from "./pages/RoleManagement";
 import UserDetails from "./pages/UserDetails";
 import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
+import IdeaDetail from "./pages/IdeaDetail";
 import PageNotFound from "./404";
 
 function GlobalRoute({ children, ...props }) {
@@ -70,6 +71,7 @@ function App() {
                     <Route path='/role-management' exact element={<RoleManagement />} />
                     <Route path='/user/user-settings' exact element={<UserDetails />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
+                    <Route path='/idea-detail' exact element={<IdeaDetail />} />
                     <Route path='*' element={<Navigate to='/404' />} />
                     <Route path='/404' exact element={<PageNotFound />} />
                 </PrivateRoute>

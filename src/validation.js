@@ -68,7 +68,7 @@ export const UserSchema = Yup.object().shape({
 });
 
 export const PasswordSchema = Yup.object().shape({
-    oldPassword: Yup.string().required("Sorry, Old password is required"),
+    oldPassword: Yup.string().required("Sorry, Current password is required"),
     newPassword: Yup.string().required("Sorry, New password is required"),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('newPassword')], 'Confirm password does not match')
@@ -77,6 +77,5 @@ export const PasswordSchema = Yup.object().shape({
 
 export const RoleSchema = Yup.object().shape({
     roleName: Yup.string().required("Sorry, Role name is required"),
-    topicId: Yup.number().required(1, "Sorry, Topic name is required"),
 });
 
