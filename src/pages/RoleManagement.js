@@ -4,7 +4,7 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { RoleSchema } from "../validation";
-import { Columns } from "./dummy-data/permission-page";
+import { Columns, Data } from "./dummy-data/role-page";
 import Select, { components } from "react-select";
 import { RoleUrl, Authen, PermissionUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
@@ -260,6 +260,7 @@ function RoleManagement() {
                     <EnhancedTable
                         columns={Columns}
                         rows={returnData}
+                        hasViewBtn={true}
                         totalPages={returnPagination.totalPages}
                     />
                 </div>

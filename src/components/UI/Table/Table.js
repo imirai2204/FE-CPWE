@@ -16,7 +16,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from "../Modal/ConfirmDialog";
-import CloseIcon from "@mui/icons-material/Close";
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Pagination from "@mui/material/Pagination";
 import EditPopup from "../Modal/EditPopup";
 import EditForm from "./EditForm";
@@ -105,11 +106,15 @@ function EnhancedTableHead(props) {
                     <Fragment />
                 )}
                 {props.isDisableCol ? (
-                    <TableCell
-                        key='header-disabled'
-                        align='center'
-                        style={{ width: "5%" }}>
+                    <TableCell key='header-disabled' align='center' style={{ width: "5%" }}>
                         Disabled
+                    </TableCell>
+                ) : (
+                    <Fragment />
+                )}
+                {props.isViewCol ? (
+                    <TableCell key='header-view' align='center' style={{ width: "5%" }}>
+                        View
                     </TableCell>
                 ) : (
                     <Fragment />
@@ -212,6 +217,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                             isEditCol={props.hasEditedBtn}
                             isDeleteCol={props.hasDeletedBtn}
                             isDisableCol={props.hasDisabledBtn}
+                            isViewCol={props.hasViewBtn}
                         />
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy))
@@ -280,7 +286,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                 <TableCell
                                                     key={index + 4}
                                                     align={"center"}>
-                                                    <CloseIcon
+                                                    <DoDisturbIcon
                                                         style={{
                                                             fill: "#636E72",
                                                             fontSize: "20px",
@@ -294,6 +300,29 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                                 selectDisable: row.id,
                                                             });
                                                         }}
+                                                    />
+                                                </TableCell>
+                                            ) : (
+                                                <Fragment />
+                                            )}
+
+                                            {props.hasViewBtn ? (
+                                                <TableCell
+                                                    key={index + 5}
+                                                    align={"center"}>
+                                                    <VisibilityIcon
+                                                        style={{
+                                                            fontSize: "20px",
+                                                        }}
+                                                        // onClick={() => {
+                                                        //     setConfirmDialog({
+                                                        //         isOpen: true,
+                                                        //         title: "Are you sure you want to disabled this record?",
+                                                        //         subTitle:
+                                                        //             "You can enable it again before final closure date",
+                                                        //         selectDisable: row.id,
+                                                        //     });
+                                                        // }}
                                                     />
                                                 </TableCell>
                                             ) : (
