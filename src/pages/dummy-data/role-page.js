@@ -1,4 +1,5 @@
 export const Columns = [
+    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
     { id: "roleName", label: "Role Name", width: "20%", align: "left" },
     { id: "permission", label: "Permission", width: "20%", align: "left" },
 ];

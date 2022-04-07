@@ -5,18 +5,24 @@ import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { UserSchema } from "../validation";
 import Select from "react-select";
-import { Columns, Data } from "./dummy-data/manage-page";
+import { Columns } from "./dummy-data/manage-page";
 import { Gender } from "../components/Navbar/dropdown/DropdownItems";
 import { UserUrl, Authen, DepartmentUrl, RoleUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector, useDispatch } from "react-redux";
 import { pageActions } from "../redux-store/table/table.slice"
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, setIsSubmiting) => {
+const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(UserUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
@@ -186,6 +192,10 @@ function ManageUser() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
     const [departmentOption, setDepartmentOption] = useState([]);
     const [roleOption, setRoleOption] = useState([]);
     const currentPage = useSelector((state) => state.table.page);
@@ -231,7 +241,7 @@ function ManageUser() {
                         initialValues={initialValue}
                         validationSchema={UserSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, setIsSubmiting);
+                            handleSubmit(values, setIsSubmiting, setErrorData);
                             // console.log(values)
                         }}>
                         {({
@@ -464,6 +474,10 @@ function ManageUser() {
                         )}
                     </Formik>
                 </div>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {

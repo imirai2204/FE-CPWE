@@ -1,27 +1,37 @@
 import React from "react";
-//import "./message.css";
 import "../../../styles/style.scss";
+import CloseIcon from '@mui/icons-material/Close';
 
-function ErrorMessage({ closebtn }) {
+function ErrorMessagePopUp({closebtn, errorMess}) {
+    var errorData = {
+        code: 1,
+        message: "ok",
+    }
     return (
         <div className='mess-background'>
             <div className='overlay'></div>
             <div className='mess-container'>
                 <div className='titlecloseBtn'>
-                    <button onClick={() => closebtn(false)}> X </button>
+                    <CloseIcon
+                        onClick={() => closebtn(errorData)}
+                        style={{
+                            fontSize: "25px",
+                            cursor: "pointer",
+                        }}
+                    />
                 </div>
                 <div className='mess-title'>
-                    <h3>Warning Message!</h3>
+                    <h3>Error Message!</h3>
                 </div>
                 <div className='mess-body'>
-                    <p>The following account doesn't exist! Please try again!</p>
+                    <p>{errorMess}</p>
                 </div>
                 <div className='mess-footer'>
-                    <button onClick={() => closebtn(false)}> OK </button>
+                    <button onClick={() => closebtn(errorData)}> OK </button>
                 </div>
             </div>
         </div>
     );
 }
 
-export default ErrorMessage;
+export default ErrorMessagePopUp;

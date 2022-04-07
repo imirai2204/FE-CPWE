@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
-import ErrorMessage from "../components/UI/Modal/ErrorMessage";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
 const style = {
     display: "block",
@@ -25,7 +25,10 @@ const Login = () => {
     const auth = useSelector((state) => state.auth);
     const [loginData, setLoginData] = useState(null);
     const [passwordShown, setPasswordShown] = useState(false);
-    const [hasError, setHasError] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
 
     useEffect(() => {
         if (loginData === null) {
@@ -39,19 +42,9 @@ const Login = () => {
         setPasswordShown(!passwordShown);
     };
 
-    const handleCheckBox = () => {
-        console.log("test");
-    };
-
-    if (hasError) {
-        document.body.classList.add("active-modal");
-    } else {
-        document.body.classList.remove("active-modal");
-    }
-
-    const clickLoginButtonHandler = () => {
-        setHasError(true);
-    };
+    // const handleCheckBox = () => {
+    //     console.log("test");
+    // };
 
     const handleSubmit = async (values) => {
         setLoginData(values);
@@ -88,12 +81,11 @@ const Login = () => {
                                     name='password'
                                     type={passwordShown ? "text" : "password"}
                                     placeholder='Password'
-                                    style={{paddingRight: "30px"}}
+                                    style={{ paddingRight: "30px" }}
                                 />
                                 <i
-                                    className={`fa ${
-                                        passwordShown ? "fa-eye-slash" : "fa-eye"
-                                    } fa-lg password-icon`}
+                                    className={`fa ${passwordShown ? "fa-eye-slash" : "fa-eye"
+                                        } fa-lg password-icon`}
                                     onClick={togglePassword}
                                 />
                             </div>
@@ -107,17 +99,21 @@ const Login = () => {
                                     className='btn btn--linear'
                                     type='submit'
                                     style={style}
-                                    onClick={clickLoginButtonHandler}>
+                                    onClick={() => setErrorData(errorData.code === -1)}
+                                >
                                     LOGIN
                                 </button>
                             </div>
-                            {auth.isLoggedIn && <p>Login Success!</p>}
+                            {/* {auth.isLoggedIn && <p>Login Success!</p>} */}
                         </Form>
                     )}
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {auth.hasError && <ErrorMessage closebtn={setHasError} />}
+            {errorData.code !== 1 ?
+                <ErrorMessagePopUp closebtn={setErrorData} errorMess={auth.errorMessage} /> :
+                <></>
+            }
         </div>
     );
 };

@@ -14,6 +14,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
 const handelUpdate = async (values) => {
     await AxiosInstance.post(UserUrl.update + values.userId, values, {
@@ -29,11 +30,16 @@ const handelUpdate = async (values) => {
         });
 };
 
-const handelUpdatePassword = async (values) => {
+const handelUpdatePassword = async (values, setErrorData) => {
     await AxiosInstance.post(UserUrl.changePass, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Update success");
         })
         .catch((error) => {
@@ -183,6 +189,10 @@ function UserDetails() {
     const [value, setValue] = React.useState("info");
     const [passwordShown, setPasswordShown] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
@@ -507,7 +517,7 @@ function UserDetails() {
                                 initialValues={initialPassword}
                                 validationSchema={PasswordSchema}
                                 onSubmit={(values, { setSubmitting }) => {
-                                    handelUpdatePassword(values);
+                                    handelUpdatePassword(values, setErrorData);
                                 }}>
                                 {({
                                     isSubmiting,
@@ -577,6 +587,10 @@ function UserDetails() {
                                 )}
                             </Formik>
                         </div>
+                        {errorData.code !== 1 ?
+                            <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                            <></>
+                        }
                     </TabPanel>
                 </TabContext>
             </div >

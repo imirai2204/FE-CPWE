@@ -11,12 +11,18 @@ import { TopicUrl, Authen, AcademicUrl, DepartmentUrl } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, setIsSubmiting) => {
+const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(TopicUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
@@ -161,6 +167,10 @@ function Topic() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
     const [semesterOption, setSemesterOption] = useState([]);
     const [departmentOption, setDepartmentOption] = useState([]);
     // const tableAttr = useSelector((state) => state.table);
@@ -195,7 +205,7 @@ function Topic() {
                         initialValues={initialValues}
                         validationSchema={TopicSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, setIsSubmiting);
+                            handleSubmit(values, setIsSubmiting, setErrorData);
                         }}>
                         {({
                             isSubmiting,
@@ -340,6 +350,10 @@ function Topic() {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {

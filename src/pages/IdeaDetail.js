@@ -1,6 +1,7 @@
 import React from "react"
 import "../styles/style.scss";
 import Avatar from "@mui/material/Avatar";
+import { Link } from "react-router-dom";
 
 function IdeaDetail() {
     return (
@@ -22,7 +23,38 @@ function IdeaDetail() {
                             and phrasing, makes it seem real. Descriptive writing is vivid, colorful, and detailed.
                         </p>
                     </div>
-                    
+                    <div className="idea-document">
+                        <label>List upload document</label>
+                        <ul>
+                            <li>
+                                <Link
+                                    to='/terms-conditions'
+                                    className='link-item'
+                                    target='_blank'>
+                                    test.docx
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to='/terms-conditions'
+                                    className='link-item'
+                                    target='_blank'>
+                                    test.pdf
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to='/terms-conditions'
+                                    className='link-item'
+                                    target='_blank'>
+                                    test.xlsx
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="idea-image">
+                        <label>List upload image</label>
+                    </div>
                 </div>
             </div>
         </div>

@@ -9,12 +9,18 @@ import Select from "react-select";
 import { CategoryUrl, Authen, TopicUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, setIsSubmiting) => {
+const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(CategoryUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
@@ -120,6 +126,10 @@ const Tags = (props) => {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
     const [topicOption, setTopicOption] = useState([]);
     // const tableAttr = useSelector((state) => state.table);
     const currentPage = useSelector((state) => state.table.page);
@@ -153,7 +163,7 @@ const Tags = (props) => {
                         initialValues={initialValues}
                         validationSchema={TagSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, setIsSubmiting);
+                            handleSubmit(values, setIsSubmiting, setErrorData);
                         }}>
                         {({
                             isSubmiting,
@@ -234,6 +244,10 @@ const Tags = (props) => {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {

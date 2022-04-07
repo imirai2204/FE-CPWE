@@ -8,12 +8,18 @@ import { DepartmentUrl, Authen } from "../api/EndPoint";
 import { Columns } from "./dummy-data/department-page";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, setIsSubmiting) => {
+const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(DepartmentUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
@@ -25,7 +31,6 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
-    // console.log(values)
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -88,6 +93,10 @@ function Department() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
     // const tableAttr = useSelector((state) => state.table);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
@@ -119,7 +128,7 @@ function Department() {
                         initialValues={initialValues}
                         validationSchema={DepartmentSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, setIsSubmiting);
+                            handleSubmit(values, setIsSubmiting, setErrorData);
                         }}>
                         {({
                             isSubmiting,
@@ -162,6 +171,10 @@ function Department() {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {

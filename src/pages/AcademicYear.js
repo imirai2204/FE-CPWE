@@ -10,12 +10,18 @@ import { AcademicUrl, Authen } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, setIsSubmiting) => {
+const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(AcademicUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
@@ -39,7 +45,7 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
         params: paramsValue,
     })
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
@@ -97,6 +103,10 @@ function AcademicYear() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
     // const tableAttr = useSelector((state) => state.table);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
@@ -128,7 +138,7 @@ function AcademicYear() {
                         initialValues={initialValues}
                         validationSchema={AcademicYearSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, setIsSubmiting);
+                            handleSubmit(values, setIsSubmiting, setErrorData);
                         }}>
                         {({
                             isSubmiting,
@@ -210,6 +220,10 @@ function AcademicYear() {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {

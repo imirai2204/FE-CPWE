@@ -2,10 +2,8 @@ import { Dialog, DialogContent, DialogTitle, Typography } from '@mui/material'
 import React from 'react'
 import "../../../styles/style.scss"
 
-
 function EditPopup(props) {
     const { title, children, openPopup, setOpenpopup } = props;
-
 
     return (
         <Dialog open={openPopup} >

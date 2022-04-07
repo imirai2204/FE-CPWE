@@ -5,15 +5,9 @@ body.active-modal {
 .titlecloseBtn {
     display: flex;
     justify-content: flex-end;
-
-    button {
-        background-color: transparent;
-        border: none;
-        font-size: 25px;
-        top: 20px;
-        left: 40px;
-        cursor: pointer;
-    }
+    margin-right: -20px;
+    margin-top: -5px;
+    margin-bottom: 10px;
 }
 
 .mess-background, .overlay {
@@ -24,6 +18,7 @@ body.active-modal {
     right: 0;
     bottom: 0;
     position: fixed;
+    z-index: 99;
 }
 
 .overlay {
@@ -32,16 +27,17 @@ body.active-modal {
 
 .mess-container {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1.4;
     background: #f1f1f1;
     padding: 14px 28px;
     border-radius: 12px;
-    max-width: 600px;
-    min-width: 300px;
+    max-width: 60%;
+    min-width: 30%;
     box-shadow: rgba(0, 0, 0, 0.35);
+    z-index: 99;
 
     .body{
         flex: 50%;
@@ -57,6 +53,7 @@ body.active-modal {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-top: 10px;
 
         button {
             width: 150px;

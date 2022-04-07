@@ -4,14 +4,14 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { RoleSchema } from "../validation";
-import { Columns, Data } from "./dummy-data/role-page";
-import Select, { components } from "react-select";
+import { Columns } from "./dummy-data/role-page";
+import Select from "react-select";
 import { RoleUrl, Authen, PermissionUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
-import { Gender } from "../components/Navbar/dropdown/DropdownItems";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, optionValues, setIsSubmiting) => {
+const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) => {
     let optionItem = optionValues.map((option) => {
         return option.value
     });
@@ -24,7 +24,12 @@ const handleSubmit = async (values, optionValues, setIsSubmiting) => {
     await AxiosInstance.post(RoleUrl.create, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
@@ -57,6 +62,7 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
             };
             var tableData = res.data.data.content.map((content) => {
                 return {
+                    id: content.id,
                     roleName: content.name,
                     key: content.id,
                 };
@@ -129,6 +135,10 @@ function RoleManagement() {
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
     const [permissionOption, setPermissionOption] = useState([]);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
@@ -173,7 +183,7 @@ function RoleManagement() {
                         initialValues={initialValues}
                         validationSchema={RoleSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            handleSubmit(values, optionValues, setIsSubmiting);
+                            handleSubmit(values, optionValues, setIsSubmiting, setErrorData);
                         }}>
                         {({
                             isSubmiting,
@@ -272,6 +282,10 @@ function RoleManagement() {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {

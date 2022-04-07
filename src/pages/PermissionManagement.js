@@ -8,12 +8,18 @@ import { PermissionUrl, Authen } from "../api/EndPoint";
 import { Columns, Data } from "./dummy-data/permission-page";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector, useDispatch } from "react-redux";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
-const handleSubmit = async (values, setIsSubmiting) => {
+const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
 	await AxiosInstance.post(PermissionUrl.create, values, {
 		headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 	})
-		.then(() => {
+		.then((res) => {
+			var errorData = {
+				code: res.data.code,
+				message: res.data.message,
+			}
+			setErrorData(errorData);
 			console.log("Create success");
 			setIsSubmiting(false);
 		})
@@ -25,38 +31,38 @@ const handleSubmit = async (values, setIsSubmiting) => {
 };
 
 const handleGet = async (values, setReturnData, returnData, setPagination) => {
-    const paramsValue = {
-        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
-        page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "userId" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    };
-    await AxiosInstance.get(PermissionUrl.get, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        params: paramsValue,
-    })
-        .then((res) => {
-            console.log(res);
-            var pagination = {
-                page: res.data.data.page,
-                size: res.data.data.size,
-                totalPages: res.data.data.totalPages,
-            };
-            var tableData = res.data.data.content.map((content) => {
-                return {
+	const paramsValue = {
+		searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+		page: values === null || values.page === null ? 1 : values.page,
+		limit: values === null || values.limit === null ? 5 : values.limit,
+		sortBy: values === null || values.sortBy === null ? "userId" : values.sortBy,
+		sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+	};
+	await AxiosInstance.get(PermissionUrl.get, {
+		headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+		params: paramsValue,
+	})
+		.then((res) => {
+			console.log(res);
+			var pagination = {
+				page: res.data.data.page,
+				size: res.data.data.size,
+				totalPages: res.data.data.totalPages,
+			};
+			var tableData = res.data.data.content.map((content) => {
+				return {
 					permissionName: content.permissionName,
 					permissionURL: content.permissionURL,
-                };
-            });
-            setReturnData(tableData);
-            setPagination(pagination);
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
-        });
+				};
+			});
+			setReturnData(tableData);
+			setPagination(pagination);
+		})
+		.catch((error) => {
+			if (error && error.response) {
+				console.log("Error: ", error);
+			}
+		});
 };
 
 const checkPermission = async (setPermission) => {
@@ -88,6 +94,10 @@ function PermissionManagement() {
 	const [returnData, setReturnData] = useState([]);
 	const [returnPagination, setPagination] = useState({});
 	const [isSubmiting, setIsSubmiting] = useState(false);
+	const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
 	const currentPage = useSelector((state) => state.table.page);
 	const currentLimit = useSelector((state) => state.table.rowsPerPage);
 
@@ -100,13 +110,13 @@ function PermissionManagement() {
 	};
 
 	useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+		handleGet(tableDatas, setReturnData, returnData, setPagination);
+	}, [currentPage, currentLimit]);
 
 	if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination);
-        setIsSubmiting(true);
-    }
+		handleGet(null, setReturnData, returnData, setPagination);
+		setIsSubmiting(true);
+	}
 
 	if (permission) {
 		return (
@@ -117,7 +127,7 @@ function PermissionManagement() {
 						initialValues={initialValues}
 						validationSchema={PermissionSchema}
 						onSubmit={(values, { setSubmitting }) => {
-							handleSubmit(values, setIsSubmiting);
+							handleSubmit(values, setIsSubmiting, setErrorData);
 						}}>
 						{({
 							isSubmiting,
@@ -175,6 +185,10 @@ function PermissionManagement() {
 						totalPages={returnPagination.totalPages}
 					/>
 				</div>
+				{errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
 			</div>
 		);
 	} else {

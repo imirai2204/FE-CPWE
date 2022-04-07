@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
@@ -6,12 +6,14 @@ import { TextArea } from "../components/UI/Form/TextArea";
 import { IdeaSchema } from "../validation";
 import Select from "react-select";
 import { Link } from "react-router-dom";
-import { Topics, Tags, Contributor } from "../components/Navbar/dropdown/DropdownItems";
+import { Contributor } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from "material-ui-dropzone";
-import { IdeaUrl, Authen, DepartmentUrl } from "../api/EndPoint";
+import { IdeaUrl, Authen, DepartmentUrl, TopicUrl, CategoryUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import { useSelector } from "react-redux";
 
-const handleSubmit = async (values) => {
+const handleSubmit = async (values, setErrorData) => {
     var formData = new FormData();
     formData.append("departmentId", values.departmentId);
     formData.append("topicId", values.topicId);
@@ -29,7 +31,12 @@ const handleSubmit = async (values) => {
     await AxiosInstance.post(IdeaUrl.create, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Create success");
         })
         .catch((error) => {
@@ -61,6 +68,65 @@ const getDepartment = async (values, setDepartmenOption) => {
                 };
             });
             setDepartmenOption(departmentOption);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getTopic = async (values, setTopicOption) => {
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? "" : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    };
+    await AxiosInstance.get(TopicUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
+        .then((res) => {
+            var topicOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.topic,
+                    key: content.id,
+                };
+            });
+            setTopicOption(topicOption);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getCategory = async (values, setCategoryOption) => {
+    console.log(values);
+    const paramsValue = {
+        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+    };
+    await AxiosInstance.get(CategoryUrl.get, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
+        .then((res) => {
+            var categoryOption = res.data.data.content.map((content) => {
+                return {
+                    value: content.id,
+                    label: content.category,
+                    key: content.id,
+                };
+            });
+            setCategoryOption(categoryOption);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -103,8 +169,27 @@ const SubmitPage = (props) => {
     const [permission, setPermission] = useState(true);
     const [topicName, setTopicName] = useState("");
     const [departmentOption, setDepartmentOption] = useState([]);
+    const [topicOption, setTopicOption] = useState([]);
+    const [categoryOption, setCategoryOption] = useState([]);
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
+    const userInfo = useSelector((state) => state.user.userInfo)
 
-    // getDepartment(null, setDepartmentOption)
+    const dataDepartment = {
+        searchKey: userInfo.departmentName,
+        limit: 5,
+        page: 1,
+        sortBy: null,
+        sortType: null,
+    };
+
+    useEffect(() => {
+        getDepartment(dataDepartment, setDepartmentOption);
+        getTopic(null, setTopicOption);
+        getCategory(null, setCategoryOption);
+    }, [userInfo]);
 
     // checkPermission(setPermission);
 
@@ -124,7 +209,7 @@ const SubmitPage = (props) => {
                     initialValues={initialValues}
                     validationSchema={IdeaSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values);
+                        handleSubmit(values, setErrorData);
                     }}>
                     {({
                         isSubmiting,
@@ -176,7 +261,7 @@ const SubmitPage = (props) => {
                                             className='select'
                                             name='topic'
                                             id='topic'
-                                            options={Topics}
+                                            options={topicOption}
                                             placeholder={"Select topic"}
                                             onChange={(selectOption) => {
                                                 setFieldValue(
@@ -203,7 +288,7 @@ const SubmitPage = (props) => {
                                             className='select'
                                             name='tag'
                                             id='tag'
-                                            options={Tags}
+                                            options={categoryOption}
                                             placeholder={"Select tag"}
                                             onChange={(selectOption) => {
                                                 setFieldValue(
@@ -332,9 +417,8 @@ const SubmitPage = (props) => {
                                     Cancel
                                 </button>
                                 <button
-                                    className={`btn btn--medium ${
-                                        buttonShown ? "" : "disabled"
-                                    }`}
+                                    className={`btn btn--medium ${buttonShown ? "" : "disabled"
+                                        }`}
                                     type='submit'>
                                     Submit
                                 </button>
@@ -342,6 +426,10 @@ const SubmitPage = (props) => {
                         </Form>
                     )}
                 </Formik>
+                {errorData.code !== 1 ?
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                    <></>
+                }
             </div>
         );
     } else {
