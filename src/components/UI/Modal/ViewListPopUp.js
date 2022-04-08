@@ -9,19 +9,19 @@ import "../../../styles/style.scss"
 import CloseIcon from '@mui/icons-material/Close';
 
 function ViewListPopUp(props) {
-    const { openPopUp, setOpenPopUp, listItem } = props;
+    const { openPopUp, setOpenPopUp } = props;
 
     return (
         <Dialog
-            open={openPopUp}
-            onClose={() => setOpenPopUp(false)}
+            open={openPopUp.isOpen}
+            onClose={() => setOpenPopUp({ ...openPopUp, isOpen: false })}
             scroll={'paper'}
             className={'view-popup'}
         >
             <DialogTitle>
                 <CloseIcon
                     className='popup-btnClose'
-                    onClick={() => setOpenPopUp(false)}
+                    onClick={() => setOpenPopUp({ ...openPopUp, isOpen: false })}
                     style={{
                         fontSize: "25px",
                         cursor: "pointer",
@@ -33,9 +33,11 @@ function ViewListPopUp(props) {
 
             <DialogContent className='popup-listItem'>
                 <ul>
-                    {listItem.map((item) => {
+                    {openPopUp.itemList.map((item) => {
                         return (
-                            <li>{item}</li>
+                            <>
+                                <li key={item.permissionId}>{item.permissionId}. {item.permissionName}</li>
+                            </>
                         );
                     })}
                 </ul>

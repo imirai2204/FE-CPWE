@@ -47,4 +47,5 @@ export const PermissionUrl = {
 export const RoleUrl = {
     create: "/role/create",
     get: "/role/get",
+    update: "/role/update/"
 };

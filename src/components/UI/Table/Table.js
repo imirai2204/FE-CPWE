@@ -137,12 +137,12 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
     const [currentLimit, setCurrentLimit] = useState(5);
     const [searchKey, setSearchKey] = useState(null);
     const [itemIndex, setItemIndex] = useState(null);
-    // const [openPopUp, setOpenPopUp] = useState({
-    //     isOpen: false,
-    //     itemList: [],
-    // });
+    const [openPopUp, setOpenPopUp] = useState({
+        isOpen: false,
+        itemList: [],
+    });
 
-    const [openPopUp, setOpenPopUp] = useState(false)
+    // const [openPopUp, setOpenPopUp] = useState(false)
 
     const searchDataHandler = (data) => {
         setSearchKey(data);
@@ -205,6 +205,8 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         setFieldValue("departmentId", rows[index].departmentId)
         setFieldValue("roleId", rows[index].roleId)
         setFieldValue("userId", rows[index].id)
+        setFieldValue("roleName", rows[index].roleName)
+        setFieldValue("id", rows[index].id)
     }
 
     return (
@@ -320,11 +322,11 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                         }}
                                                         onClick={() => 
                                                             {
-                                                            // setOpenPopUp({
-                                                            //     isOpen: true,
-                                                            //     itemList: [],
-                                                            // })
-                                                            setOpenPopUp(true)
+                                                            setOpenPopUp({
+                                                                isOpen: true,
+                                                                itemList: row.listItem,
+                                                            })
+                                                            // setOpenPopUp(true)
                                                         }}
                                                     />
                                                 </TableCell>
@@ -378,7 +380,6 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                 <ViewListPopUp
                     openPopUp={openPopUp}
                     setOpenPopUp={setOpenPopUp}
-                    listItem={[]}
                 />
             </Paper>
         </Fragment>

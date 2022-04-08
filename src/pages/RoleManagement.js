@@ -8,8 +8,9 @@ import { Columns } from "./dummy-data/role-page";
 import Select from "react-select";
 import { RoleUrl, Authen, PermissionUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import { pageActions } from "../redux-store/table/table.slice"
 
 const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) => {
     let optionItem = optionValues.map((option) => {
@@ -31,6 +32,35 @@ const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) 
             }
             setErrorData(errorData);
             console.log("Create success");
+            setIsSubmiting(false);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const handelUpdate = async (values, optionValues, setIsSubmiting, setErrorData) => {
+    let optionItem = optionValues.map((option) => {
+        return option.value
+    });
+
+    const body = {
+        name: values.roleName,
+        permission: optionItem
+    }
+
+    await AxiosInstance.post(RoleUrl.update + values.id, body, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
+            console.log("update success");
             setIsSubmiting(false);
         })
         .catch((error) => {
@@ -65,6 +95,13 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
                     id: content.id,
                     roleName: content.name,
                     key: content.id,
+                    permission: content.count,
+                    listItem: content.listPermission.map((item) => {
+                        return {
+                            permissionId: item.id,
+                            permissionName: item.name,
+                        }
+                    })
                 };
             });
             setReturnData(tableData);
@@ -127,10 +164,12 @@ const checkPermission = async (setPermission) => {
 };
 
 const initialValues = {
-    roleName: ""
+    roleName: "",
+    id: ""
 };
 
 function RoleManagement() {
+    const dispatch = useDispatch();
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
@@ -144,6 +183,17 @@ function RoleManagement() {
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
     const [isChecked, setIsChecked] = useState(false);
     const [optionValues, setOptionValues] = useState([]);
+    const itemIndex = useSelector((state) => state.table.itemIndex);
+    const [isResetting, setIsResetting] = useState(false);
+
+    if (isResetting === true) {
+        dispatch(
+            pageActions.updateItemIndex({
+                itemIndex: null,
+            })
+        );
+        setIsResetting(false);
+    }
 
     const tableDatas = {
         searchKey: null,
@@ -194,6 +244,7 @@ function RoleManagement() {
                             errors,
                             touched,
                             setFieldValue,
+                            isValid,
                         }) => (
                             <Form className='submit-form'>
                                 <div className='form-container'>
@@ -262,25 +313,49 @@ function RoleManagement() {
                                 </div>
                                 <hr />
                                 <div className='list-button'>
-                                    <button className={"btn btn-info"} type='reset'>
+                                    <button
+                                        className={"btn btn-warning"}
+                                        type='button'
+                                        disabled={itemIndex === null ? true : false}
+                                        onClick={
+                                            () => isValid === true ?
+                                                handelUpdate(values, optionValues, setIsSubmiting, setErrorData) :
+                                                console.log("update fail")
+                                        }
+                                    >
+                                        Update
+                                    </button>
+                                    <button
+                                        className={"btn btn-info"}
+                                        type='reset'
+                                        onClick={() => setIsResetting(true)}
+                                    >
                                         Refresh
                                     </button>
-                                    <button className={"btn btn-success"} type='submit'>
-                                        Save
+                                    <button
+                                        className={"btn btn-success"}
+                                        type='submit'
+                                        disabled={itemIndex === null ? false : true}
+                                    >
+                                        Create
                                     </button>
+                                </div>
+                                <div className='layout-table'
+                                    style={{ marginTop: "5rem" }}
+                                >
+                                    <EnhancedTable
+                                        columns={Columns}
+                                        rows={returnData}
+                                        hasViewedBtn={true}
+                                        hasEditedBtn={true}
+                                        totalPages={returnPagination.totalPages}
+                                        setFieldValue={setFieldValue}
+                                        formikValue={values}
+                                    />
                                 </div>
                             </Form>
                         )}
                     </Formik>
-                </div>
-                <div className='layout-table'>
-                    <EnhancedTable
-                        columns={Columns}
-                        rows={returnData}
-                        hasViewedBtn={true}
-                        hasEditedBtn={true}
-                        totalPages={returnPagination.totalPages}
-                    />
                 </div>
                 {errorData.code !== 1 ?
                     <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :

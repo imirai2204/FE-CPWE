@@ -1,9 +1,12 @@
-import React from "react"
+import React, { useState } from "react"
 import "../styles/style.scss";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function IdeaDetail() {
+    const [isAnonymous, setIsAnonymous] = useState(true)
+
     return (
         <div className="container">
             <div className="idea-detail-page">
@@ -12,10 +15,11 @@ function IdeaDetail() {
                     <div className="author">
                         <Avatar className="author-avatar" />
                         <div className="author-info">
-                            <label className="author-name">Anonymous</label>
+                            <label className="author-name">{isAnonymous ? "Anonymous" : "Test user"}</label>
                             <p classname="date-submit">18/04/2022</p>
                         </div>
                     </div>
+                    <VisibilityIcon onClick={() => setIsAnonymous(!isAnonymous)} />
                     <div className="idea-description">
                         <p>In descriptive writing, the author does not just tell the reader
                             what was seen, felt, tested, smelled, or heard. Rather, the author
