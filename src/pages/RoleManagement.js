@@ -277,7 +277,7 @@ function RoleManagement() {
                     <EnhancedTable
                         columns={Columns}
                         rows={returnData}
-                        hasViewBtn={true}
+                        hasViewedBtn={true}
                         hasEditedBtn={true}
                         totalPages={returnPagination.totalPages}
                     />

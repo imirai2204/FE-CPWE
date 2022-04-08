@@ -19,8 +19,7 @@ import ConfirmDialog from "../Modal/ConfirmDialog";
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import Pagination from "@mui/material/Pagination";
-import EditPopup from "../Modal/EditPopup";
-import EditForm from "./EditForm";
+import ViewListPopUp from "../Modal/ViewListPopUp";
 import SearchBar from "../SearchBar/SearchBar";
 import Stack from "@mui/material/Stack";
 import { pageActions } from "../../../redux-store/table/table.slice";
@@ -137,8 +136,13 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
     const [currentPage, setCurrentPage] = useState(1);
     const [currentLimit, setCurrentLimit] = useState(5);
     const [searchKey, setSearchKey] = useState(null);
-    const [openPopup, setOpenpopup] = useState(false);
     const [itemIndex, setItemIndex] = useState(null);
+    // const [openPopUp, setOpenPopUp] = useState({
+    //     isOpen: false,
+    //     itemList: [],
+    // });
+
+    const [openPopUp, setOpenPopUp] = useState(false)
 
     const searchDataHandler = (data) => {
         setSearchKey(data);
@@ -217,7 +221,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                             isEditCol={props.hasEditedBtn}
                             isDeleteCol={props.hasDeletedBtn}
                             isDisableCol={props.hasDisabledBtn}
-                            isViewCol={props.hasViewBtn}
+                            isViewCol={props.hasViewedBtn}
                         />
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy))
@@ -306,7 +310,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                 <Fragment />
                                             )}
 
-                                            {props.hasViewBtn ? (
+                                            {props.hasViewedBtn ? (
                                                 <TableCell
                                                     key={index + 5}
                                                     align={"center"}>
@@ -314,15 +318,14 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                         style={{
                                                             fontSize: "20px",
                                                         }}
-                                                        // onClick={() => {
-                                                        //     setConfirmDialog({
-                                                        //         isOpen: true,
-                                                        //         title: "Are you sure you want to disabled this record?",
-                                                        //         subTitle:
-                                                        //             "You can enable it again before final closure date",
-                                                        //         selectDisable: row.id,
-                                                        //     });
-                                                        // }}
+                                                        onClick={() => 
+                                                            {
+                                                            // setOpenPopUp({
+                                                            //     isOpen: true,
+                                                            //     itemList: [],
+                                                            // })
+                                                            setOpenPopUp(true)
+                                                        }}
                                                     />
                                                 </TableCell>
                                             ) : (
@@ -372,11 +375,12 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}
                 />
+                <ViewListPopUp
+                    openPopUp={openPopUp}
+                    setOpenPopUp={setOpenPopUp}
+                    listItem={[]}
+                />
             </Paper>
-
-            <EditPopup title='Edit' openPopup={openPopup} setOpenpopup={setOpenpopup}>
-                <EditForm props={setOpenpopup} />
-            </EditPopup>
         </Fragment>
     );
 };
