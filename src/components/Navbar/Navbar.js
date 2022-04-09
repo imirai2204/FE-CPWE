@@ -5,8 +5,10 @@ import { sideBarActions } from "../../redux-store/sidebar/sidebar.slice";
 import { Button } from "../UI/Button/Button";
 import { MenuItems } from "./MenuItems";
 import { Link } from "react-router-dom";
-import Dropdown from "./dropdown/Dropdown";
-import DropdownSide from "./dropdown/DropdownSide";
+import CategoryDesktop from "./dropdown/CategoryDesktop";
+import CategoryMobile from "./dropdown/CategoryMobile";
+import ManagementDesktop from "./dropdown/ManagementDesktop";
+import ManagementMobile from "./dropdown/ManagementMobile";
 import User from "./greeting/User";
 import UserMobile from "./greeting/UserMobile";
 
@@ -14,8 +16,10 @@ const Navbar = (props) => {
     /** Call hooks to get data from redux-store */
     const dispatch = useDispatch();
     const [isClicked, setIsClicked] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [showCateDropdown, setShowCateDropdown] = useState(false);
+    const [showMgmtDropdown, setShowMgmtDropdown] = useState(false);
     const isCategoryListShown = useSelector((state) => state.sideBar.isCategoryShown);
+    const isMgmtListShown = useSelector((state) => state.sideBar.isManagementShown);
     const isAccountCardShown = useSelector((state) => state.sideBar.isAccountShown);
     const isCardShown = useSelector((state) => state.user.isCardOpen);
     const userData = useSelector((state) => state.user.userInfo);
@@ -24,8 +28,9 @@ const Navbar = (props) => {
 
     /** Hand Icon Click on Navbar */
     const clickIconHandler = () => {
-        if (isCategoryListShown || isAccountCardShown) {
+        if (isCategoryListShown || isAccountCardShown || isMgmtListShown) {
             dispatch(sideBarActions.toggleCategory(false));
+            dispatch(sideBarActions.toggleManagement(false));
             dispatch(sideBarActions.toggleUserCardMobile(false));
         }
         if (isCardShown) {
@@ -39,6 +44,9 @@ const Navbar = (props) => {
         setIsClicked(false);
         if (isCategoryListShown) {
             dispatch(sideBarActions.toggleCategory(false));
+        }
+        if (isMgmtListShown) {
+            dispatch(sideBarActions.toggleManagement(false));
         }
         if (isAccountCardShown) {
             dispatch(sideBarActions.toggleUserCardMobile(false));
@@ -55,20 +63,26 @@ const Navbar = (props) => {
     const onClickCategoryHandler = () => {
         dispatch(sideBarActions.toggleCategory(true));
     };
+
+    const onClickMgmtHandler = () => {
+        dispatch(sideBarActions.toggleManagement(true));
+    };
     /** For Mobile Size */
 
-    /** Event listener for Category dropdown */
-    const onMouseEnter = () => setShowDropdown(!isMobileSize);
-    const onMouseLeave = () => setShowDropdown(false);
+    /** Event listener for Category and Management dropdown */
+    const onMouseEnterCategory = () => setShowCateDropdown(!isMobileSize);
+    const onMouseLeaveCategory = () => setShowCateDropdown(false);
+    const onMouseEnterMgmt = () => setShowMgmtDropdown(!isMobileSize);
+    const onMouseLeaveMgmt = () => setShowMgmtDropdown(false);
 
     /** Retrieve navbar items from MenuItems.js and render on Navbar */
     const mapMenuItems = MenuItems.map((item, index) => {
-        if (item.hasDropdown) {
+        if (item.isCategory === true) {
             return (
                 <li
                     key={index}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}
+                    onMouseEnter={onMouseEnterCategory}
+                    onMouseLeave={onMouseLeaveCategory}
                     className='nav-items'>
                     <Link
                         className={item.cName}
@@ -76,7 +90,23 @@ const Navbar = (props) => {
                         onClick={isMobileSize ? onClickCategoryHandler : false}>
                         {item.title}
                     </Link>
-                    {showDropdown && <Dropdown />}
+                    {showCateDropdown && <CategoryDesktop />}
+                </li>
+            );
+        } else if (item.isManagement === true) {
+            return (
+                <li
+                    key={index}
+                    onMouseEnter={onMouseEnterMgmt}
+                    onMouseLeave={onMouseLeaveMgmt}
+                    className='nav-items'>
+                    <Link
+                        className={item.cName}
+                        to={item.path}
+                        onClick={isMobileSize ? onClickMgmtHandler : false}>
+                        {item.title}
+                    </Link>
+                    {showMgmtDropdown && <ManagementDesktop />}
                 </li>
             );
         }
@@ -124,7 +154,8 @@ const Navbar = (props) => {
                 </ul>
                 <User userName={userData.fullName} src={userData.avatar} />
             </nav>
-            <DropdownSide onClick={closeMobileMenu} />
+            <ManagementMobile onClick={closeMobileMenu} />
+            <CategoryMobile onClick={closeMobileMenu} />
             <UserMobile onClick={closeMobileMenu} src={userData.avatar} />
         </Fragment>
     );

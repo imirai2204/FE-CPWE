@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../../redux-store/user/user.slice";
 import { Link } from "react-router-dom";
-import { DropdownItems } from "./DropdownItems";
+import { ManagementDropdownItems } from "./DropdownItems";
 
-const Dropdown = () => {
+const ManagementDesktop = () => {
     const dispatch = useDispatch();
     const [isClicked, setIsClicked] = useState(false);
-    const isUserCardOpen = useSelector((state) => state.user.isCardOpen);
+    const isUserCardOpen = useSelector((state) => state.user.isUserCardOpen);
 
     const clickHandler = () => {
         setIsClicked(!isClicked);
@@ -18,7 +18,7 @@ const Dropdown = () => {
 
     const dropdownMenuClasses = isClicked ? "dropdown-menu clicked" : "dropdown-menu";
 
-    const dropdownMenu = DropdownItems.map((item, index) => {
+    const dropdownMenu = ManagementDropdownItems.map((item, index) => {
         return (
             <li key={index} className='dropdown-items'>
                 <Link
@@ -32,12 +32,12 @@ const Dropdown = () => {
     });
 
     return (
-        <>
+        <Fragment>
             <ul onClick={clickHandler} className={dropdownMenuClasses}>
                 {dropdownMenu}
             </ul>
-        </>
+        </Fragment>
     );
 };
 
-export default Dropdown;
+export default ManagementDesktop;
