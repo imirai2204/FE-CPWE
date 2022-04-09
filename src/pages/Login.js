@@ -25,11 +25,12 @@ const Login = () => {
     const auth = useSelector((state) => state.auth);
     const [loginData, setLoginData] = useState(null);
     const [passwordShown, setPasswordShown] = useState(false);
-    const [errorData, setErrorData] = useState({
-        code: 1,
-        message: "ok"
-    });
-
+    // const [errorData, setErrorData] = useState({
+    //     code: 1,
+    //     message: "ok"
+    // });
+    console.log(auth)
+    
     useEffect(() => {
         if (loginData === null) {
             return;
@@ -99,7 +100,7 @@ const Login = () => {
                                     className='btn btn--linear'
                                     type='submit'
                                     style={style}
-                                    onClick={() => setErrorData(errorData.code === -1)}
+                                // onClick={() => setErrorData(errorData.code === -1)}
                                 >
                                     LOGIN
                                 </button>
@@ -110,8 +111,8 @@ const Login = () => {
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {errorData.code !== 1 ?
-                <ErrorMessagePopUp closebtn={setErrorData} errorMess={auth.errorMessage} /> :
+            {auth.errorCode !== 1 ?
+                <ErrorMessagePopUp errorMess={auth.errorMessage} /> :
                 <></>
             }
         </div>

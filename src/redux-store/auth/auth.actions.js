@@ -9,22 +9,36 @@ export const userLogin = (data) => {
         await AxiosInstance.post(Authen.login, body)
             .then((response) => {
                 let responseData = response.data.data;
-                dispatch(
-                    authActions.successLogin({
-                        token: responseData.token,
-                        isSuccess: true,
-                    })
-                );
-                console.log(responseData.userInfo);
-                dispatch(
-                    userActions.updateUserInfo({
-                        userInfo: responseData.userInfo,
-                    })
-                );
+                if (response.data.code === 1) {
+                    dispatch(
+                        authActions.successLogin({
+                            token: responseData.token,
+                            isSuccess: true,
+                        })
+                    );
+                    console.log(responseData.userInfo);
+                    dispatch(
+                        userActions.updateUserInfo({
+                            userInfo: responseData.userInfo,
+                        })
+                    );
+                } else {
+                    dispatch(
+                        authActions.failLogin({
+                            errorMessage: response.data.message,
+                            errorCode: response.data.code
+                        })
+                    );
+                }
             })
             .catch((error) => {
-                dispatch(authActions.failLogin(error.message));
-                console.log(error.message);
+                if (error && error.response) {
+                    dispatch(
+                        authActions.failLogin({
+                            errorMessage: error.message,
+                        })
+                    );
+                }
             });
     };
 };

@@ -4,7 +4,8 @@ const initialState = {
     token: null,
     isLoggedIn: localStorage.getItem("login") === "true" ? true : null,
     hasError: false,
-    errorMessage: null,
+    errorMessage: "",
+    errorCode: 1,
 };
 
 const authSlice = createSlice({
@@ -17,11 +18,14 @@ const authSlice = createSlice({
             state.userInfo = action.payload.userInfo;
             localStorage.setItem("token", state.token);
             localStorage.setItem("login", true);
+            state.errorMessage = action.payload.errorMessage;
+            state.errorCode = action.payload.errorCode;
         },
         failLogin(state, action) {
             state.isLoggedIn = false;
             state.hasError = true;
-            state.errorMessage = action.payload;
+            state.errorMessage = action.payload.errorMessage;
+            state.errorCode = action.payload.errorCode;
         },
         logout() {
             localStorage.clear();

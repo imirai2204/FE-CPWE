@@ -33,11 +33,16 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
         });
 };
 
-const handelUpdate = async (values, setIsSubmiting) => {
+const handelUpdate = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(UserUrl.update + values.userId, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-        .then(() => {
+        .then((res) => {
+            var errorData = {
+                code: res.data.code,
+                message: res.data.message,
+            }
+            setErrorData(errorData);
             console.log("Update success");
             setIsSubmiting(false);
         })
