@@ -8,9 +8,8 @@ import {
 import React, { useState } from "react";
 import "../../../styles/style.scss";
 
-function ConfirmDialog(props) {
+function ConfirmDialog({ confirmDialog, setConfirmDialog, props }) {
     const [buttonShown, setButtonShown] = useState(false);
-    const { confirmDialog, setConfirmDialog } = props;
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -32,7 +31,10 @@ function ConfirmDialog(props) {
                 </label>
                 <button
                     className='btn btn-noline'
-                    onClick={() => {setConfirmDialog({ ...confirmDialog, isOpen: false }); setButtonShown(false)}}>
+                    onClick={() => {
+                        setConfirmDialog({ ...confirmDialog, isOpen: false });
+                        setButtonShown(false);
+                    }}>
                     NO
                 </button>
                 <button

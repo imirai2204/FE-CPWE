@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { saveState, getState } from "../localStorage";
+import { storage } from "../../firebase/firebase";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 
 const currentUserInfo = getState("userData");
+
+const imageRef = ref(storage, "user-avatar/");
 
 export const isEmpty = (value) => {
     return (
@@ -26,6 +30,7 @@ const initialState = {
                   departmentId: "",
                   userRole: "",
                   avatar: "",
+                  userId: "",
               },
 };
 
@@ -45,6 +50,16 @@ const userSlice = createSlice({
             if (isEmpty(action.payload.userInfo.avatar)) {
                 state.userInfo.avatar = "/default-avatar.png";
             } else {
+                let imageName = action.payload.userInfo.userId + ".png";
+                listAll(imageRef).then((response) => {
+                    response.items.forEach((item) => {
+                        if (item.name === imageName) {
+                            getDownloadURL(item).then((url) => {
+                                state.userInfo.avatar = url;
+                            });
+                        }
+                    });
+                });
                 state.userInfo.avatar = action.payload.userInfo.avatar;
             }
             saveState("userData", state.userInfo);
