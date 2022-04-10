@@ -27,7 +27,7 @@ const Comment = ({
     return (
         <div className='comment'>
             <div className='comment-image-container'>
-                <img src='/default-avatar.png' />
+                <img src='/default-avatar.png' alt='default-avatar' />
             </div>
             <div className='comment-right-part'>
                 <div className='comment-content'>
@@ -83,7 +83,7 @@ const Comment = ({
                             <Comment
                                 key={reply.id}
                                 comment={reply}
-                                replies={[]}
+                                replies={[]} //Provide Empty Array as we only allow comment with 2 levels.
                                 currentUserId={currentUserId}
                                 deleteComment={deleteComment}
                                 activeComment={activeComment}

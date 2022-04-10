@@ -16,7 +16,6 @@ const Comments = ({ currentUserId, currentUserName }) => {
         (backendComment) => backendComment.parentId === null
     );
 
-    /** Integrate with API from Backend to Create/Update/Delete/Read comments */
     const getReplies = (commentId) => {
         return backendComments
             .filter((backendComment) => backendComment.parentId === commentId)
@@ -26,6 +25,7 @@ const Comments = ({ currentUserId, currentUserName }) => {
             );
     };
 
+    /** Integrate with API from Backend to Create/Update/Delete/Read comments */
     const addComment = (text, parentId) => {
         console.log("addComment", text, parentId, currentUserId, currentUserName);
         createCommentApi(text, parentId, currentUserId, currentUserName).then(
@@ -95,6 +95,6 @@ const Comments = ({ currentUserId, currentUserName }) => {
             </div>
         </div>
     );
-};
+};;
 
 export default Comments;
