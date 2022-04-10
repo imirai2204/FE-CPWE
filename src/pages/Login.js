@@ -25,11 +25,11 @@ const Login = () => {
     const auth = useSelector((state) => state.auth);
     const [loginData, setLoginData] = useState(null);
     const [passwordShown, setPasswordShown] = useState(false);
-    // const [errorData, setErrorData] = useState({
-    //     code: 1,
-    //     message: "ok"
-    // });
-    console.log(auth)
+    const [errorData, setErrorData] = useState({
+        code: 1,
+        message: "ok"
+    });
+    // console.log(auth)
     
     useEffect(() => {
         if (loginData === null) {
@@ -112,7 +112,7 @@ const Login = () => {
             </div>
             <div className='login-background'></div>
             {auth.errorCode !== 1 ?
-                <ErrorMessagePopUp errorMess={auth.errorMessage} /> :
+                <ErrorMessagePopUp closebtn={setErrorData} errorMess={auth.errorMessage} /> :
                 <></>
             }
         </div>

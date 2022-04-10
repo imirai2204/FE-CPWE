@@ -18,8 +18,6 @@ const authSlice = createSlice({
             state.userInfo = action.payload.userInfo;
             localStorage.setItem("token", state.token);
             localStorage.setItem("login", true);
-            state.errorMessage = action.payload.errorMessage;
-            state.errorCode = action.payload.errorCode;
         },
         failLogin(state, action) {
             state.isLoggedIn = false;
