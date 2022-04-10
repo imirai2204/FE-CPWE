@@ -28,6 +28,9 @@
         color: $color-white;
         font-weight: 600;
         padding: 0.5rem 1rem 1rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
 
         &:hover {
             background-color: $color-yellow-00;

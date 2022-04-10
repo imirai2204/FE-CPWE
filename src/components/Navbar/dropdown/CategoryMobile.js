@@ -2,10 +2,10 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sideBarActions } from "../../../redux-store/sidebar/sidebar.slice";
 import { Link } from "react-router-dom";
-import { DropdownItems } from "./DropdownItems";
+import { CategoryDropdownItems } from "./DropdownItems";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
-const DropdownSide = (props) => {
+const CategoryMobile = (props) => {
     const dispatch = useDispatch();
     const isCategoryDisplayed = useSelector((state) => state.sideBar.isCategoryShown);
 
@@ -18,7 +18,7 @@ const DropdownSide = (props) => {
         dispatch(sideBarActions.toggleCategory(false));
     };
 
-    const dropdownMenu = DropdownItems.map((item, index) => {
+    const dropdownMenu = CategoryDropdownItems.map((item, index) => {
         return (
             <li key={index} className='dropdown-items-mobile'>
                 <Link
@@ -47,4 +47,4 @@ const DropdownSide = (props) => {
     );
 };
 
-export default DropdownSide;
+export default CategoryMobile;

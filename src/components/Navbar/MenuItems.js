@@ -12,16 +12,16 @@ export const MenuItems = [
         hasMenu: false,
     },
     {
-        title: "Manage User",
-        path: "/manage-user",
+        title: "Management",
+        path: "#",
         cName: "nav-link",
-        hasMenu: false,
+        isManagement: true,
     },
     {
         title: "Category",
         path: "#",
         cName: "nav-link",
-        hasDropdown: true,
+        isCategory: true,
     },
     {
         title: "CREATE",
