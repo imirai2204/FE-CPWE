@@ -25,7 +25,7 @@ const CategoryMobile = (props) => {
                     className={`${item.cName} mobile--side--link`}
                     to={item.path}
                     onClick={onClickHandler}>
-                    {item.title}
+                    Manage {item.title}
                 </Link>
             </li>
         );

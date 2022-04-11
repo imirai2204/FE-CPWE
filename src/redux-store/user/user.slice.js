@@ -47,6 +47,7 @@ const userSlice = createSlice({
             state.userInfo.departmentName = action.payload.userInfo.departmentName;
             state.userInfo.departmentId = action.payload.userInfo.departmentId;
             state.userInfo.userRole = action.payload.userInfo.role;
+            state.userInfo.userId = action.payload.userInfo.userId;
             if (isEmpty(action.payload.userInfo.avatar)) {
                 state.userInfo.avatar = "/default-avatar.png";
             } else {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comments from "../components/Comment/Comments";
 import "../styles/style.scss";
@@ -13,40 +13,37 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { convertDate, getFormattedDate } from "../function/library";
 
-const images = [
-    {
-        original: 'https://picsum.photos/id/1018/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    },
-    {
-        original: 'https://picsum.photos/id/1015/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1015/250/150/',
-    },
-    {
-        original: 'https://files.readme.io/069a96b-4d870d7-546212389.jpg',
-        thumbnail: 'https://files.readme.io/069a96b-4d870d7-546212389.jpg',
-    },
-    {
-        original: 'https://cdn.pixabay.com/photo/2015/07/05/13/44/beach-832346__340.jpg',
-        thumbnail: 'https://cdn.pixabay.com/photo/2015/07/05/13/44/beach-832346__340.jpg',
-    },
-];
-
-const handleGet = async (values) => {
-    const paramsValue = {
-        searchKey: values === null || values.searchKey === null ? null : values.searchKey,
-        page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "userId" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
-    };
-    await AxiosInstance.get(IdeaUrl.get, {
+const handleGet = async (setIdeaDetail, setListDocument, setListImage) => {
+    await AxiosInstance.get(IdeaUrl.get + 9, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        params: paramsValue,
     })
         .then((res) => {
-            console.log(res)
+            var data = res.data.data;
+            var createDate = getFormattedDate(convertDate(data.createdDate));
+            var listImage = data.listAttachment.filter((item) => {
+                if (item.picture === 1) {
+                    return item
+                }
+            })
+            var listDocument = data.listAttachment.filter((item) => {
+                if (item.picture === 0) {
+                    return item
+                }
+            })
+            var ideaDetail = {
+                title: data.title,
+                description: data.content,
+                createDate: createDate,
+                createdUser: data.createdUser,
+                isAnonymous: data.isAnonymous,
+                category: data.category,
+                topic: data.topic,
+            }
+            setIdeaDetail(ideaDetail)
+            setListDocument(listDocument)
+            setListImage(listImage)
         })
         .catch((error) => {
             if (error && error.response) {
@@ -60,6 +57,15 @@ function IdeaDetail() {
     const currentUserId = useSelector((state) => state.user.userInfo.userId);
     const currentUserName = useSelector((state) => state.user.userInfo.fullName);
     const [isShowComment, setIsShowComment] = useState(false);
+    const [ideaDetail, setIdeaDetail] = useState({})
+    const [listImage, setListImage] = useState([])
+    const [listDocument, setListDocument] = useState([])
+    const [isLoading, setisLoading] = useState(false);
+
+    useEffect(() => {
+        handleGet(setIdeaDetail, setListDocument, setListImage);
+        setIsAnonymous(ideaDetail.isAnonymous);
+    }, [isLoading])
 
     return (
         <div className='container'>
@@ -68,68 +74,48 @@ function IdeaDetail() {
                     <div className='author'>
                         <div className='author-info'>
                             <label className='author-name'>
-                                {isAnonymous ? "Anonymous" : "Test user"}
+                                {isAnonymous ? "Anonymous" : ideaDetail.createdUser}
                             </label>
-                            <p className='date-submit'>Post date: 18/04/2022</p>
+                            <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
                         </div>
                         <VisibilityIcon
                             className='author-view'
                             onClick={() => setIsAnonymous(!isAnonymous)}
                         />
                     </div>
-                    <h2 className='idea-title'>Idea Detail</h2>
+                    <h2 className='idea-title'>{ideaDetail.title}</h2>
                     <div className='idea-category'>
                         <label className='topic-name'>
                             <PushPinIcon className="icon" />
-                            Topic
+                            {ideaDetail.topic}
                         </label>
                         <label className='category-name'>
                             <TagIcon className="icon" />
-                            Category
+                            {ideaDetail.category}
                         </label>
                     </div>
                     <div className='idea-description'>
-                        <p>
-                            In descriptive writing, the author does not just tell the
-                            reader what was seen, felt, tested, smelled, or heard.
-                            Rather, the author describes something from their own
-                            experience and, through careful choice of words and
-                            phrasing, makes it seem real. Descriptive writing is
-                            vivid, colorful, and detailed.
-                        </p>
+                        <p>{ideaDetail.description}</p>
                     </div>
                     <div className='idea-document'>
                         <label className="idea-label">List upload document</label>
                         <ol>
-                            <li>
-                                <Link
-                                    to='/terms-conditions'
-                                    className='link-item'
-                                    target='_blank'>
-                                    test.docx
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to='/terms-conditions'
-                                    className='link-item'
-                                    target='_blank'>
-                                    test.pdf
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to='/terms-conditions'
-                                    className='link-item'
-                                    target='_blank'>
-                                    test.xlsx
-                                </Link>
-                            </li>
+                            {listDocument.map((item, index) => {
+                                return (<li key={index}>
+                                    <Link
+                                        to={item.downloadUrl}
+                                        className='link-item'
+                                        target='_blank'>
+                                        {item.fileName}
+                                    </Link>
+                                </li>)
+                            }
+                            )}
                         </ol>
                     </div>
                     <div className='idea-image'>
                         <label className="idea-label">List upload image</label>
-                        <ImageGallery showPlayButton={false} items={images} />
+                        <ImageGallery showPlayButton={false} items={listImage} />
                     </div>
                     <hr />
                     <div className='idea-data'>
@@ -156,7 +142,10 @@ function IdeaDetail() {
                     </div>
                     <hr />
                     <div className="idea-button">
-                        <button className="btn btn--outline" type="button">
+                        <button
+                            className="btn btn--outline"
+                            type="button"
+                        >
                             <ThumbUpOutlinedIcon className="btn-icon" />
                             Like
                         </button>

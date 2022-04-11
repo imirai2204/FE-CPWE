@@ -15,7 +15,7 @@
 
     .author {
         display: flex;
-        width: 23rem;
+        width: 24rem;
         box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
         padding: 5px;
         border-bottom: 2px solid $color-black-B3;
@@ -33,7 +33,7 @@
         }
 
         &-view {
-            margin-left: 2.4rem;
+            margin-left: 3.2rem;
         }
     }
 
@@ -47,6 +47,7 @@
             color: $color-black-40;
             margin-top: 3rem;
             text-transform: uppercase;
+            word-wrap: break-word;
         }
 
         &-category {
@@ -67,6 +68,10 @@
             margin-bottom: 2rem;
             text-indent: 3rem;
             text-align: justify;
+
+            p {
+                word-wrap: break-word;
+            }
         }
 
         &-label {

@@ -12,23 +12,28 @@ import { IdeaUrl, Authen, DepartmentUrl, TopicUrl, CategoryUrl } from "../api/En
 import { AxiosInstance } from "../api/AxiosClient";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { useSelector } from "react-redux";
+import { storage } from "../firebase/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const handleSubmit = async (values, setErrorData) => {
-    var formData = new FormData();
-    formData.append("departmentId", values.departmentId);
-    formData.append("topicId", values.topicId);
-    formData.append("categoryId", values.categoryId);
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("contributor", values.contributor);
-
-    if (values.files.length > 0) {
-        for (var i = 0; i < values.files.length; i++) {
-            formData.append("files", values.files[i]);
-        }
+const handleSubmit = async (values, setErrorData, imageUpload) => {
+    const body = {
+        departmentId: values.departmentId,
+        topicId: values.topicId,
+        categoryId: values.categoryId,
+        title: values.title,
+        description: values.description,
+        contributor: values.contributor,
+        files: imageUpload
+        // files: values.files.map((item, index) => {
+        //     return item[index]
+        // })
     }
-
-    await AxiosInstance.post(IdeaUrl.create, formData, {
+    // if (values.files.length > 0) {
+    //     for (var i = 0; i < values.files.length; i++) {
+    //         formData.append("files", values.files[i]);
+    //     }
+    // }
+    await AxiosInstance.post(IdeaUrl.create, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then((res) => {
@@ -166,6 +171,9 @@ const initialValues = {
 
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
+    const [isClickSubmit, setIsClickSubmit] = useState(false);
+    const [imageUpload, setImageUpload] = useState([]);
+    const [imgDownloadUrl, setImgDownloadUrl] = useState([]);
     const [permission, setPermission] = useState(true);
     const [topicName, setTopicName] = useState("");
     const [departmentOption, setDepartmentOption] = useState([]);
@@ -191,6 +199,29 @@ const SubmitPage = (props) => {
         getCategory(null, setCategoryOption);
     }, [userInfo]);
 
+    /**Handle upload image to firebase */
+    useEffect(() => {
+        if (imageUpload.length == 0) {
+            return;
+        }
+        if (isClickSubmit) {
+            let imageRef;
+            imageUpload.forEach((image) => {
+                imageRef = ref(storage, `idea-attachment/${userInfo.userId}/${image.fileName}`)
+                uploadBytes(imageRef, image).then(() => {
+                    alert("Image Upload");
+                    setImgDownloadUrl([...imgDownloadUrl, getDownloadURL(imageRef)])
+                })
+            })
+        }
+        console.log(imageUpload)
+        setIsClickSubmit(false)
+    }, [isClickSubmit])
+
+    const handleImageUpload = (event) => {
+        setImageUpload(event.target.value);
+    };
+
     // checkPermission(setPermission);
 
     const changeTopicName = (topic) => {
@@ -201,15 +232,19 @@ const SubmitPage = (props) => {
         setButtonShown(!buttonShown);
     };
 
+    const clickSubmitHandler = () => {
+        setIsClickSubmit(true);
+    }
+
     if (permission) {
         return (
             <div className='submit-panel'>
                 <h2 className='submit-title'>Create idea</h2>
                 <Formik
                     initialValues={initialValues}
-                    validationSchema={IdeaSchema}
+                    // validationSchema={IdeaSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setErrorData);
+                        handleSubmit(values, setErrorData, imageUpload);
                     }}>
                     {({
                         isSubmiting,
@@ -235,6 +270,7 @@ const SubmitPage = (props) => {
                                             options={departmentOption}
                                             placeholder={"Select depertment"}
                                             isDisabled={false}
+                                            defaultValue={departmentOption[0]}
                                             onChange={(selectOption) => {
                                                 setFieldValue(
                                                     "departmentId",
@@ -375,7 +411,7 @@ const SubmitPage = (props) => {
                                 </label>
                                 <DropzoneArea
                                     acceptedFiles={[
-                                        ".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf",
+                                        ".png,.jpg,.jpeg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf",
                                     ]}
                                     showPreviews={true}
                                     maxFileSize={10000000}
@@ -419,7 +455,8 @@ const SubmitPage = (props) => {
                                 <button
                                     className={`btn btn--medium ${buttonShown ? "" : "disabled"
                                         }`}
-                                    type='submit'>
+                                    type='submit'
+                                    onClick={clickSubmitHandler}>
                                     Submit
                                 </button>
                             </div>

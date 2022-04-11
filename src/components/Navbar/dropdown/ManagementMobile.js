@@ -25,7 +25,7 @@ const ManagementMobile = (props) => {
                     className={`${item.cName} mobile--side--link`}
                     to={item.path}
                     onClick={onClickHandler}>
-                    {item.title}
+                    {item.title.concat(' Management')}
                 </Link>
             </li>
         );

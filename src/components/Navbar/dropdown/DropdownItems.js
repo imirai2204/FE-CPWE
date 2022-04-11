@@ -25,17 +25,17 @@ export const CategoryDropdownItems = [
 export const ManagementDropdownItems = [
     //Management drop down
     {
-        title: "Manage User",
+        title: "User",
         path: "/management/manage-user",
         cName: "dropdown-link",
     },
     {
-        title: "Permission Management",
+        title: "Permission",
         path: "/management/perms-management",
         cName: "dropdown-link",
     },
     {
-        title: "Role Management",
+        title: "Role",
         path: "/management/role-management",
         cName: "dropdown-link",
     },
