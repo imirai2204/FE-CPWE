@@ -351,6 +351,7 @@ function RoleManagement() {
                                         totalPages={returnPagination.totalPages}
                                         setFieldValue={setFieldValue}
                                         formikValue={values}
+                                        setOptionValues={setOptionValues}
                                     />
                                 </div>
                             </Form>

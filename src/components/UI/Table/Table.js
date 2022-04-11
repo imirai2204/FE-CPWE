@@ -129,7 +129,7 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
 
-export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formikValue, ...props }) => {
+export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formikValue, setOptionValues, ...props }) => {
     const dispatch = useDispatch();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("ID");
@@ -207,6 +207,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         setFieldValue("userId", rows[index].id)
         setFieldValue("roleName", rows[index].roleName)
         setFieldValue("id", rows[index].id)
+        setOptionValues(rows[index].listItem)
     }
 
     return (
@@ -257,7 +258,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                             fontSize: "20px",
                                                         }}
                                                         onClick={() => {
-                                                            handleEditUser(setFieldValue, index);
+                                                            handleEditUser(setFieldValue, index, setOptionValues);
                                                             setItemIndex(index);
                                                         }}
                                                     />
