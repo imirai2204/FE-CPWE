@@ -23,9 +23,12 @@ const CommentForm = ({
     return (
         <form onSubmit={onSubmit}>
             <textarea
-                className='comment-form-textarea'
+                className='comment-form-textarea textarea'
                 value={commentText}
                 onChange={onChange}
+                style={{ width: "100%", resize: "none" }}
+                rows={4}
+                placeholder={'Add comment...'}
             />
             <button disabled={isTextareaEmpty} className='comment-form-button'>
                 {submitLabel}

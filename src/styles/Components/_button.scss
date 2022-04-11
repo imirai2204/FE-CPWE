@@ -68,6 +68,25 @@
         line-height: 24px;
         color: $color-black;
     }
+
+    &--outline {
+        background-color: $color-white-FA;
+        width: 30%;
+        border: 2px solid $color-black-B3;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 15px;
+        font-weight: 500;
+
+        &:active{
+            background-color: $color-blue-FF;
+            border: 2px solid $color-blue-CC;
+            color: $color-white-FA;
+        }
+        &:focus{
+            box-shadow: none;
+        }
+    }
 }
 
 .btn--user--info {
@@ -102,20 +121,20 @@
         font-size: 15px;
         width: 10rem;
 
-        &--warning{
-            &:hover{
+        &--warning {
+            &:hover {
                 background-color: #ffc107;
             }
         }
 
-        &--info{
-            &:hover{
+        &--info {
+            &:hover {
                 background-color: #31d2f2;
             }
         }
 
-        &--success{
-            &:hover{
+        &--success {
+            &:hover {
                 background-color: #157347;
             }
         }

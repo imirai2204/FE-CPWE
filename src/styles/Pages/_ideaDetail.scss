@@ -4,36 +4,118 @@
     padding-bottom: 2rem;
     margin: 3rem 20rem 2rem;
 
-    .idea-title {
-        text-align: center;
+    label {
+        font-size: 20px;
     }
 
-    .idea-body {
-        margin: 3rem 2rem 2rem;
+    .icon {
+        font-size: 20px;
+        align-self: center;
     }
 
     .author {
         display: flex;
-        width: 16rem;
+        width: 23rem;
         box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
         padding: 5px;
         border-bottom: 2px solid $color-black-B3;
         border-right: 2px solid $color-black-B3;
         border-radius: 5px;
 
-        &-avatar {
-            align-self: center;
+        &-name {
+            font-size: 15px;
         }
 
         &-info {
             align-self: center;
-            margin-left: 16px;
+            margin-left: 20px;
             height: 45px;
+        }
+
+        &-view {
+            margin-left: 2.4rem;
         }
     }
 
-    .idea-description {
-        margin-top: 2rem;
-        text-indent: 5rem;
+    .idea {
+        &-body {
+            margin: 3rem 2rem 2rem;
+        }
+
+        &-title {
+            text-align: center;
+            color: $color-black-40;
+            margin-top: 3rem;
+            text-transform: uppercase;
+        }
+
+        &-category {
+            padding-left: 3rem;
+
+            .topic-name {
+                color: $color-blue-CC;
+                margin-right: 1rem;
+            }
+
+            .category-name {
+                color: $color-green;
+            }
+        }
+
+        &-description {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            text-indent: 3rem;
+            text-align: justify;
+        }
+
+        &-label {
+            margin-bottom: 1rem;
+            margin-left: 3rem;
+        }
+
+        &-document {
+            ol {
+                font-size: 15px;
+                margin-left: 3rem;
+                margin-bottom: 2rem;
+            }
+
+            li::marker {
+                font-weight: 700;
+            }
+
+            .link-item {
+                margin-left: 1rem;
+            }
+        }
+
+        &-data {
+            margin-left: 3rem;
+            margin-right: 3rem;
+            display: flex;
+            justify-content: space-between;
+
+            .data-detail {
+                margin-right: 2rem;
+                font-family: "Montserrat", sans-serif;
+
+                .icon {
+                    margin-right: 1rem;
+                }
+            }
+        }
+
+        &-button {
+            margin-left: 3rem;
+            margin-right: 3rem;
+            display: flex;
+            justify-content: space-between;
+
+            .btn-icon{
+                font-size: 18px;
+                margin-right: 1rem;
+            }
+        }
     }
 }

@@ -71,8 +71,6 @@ const Comments = ({ currentUserId, currentUserName }) => {
 
     return (
         <div className='comments'>
-            <h3>Comments</h3>
-            <div className='comment-form-title'>Write your comment</div>
             <CommentForm
                 submitLabel='Add Comment'
                 handleSubmit={addComment}

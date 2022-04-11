@@ -5,6 +5,7 @@ export const Authen = {
 
 export const IdeaUrl = {
     create: "/idea/create",
+    get: "/idea/get/"
 };
 
 export const AcademicUrl = {
