@@ -20,6 +20,7 @@ import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
 import IdeaDetail from "./pages/IdeaDetail";
 import PageNotFound from "./404";
+import { Warn } from "./api/EndPoint"
 
 function GlobalRoute({ children, ...props }) {
     return (
@@ -66,11 +67,11 @@ function App() {
                         exact
                         element={<ManageUser />}
                     />
-                    <Route
+                    {/* <Route
                         path='/management/perms-management'
                         exact
                         element={<PermissionManagement />}
-                    />
+                    /> */}
                     <Route path='/category/semester' exact element={<AcademicYear />} />
                     <Route path='/category/department' exact element={<Department />} />
                     <Route path='/category/tags' exact element={<Tags />} />
@@ -85,7 +86,7 @@ function App() {
                     <Route path='/terms-conditions' exact element={<Terms />} />
                     <Route path='/idea-detail' exact element={<IdeaDetail />} />
                     <Route path='*' element={<Navigate to='/404' />} />
-                    <Route path='/404' exact element={<PageNotFound />} />
+                    <Route path='/404' exact element={<PageNotFound warn={Warn.noExist} />} />
                 </PrivateRoute>
             )}
             {!isLoggedIn && (
@@ -131,7 +132,7 @@ function App() {
                         element={<Navigate to='/login' />}
                     />
                     <Route path='*' element={<Navigate to='/404' />} />
-                    <Route path='/404' exact element={<PageNotFound />} />
+                    <Route path='/404' exact element={<PageNotFound warn={Warn.noExist} />} />
                 </GlobalRoute>
             )}
         </Fragment>

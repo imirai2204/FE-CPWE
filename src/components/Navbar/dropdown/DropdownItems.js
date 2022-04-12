@@ -29,11 +29,11 @@ export const ManagementDropdownItems = [
         path: "/management/manage-user",
         cName: "dropdown-link",
     },
-    {
-        title: "Permission",
-        path: "/management/perms-management",
-        cName: "dropdown-link",
-    },
+    // {
+    //     title: "Permission",
+    //     path: "/management/perms-management",
+    //     cName: "dropdown-link",
+    // },
     {
         title: "Role",
         path: "/management/role-management",
@@ -75,3 +75,19 @@ export const UserRole = [
     { value: 2, label: "QA coordinator", key: "2" },
     { value: 3, label: "Staff", key: "3" },
 ];
+
+export const YearOptions = [
+    { value: "2022", label: "Year 2022", key: "1" },
+    { value: "2023", label: "Year 2023", key: "2" },
+    { value: "2024", label: "Year 2024", key: "3" },
+];
+
+export const SortOptions = [
+    { value: "mostlike", label: "Most Likes", key: "1" },
+    { value: "mostdislike", label: "Most Dislikes", key: "2" },
+    { value: "mostview", label: "Most Views", key: "3" },
+    { value: "lastidea", label: "Last Idea", key: "4" },
+    { value: "lastcomment", label: "Last Comment", key: "5" },
+];
+
+

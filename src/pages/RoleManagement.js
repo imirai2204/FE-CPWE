@@ -4,13 +4,15 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { RoleSchema } from "../validation";
-import { Columns } from "./dummy-data/role-page";
+import { ColumnsRole } from "../components/UI/Table/TableItems";
 import Select from "react-select";
-import { RoleUrl, Authen, PermissionUrl } from "../api/EndPoint";
+import { RoleUrl, PermissionUrl, Flag, Warn } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector, useDispatch } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { pageActions } from "../redux-store/table/table.slice"
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) => {
     let optionItem = optionValues.map((option) => {
@@ -70,7 +72,7 @@ const handelUpdate = async (values, optionValues, setIsSubmiting, setErrorData) 
         });
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
     // console.log(values);
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
@@ -144,25 +146,6 @@ const getPermission = async (values, setPermissionOption) => {
         });
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 const initialValues = {
     roleName: "",
     id: ""
@@ -215,11 +198,17 @@ function RoleManagement() {
     }
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination);
+        handleGet(null, setReturnData, setPagination);
         getPermission(null, setPermissionOption);
         setIsSubmiting(true);
     }
@@ -344,7 +333,7 @@ function RoleManagement() {
                                     style={{ marginTop: "5rem" }}
                                 >
                                     <EnhancedTable
-                                        columns={Columns}
+                                        columns={ColumnsRole}
                                         rows={returnData}
                                         hasViewedBtn={true}
                                         hasEditedBtn={true}
@@ -366,9 +355,7 @@ function RoleManagement() {
         );
     } else {
         return (
-            <div>
-                <p>You have no permission</p>
-            </div>
+            <PageNotFound warn={Warn.noPermission} />
         );
     }
 }

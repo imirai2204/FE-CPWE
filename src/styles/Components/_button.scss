@@ -121,22 +121,26 @@
         font-size: 15px;
         width: 10rem;
 
-        &--warning {
+        &-warning {
             &:hover {
                 background-color: #ffc107;
             }
         }
 
-        &--info {
+        &-info {
             &:hover {
                 background-color: #31d2f2;
             }
         }
 
-        &--success {
+        &-success {
             &:hover {
                 background-color: #157347;
             }
+        }
+
+        &-avatar {
+            width: 15rem;
         }
     }
 }

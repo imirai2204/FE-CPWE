@@ -36,10 +36,6 @@ export const UserUrl = {
     changePass: "user/change-pass"
 };
 
-// export const RoleUrl = {
-//     get: "/authen/get/roles",
-// };
-
 export const PermissionUrl = {
     create: "/create",
     get: "/role/permission/get",
@@ -48,5 +44,20 @@ export const PermissionUrl = {
 export const RoleUrl = {
     create: "/role/create",
     get: "/role/get",
-    update: "/role/update/"
+    update: "/role/update/",
+    authen: "role/permission/check/"
 };
+
+export const Flag = {
+    manageUser: "MUSER",
+    manageRole: "MROLE",
+    manageSemester: "MSEMES",
+    manageDepartment: "MDEPT",
+    manageTopic: "MTOPIC",
+    manageCategory: "MCATE"
+}
+
+export const Warn = {
+    noPermission: "You have no permission",
+    noExist: "The requested page was not found"
+}

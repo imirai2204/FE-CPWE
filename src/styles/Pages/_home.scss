@@ -1,0 +1,28 @@
+.home-page {
+    .page-title {
+        text-transform: uppercase;
+        color: $color-red-24;
+        text-align: center;
+    }
+
+    .banner-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 20px;
+        margin-bottom: 3rem;
+    }
+
+    .sort-list {
+        // flex-flow: column wrap;
+        // justify-content: space-around;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 3rem;
+
+        .select {
+            width: 100%;
+            margin: 1rem;
+        }
+    }
+}

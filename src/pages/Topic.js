@@ -5,13 +5,15 @@ import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { TopicSchema } from "../validation";
 import Select from "react-select";
-import { YearOptions } from "./dummy-data/years-page";
-import { Columns } from "./dummy-data/topic-page";
-import { TopicUrl, Authen, AcademicUrl, DepartmentUrl } from "../api/EndPoint";
+import { YearOptions } from "../components/Navbar/dropdown/DropdownItems";
+import { ColumnsTopic } from "../components/UI/Table/TableItems";
+import { TopicUrl, AcademicUrl, DepartmentUrl, Flag, Warn } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(TopicUrl.create, values, {
@@ -33,7 +35,7 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
         });
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -143,25 +145,6 @@ const initialValues = {
     finalEndDate: "",
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 function Topic() {
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
@@ -187,11 +170,17 @@ function Topic() {
     };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination);
+        handleGet(null, setReturnData, setPagination);
         getDepartment(null, setDepartmentOption);
         setIsSubmiting(true);
     }
@@ -342,7 +331,7 @@ function Topic() {
                 </div>
                 <div className='layout-table'>
                     <EnhancedTable
-                        columns={Columns}
+                        columns={ColumnsTopic}
                         rows={returnData}
                         hasEditedBtn={false}
                         hasDeletedBtn={false}
@@ -358,9 +347,7 @@ function Topic() {
         );
     } else {
         return (
-            <div>
-                <p>You have no permission</p>
-            </div>
+            <PageNotFound warn={Warn.noPermission} />
         );
     }
 }

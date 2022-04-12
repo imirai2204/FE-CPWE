@@ -4,11 +4,13 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { DepartmentSchema } from "../validation";
-import { DepartmentUrl, Authen } from "../api/EndPoint";
-import { Columns } from "./dummy-data/department-page";
+import { DepartmentUrl, Flag, Warn } from "../api/EndPoint";
+import { ColumnsDepartment } from "../components/UI/Table/TableItems";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(DepartmentUrl.create, values, {
@@ -30,7 +32,7 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
         });
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -69,25 +71,6 @@ const initialValues = {
     department: "",
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 function Department() {
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
@@ -111,11 +94,17 @@ function Department() {
     };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
 
     if (isSubmiting === false) {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
+        handleGet(tableDatas, setReturnData, setPagination);
         setIsSubmiting(true);
     }
 
@@ -166,7 +155,7 @@ function Department() {
                 </div>
                 <div className='layout-table'>
                     <EnhancedTable
-                        columns={Columns}
+                        columns={ColumnsDepartment}
                         rows={returnData}
                         totalPages={returnPagination.totalPages}
                     />
@@ -179,9 +168,7 @@ function Department() {
         );
     } else {
         return (
-            <div>
-                <p>You have no permission</p>
-            </div>
+            <PageNotFound warn={Warn.noPermission} />
         );
     }
 }

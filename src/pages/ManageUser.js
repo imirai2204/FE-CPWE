@@ -5,13 +5,15 @@ import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { UserSchema } from "../validation";
 import Select from "react-select";
-import { Columns } from "./dummy-data/manage-page";
+import { ColumnsUser } from "../components/UI/Table/TableItems";
 import { Gender } from "../components/Navbar/dropdown/DropdownItems";
-import { UserUrl, Authen, DepartmentUrl, RoleUrl } from "../api/EndPoint";
+import { UserUrl, DepartmentUrl, RoleUrl, Flag, Warn } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector, useDispatch } from "react-redux";
 import { pageActions } from "../redux-store/table/table.slice"
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(UserUrl.create, values, {
@@ -53,7 +55,7 @@ const handelUpdate = async (values, setIsSubmiting, setErrorData) => {
         });
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -160,25 +162,6 @@ const getRole = async (values, setRoleOption) => {
         });
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 const initialValue = {
     firstname: "",
     lastname: "",
@@ -217,8 +200,15 @@ function ManageUser() {
     };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
+
 
     if (isResetting === true) {
         dispatch(
@@ -230,7 +220,7 @@ function ManageUser() {
     }
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination);
+        handleGet(null, setReturnData, setPagination);
         getDepartment(null, setDepartmentOption);
         getRole(null, setRoleOption);
         setIsSubmiting(true);
@@ -466,9 +456,8 @@ function ManageUser() {
                                     style={{ marginTop: "5rem" }}
                                 >
                                     <EnhancedTable
-                                        columns={Columns}
+                                        columns={ColumnsUser}
                                         rows={returnData}
-                                        // rows={Data}
                                         hasEditedBtn={true}
                                         totalPages={returnPagination.totalPages}
                                         setFieldValue={setFieldValue}
@@ -487,9 +476,7 @@ function ManageUser() {
         );
     } else {
         return (
-            <div>
-                <p>You have no permission</p>
-            </div>
+            <PageNotFound warn={Warn.noPermission} />
         );
     }
 }

@@ -242,7 +242,7 @@ const SubmitPage = (props) => {
                 <h2 className='submit-title'>Create idea</h2>
                 <Formik
                     initialValues={initialValues}
-                    // validationSchema={IdeaSchema}
+                    validationSchema={IdeaSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         handleSubmit(values, setErrorData, imageUpload);
                     }}>

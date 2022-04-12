@@ -5,12 +5,15 @@ import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { AcademicYearSchema } from "../validation";
 import Select from "react-select";
-import { YearOptions, Columns } from "./dummy-data/years-page";
-import { AcademicUrl, Authen } from "../api/EndPoint";
+import { YearOptions } from "../components/Navbar/dropdown/DropdownItems";
+import { ColumnsSemester } from "../components/UI/Table/TableItems";
+import { AcademicUrl, Flag, Warn } from "../api/EndPoint";
 import { convertDate, getFormattedDate } from "../function/library";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(AcademicUrl.create, values, {
@@ -32,7 +35,7 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
         });
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -79,27 +82,8 @@ const initialValues = {
     endDate: "",
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 function AcademicYear() {
-    const [permission, setPermission] = useState(true);
+    const [permission, setPermission] = useState(false);
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
@@ -121,11 +105,18 @@ function AcademicYear() {
     };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
+
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination);
+        handleGet(null, setReturnData, setPagination);
         setIsSubmiting(true);
     }
 
@@ -215,7 +206,7 @@ function AcademicYear() {
                 </div>
                 <div className='layout-table'>
                     <EnhancedTable
-                        columns={Columns}
+                        columns={ColumnsSemester}
                         rows={returnData}
                         totalPages={returnPagination.totalPages}
                     />
@@ -228,9 +219,7 @@ function AcademicYear() {
         );
     } else {
         return (
-            <div>
-                <p>You have no permission</p>
-            </div>
+            <PageNotFound warn={Warn.noPermission} />
         );
     }
 }

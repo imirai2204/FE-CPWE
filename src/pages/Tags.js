@@ -4,12 +4,14 @@ import { ErrorMessage, Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { TagSchema } from "../validation";
-import { TableColumns } from "./dummy-data/tags-page";
+import { ColumnsCategory } from "../components/UI/Table/TableItems";
 import Select from "react-select";
-import { CategoryUrl, Authen, TopicUrl } from "../api/EndPoint";
+import { CategoryUrl, TopicUrl, Flag, Warn } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(CategoryUrl.create, values, {
@@ -31,7 +33,7 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
         });
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
     console.log(values);
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
@@ -102,25 +104,6 @@ const initialValues = {
     category: "",
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 const Tags = (props) => {
     const [permission, setPermission] = useState(true);
     const [returnData, setReturnData] = useState([]);
@@ -145,11 +128,17 @@ const Tags = (props) => {
     };
 
     useEffect(() => {
-        handleGet(tableDatas, setReturnData, returnData, setPagination);
-    }, [currentPage, currentLimit]);
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
 
     if (isSubmiting === false) {
-        handleGet(null, setReturnData, returnData, setPagination);
+        handleGet(null, setReturnData, setPagination);
         getTopic(null, setTopicOption);
         setIsSubmiting(true);
     }
@@ -238,7 +227,7 @@ const Tags = (props) => {
                 </div>
                 <div className='layout-table'>
                     <EnhancedTable
-                        columns={TableColumns}
+                        columns={ColumnsCategory}
                         rows={returnData}
                         hasDeletedBtn={true}
                         totalPages={returnPagination.totalPages}
@@ -252,9 +241,7 @@ const Tags = (props) => {
         );
     } else {
         return (
-            <div>
-                <p>You have no permission</p>
-            </div>
+            <PageNotFound warn={Warn.noPermission} />
         );
     }
 };

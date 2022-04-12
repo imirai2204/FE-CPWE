@@ -4,11 +4,13 @@ import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { EnhancedTable } from "../components/UI/Table/Table";
 import { PermissionSchema } from "../validation";
-import { PermissionUrl, Authen } from "../api/EndPoint";
-import { Columns, Data } from "./dummy-data/permission-page";
+import { PermissionUrl, Flag, Warn  } from "../api/EndPoint";
+import { ColumnsPermission } from "../components/UI/Table/TableItems";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector, useDispatch } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
+import AuthorizationAPI from "../api/AuthorizationAPI";
+import PageNotFound from "../404";
 
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
 	await AxiosInstance.post(PermissionUrl.create, values, {
@@ -30,7 +32,7 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
 		});
 };
 
-const handleGet = async (values, setReturnData, returnData, setPagination) => {
+const handleGet = async (values, setReturnData, setPagination) => {
 	const paramsValue = {
 		searchKey: values === null || values.searchKey === null ? null : values.searchKey,
 		page: values === null || values.page === null ? 1 : values.page,
@@ -65,25 +67,6 @@ const handleGet = async (values, setReturnData, returnData, setPagination) => {
 		});
 };
 
-const checkPermission = async (setPermission) => {
-	await AxiosInstance.post(Authen.checkPermission, {
-		headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-	})
-		.then((response) => {
-			if (response.data.code === 1) {
-				setPermission(true);
-			} else {
-				setPermission(false);
-			}
-		})
-		.catch((error) => {
-			if (error && error.response) {
-				console.log("Error: ", error);
-				// setHasError(true);
-			}
-		});
-};
-
 const initialValues = {
 	permissionName: "",
 	permissionURL: "",
@@ -109,12 +92,18 @@ function PermissionManagement() {
 		sortType: null,
 	};
 
-	useEffect(() => {
-		handleGet(tableDatas, setReturnData, returnData, setPagination);
-	}, [currentPage, currentLimit]);
+    useEffect(() => {
+        AuthorizationAPI(Flag.manageSemester, setPermission)
+    }, [permission])
+
+    useEffect(() => {
+        if (permission === true) {
+            handleGet(tableDatas, setReturnData, setPagination);
+        }
+    }, [permission, currentPage, currentLimit]);
 
 	if (isSubmiting === false) {
-		handleGet(null, setReturnData, returnData, setPagination);
+		handleGet(null, setReturnData, setPagination);
 		setIsSubmiting(true);
 	}
 
@@ -179,7 +168,7 @@ function PermissionManagement() {
 				</div>
 				<div className="layout-table">
 					<EnhancedTable
-						columns={Columns}
+						columns={ColumnsPermission}
 						hasDeletedBtn={true}
 						rows={returnData}
 						totalPages={returnPagination.totalPages}
@@ -193,9 +182,7 @@ function PermissionManagement() {
 		);
 	} else {
 		return (
-			<div>
-				<p>You have no permission</p>
-			</div>
+			<PageNotFound warn={Warn.noPermission} />
 		);
 	}
 }
