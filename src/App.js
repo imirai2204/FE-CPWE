@@ -84,7 +84,7 @@ function App() {
                     />
                     <Route path='/user/user-settings' exact element={<UserDetails />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
-                    <Route path='/idea-detail' exact element={<IdeaDetail />} />
+                    <Route path='/idea-detail/:id' element={<IdeaDetail />} />
                     <Route path='*' element={<Navigate to='/404' />} />
                     <Route path='/404' exact element={<PageNotFound warn={Warn.noExist} />} />
                 </PrivateRoute>

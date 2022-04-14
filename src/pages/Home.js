@@ -8,44 +8,46 @@ import { ColumnsIdea } from "../components/UI/Table/TableItems"
 import Select from "react-select";
 import { SortOptions } from "../components/Navbar/dropdown/DropdownItems";
 
-import { Link } from "react-router-dom";
-
-// const handleGet = async (setIdeaDetail, setListDocument, setListImage) => {
-//     await AxiosInstance.get(IdeaUrl.get, {
-//         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-//     })
-//         .then((res) => {
-//             var data = res.data.data;
-//             var createDate = getFormattedDate(convertDate(data.createdDate));
-//             var listImage = data.listAttachment.filter((item) => {
-//                 if (item.picture === 1) {
-//                     return item
-//                 }
-//             })
-//             var listDocument = data.listAttachment.filter((item) => {
-//                 if (item.picture === 0) {
-//                     return item
-//                 }
-//             })
-//             var ideaDetail = {
-//                 title: data.title,
-//                 description: data.content,
-//                 createDate: createDate,
-//                 createdUser: data.createdUser,
-//                 isAnonymous: data.isAnonymous,
-//                 category: data.category,
-//                 topic: data.topic,
-//             }
-//             setIdeaDetail(ideaDetail)
-//             setListDocument(listDocument)
-//             setListImage(listImage)
-//         })
-//         .catch((error) => {
-//             if (error && error.response) {
-//                 console.log("Error: ", error);
-//             }
-//         });
-// };
+const handleGet = async (values, setReturnData, setPagination) => {
+    var paramsValue = {
+        searchKey: null,
+        departmentId: values === null || values.departmentId === null ? null : values.departmentId,
+        academicId: values === null || values.academicId === null ? null : values.academicId,
+        topicId: values === null || values.topicId === null ? null : values.topicId,
+        categoryId: values === null || values.categoryId === null ? null : values.categoryId,
+        page: values === null || values.page === null ? 1 : values.page,
+        limit: values === null || values.limit === null ? 5 : values.limit,
+        sort: 1
+    }
+    await AxiosInstance.get(IdeaUrl.getList, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue
+    })
+        .then((res) => {
+            console.log(res)
+            var pagination = {
+                page: res.data.data.page,
+                size: res.data.data.size,
+                totalPages: res.data.data.totalPages,
+            };
+            var tableData = res.data.data.content.map((item) => {
+                return{
+                    topic: item.topic,
+                    category: item.category,
+                    title: item.ideaTitle,
+                    author: item.createdUser,
+                    url: "/idea-detail/" + item.id,
+                }           
+            })
+            setReturnData(tableData);
+            setPagination(pagination);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
 
 const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
@@ -60,7 +62,7 @@ const getSemester = async (values, setSemesterOption) => {
         params: paramsValue,
     })
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             var semesterOption = res.data.data.content.map((data) => {
                 return {
                     value: data.id,
@@ -165,33 +167,6 @@ const getCategory = async (values, setCategoryOption) => {
         });
 };
 
-const handleChangeSort = (value, setSortBy, setSortType) => {
-    switch (value) {
-        case "mostlike":
-            setSortBy("like")
-            setSortType("desc")
-            break;
-        case "mostdislike":
-            setSortBy("dislike")
-            setSortType("desc")
-            break;
-        case "mostview":
-            setSortBy("view")
-            setSortType("desc")
-            break;
-        case "lastidea":
-            setSortBy("createDate")
-            setSortType("desc")
-            break;
-        case "lastcomment":
-            setSortBy("createDate")
-            setSortType("desc")
-            break;
-        default:
-            console.log("No Value")
-            break;
-    }
-}
 
 function handleChangeFilter(value, setFilterBy) {
     setFilterBy(value);
@@ -214,7 +189,7 @@ function Home() {
 
     useEffect(() => {
         if (isLoading) {
-
+            handleGet(null, setReturnData, setPagination);
             getSemester(null, setSemesterOption);
             getDepartment(null, setDepartmentOption);
             getTopic(null, setTopicOption);
@@ -339,9 +314,10 @@ function Home() {
                     name='sortType'
                     id='sortType'
                     options={SortOptions}
+                    defaultValue={SortOptions[0]}
                     placeholder={"Sort"}
                     onChange={(selectOption) => {
-                        handleChangeSort(selectOption.value, setSortBy, setSortType)
+                        // handleChangeSort(selectOption.value, setSortBy, setSortType)
                     }}
                     menuPortalTarget={document.body}
                     styles={{

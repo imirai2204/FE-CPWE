@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comments from "../components/Comment/Comments";
 import "../styles/style.scss";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ImageGallery from 'react-image-gallery';
 import { IdeaUrl } from "../api/EndPoint";
@@ -15,8 +15,8 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { convertDate, getFormattedDate } from "../function/library";
 
-const handleGet = async (setIdeaDetail, setListDocument, setListImage) => {
-    await AxiosInstance.get(IdeaUrl.get + 9, {
+const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
+    await AxiosInstance.get(IdeaUrl.get + id, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then((res) => {
@@ -62,8 +62,10 @@ function IdeaDetail() {
     const [listDocument, setListDocument] = useState([])
     const [isLoading, setisLoading] = useState(false);
 
+    let { id } = useParams();
+
     useEffect(() => {
-        handleGet(setIdeaDetail, setListDocument, setListImage);
+        handleGet(setIdeaDetail, setListDocument, setListImage, id);
         setIsAnonymous(ideaDetail.isAnonymous);
     }, [isLoading])
 

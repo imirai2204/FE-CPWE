@@ -341,6 +341,7 @@ function RoleManagement() {
                                         setFieldValue={setFieldValue}
                                         formikValue={values}
                                         setOptionValues={setOptionValues}
+                                        type={"role"}
                                     />
                                 </div>
                             </Form>

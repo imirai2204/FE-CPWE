@@ -83,11 +83,11 @@ export const YearOptions = [
 ];
 
 export const SortOptions = [
-    { value: "mostlike", label: "Most Likes", key: "1" },
-    { value: "mostdislike", label: "Most Dislikes", key: "2" },
-    { value: "mostview", label: "Most Views", key: "3" },
-    { value: "lastidea", label: "Last Idea", key: "4" },
-    { value: "lastcomment", label: "Last Comment", key: "5" },
+    { value: 1, label: "Latest Idea", key: "1" },
+    { value: 2, label: "Most Likes", key: "2" },
+    { value: 3, label: "Most Dislikes", key: "3" },
+    { value: 4, label: "Most Views", key: "4" },
+    { value: 5, label: "Latest Comment", key: "5" },
 ];
 
 

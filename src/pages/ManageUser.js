@@ -60,8 +60,8 @@ const handleGet = async (values, setReturnData, setPagination) => {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "userId" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(UserUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -139,6 +139,7 @@ const getRole = async (values, setRoleOption) => {
         limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        selectBox: true,
     };
     await AxiosInstance.get(RoleUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -428,7 +429,7 @@ function ManageUser() {
                                     <button
                                         className={"btn btn-warning"}
                                         type='button'
-                                        disabled={itemIndex === null ? true : false}
+                                        disabled={values.userId === "" || values.userId === null ? true : false}
                                         onClick={
                                             () => isValid === true ?
                                                 handelUpdate(values, setIsSubmiting) :
@@ -447,7 +448,7 @@ function ManageUser() {
                                     <button
                                         className={"btn btn-success"}
                                         type='submit'
-                                        disabled={itemIndex === null ? false : true}
+                                        disabled={values.userId === "" || values.userId === null ? false : true}
                                     >
                                         Create
                                     </button>
@@ -462,6 +463,7 @@ function ManageUser() {
                                         totalPages={returnPagination.totalPages}
                                         setFieldValue={setFieldValue}
                                         formikValue={values}
+                                        type={"user"}
                                     />
                                 </div>
                             </Form>
