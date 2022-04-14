@@ -18,6 +18,12 @@ import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { storage } from "../firebase/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 
+const errorMessage = (error) => {
+    if (error && error.response) {
+        return "Error: " + error;
+    }
+};
+
 const handelUpdate = async (values) => {
     await AxiosInstance.post(UserUrl.update + values.userId, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -26,9 +32,7 @@ const handelUpdate = async (values) => {
             console.log("Update success");
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -45,9 +49,7 @@ const handelUpdatePassword = async (values, setErrorData) => {
             console.log("Update success");
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -80,9 +82,7 @@ const handleGet = async (values, setUserData) => {
             setUserData(userData);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -110,9 +110,7 @@ const getDepartment = async (values, setDepartmenOption) => {
             setDepartmenOption(departmentOption);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -140,9 +138,7 @@ const getRole = async (values, setRoleOption) => {
             setRoleOption(roleOption);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -264,10 +260,7 @@ function UserDetails() {
                         borderColor: "divider",
                         marginTop: "2rem",
                     }}>
-                    <TabList
-                        onChange={handleChange}
-                        aria-label='Tab user setting'
-                        centered>
+                    <TabList onChange={handleChange} aria-label='Tab user setting' centered>
                         <Tab
                             label='Change user info'
                             value='info'
@@ -340,9 +333,7 @@ function UserDetails() {
                                                     />
                                                 </div>
                                                 <div className='input-section'>
-                                                    <label className='label'>
-                                                        Gender
-                                                    </label>
+                                                    <label className='label'>Gender</label>
                                                     <Select
                                                         className='select'
                                                         name='sex'
@@ -362,14 +353,9 @@ function UserDetails() {
                                                                 },
                                                             });
                                                         }}
-                                                        value={Gender.filter(
-                                                            (option) => {
-                                                                return (
-                                                                    option.value ===
-                                                                    values.sex
-                                                                );
-                                                            }
-                                                        )}
+                                                        value={Gender.filter((option) => {
+                                                            return option.value === values.sex;
+                                                        })}
                                                         maxMenuHeight={200}
                                                     />
                                                     <ErrorMessage
@@ -403,17 +389,13 @@ function UserDetails() {
                                                     />
                                                 </div>
                                                 <div className='input-section label-mark'>
-                                                    <label className='label'>
-                                                        Department
-                                                    </label>
+                                                    <label className='label'>Department</label>
                                                     <Select
                                                         className='select'
                                                         name='departmentId'
                                                         id='department'
                                                         options={departmentOption}
-                                                        placeholder={
-                                                            "Select Department"
-                                                        }
+                                                        placeholder={"Select Department"}
                                                         isDisabled={true}
                                                         onChange={(selectOption) => {
                                                             setFieldValue(
@@ -428,17 +410,12 @@ function UserDetails() {
                                                                 },
                                                             });
                                                         }}
-                                                        value={departmentOption.filter(
-                                                            (option) => {
-                                                                return (
-                                                                    option.value ===
-                                                                    values.departmentId
-                                                                );
-                                                            }
-                                                        )}
-                                                        defaultValue={
-                                                            departmentOption[0]
-                                                        }
+                                                        value={departmentOption.filter((option) => {
+                                                            return (
+                                                                option.value === values.departmentId
+                                                            );
+                                                        })}
+                                                        defaultValue={departmentOption[0]}
                                                         maxMenuHeight={200}
                                                     />
                                                     <ErrorMessage
@@ -448,17 +425,13 @@ function UserDetails() {
                                                     />
                                                 </div>
                                                 <div className='input-section label-mark'>
-                                                    <label className='label'>
-                                                        User Role
-                                                    </label>
+                                                    <label className='label'>User Role</label>
                                                     <Select
                                                         className='select'
                                                         name='roleId'
                                                         id='roleId'
                                                         options={roleOption}
-                                                        placeholder={
-                                                            "Select User Role"
-                                                        }
+                                                        placeholder={"Select User Role"}
                                                         isDisabled={true}
                                                         onChange={(selectOption) => {
                                                             setFieldValue(
@@ -473,14 +446,9 @@ function UserDetails() {
                                                                 },
                                                             });
                                                         }}
-                                                        value={roleOption.filter(
-                                                            (option) => {
-                                                                return (
-                                                                    option.value ===
-                                                                    values.roleId
-                                                                );
-                                                            }
-                                                        )}
+                                                        value={roleOption.filter((option) => {
+                                                            return option.value === values.roleId;
+                                                        })}
                                                         defaultValue={roleOption[0]}
                                                         maxMenuHeight={200}
                                                     />
@@ -493,9 +461,7 @@ function UserDetails() {
                                             </div>
                                             <div className='layout-right'>
                                                 <div className='input-section attachment'>
-                                                    <label
-                                                        className='label'
-                                                        htmlFor='file'>
+                                                    <label className='label' htmlFor='file'>
                                                         Avatar
                                                     </label>
                                                     <DropzoneArea
@@ -524,9 +490,7 @@ function UserDetails() {
                                                         <button
                                                             className={"btn btn-info btn-avatar"}
                                                             onClick={() => {
-                                                                setIsClickUpdateAvatar(
-                                                                    true
-                                                                );
+                                                                setIsClickUpdateAvatar(true);
                                                             }}
                                                             type='button'>
                                                             Update Avatar
@@ -538,14 +502,10 @@ function UserDetails() {
                                     </div>
                                     <hr />
                                     <div className='list-button'>
-                                        <button
-                                            className={"btn btn-info"}
-                                            type='reset'>
+                                        <button className={"btn btn-info"} type='reset'>
                                             Refresh
                                         </button>
-                                        <button
-                                            className={"btn btn-success"}
-                                            type='submit'>
+                                        <button className={"btn btn-success"} type='submit'>
                                             Update
                                         </button>
                                     </div>
@@ -579,19 +539,14 @@ function UserDetails() {
                                             <TextField
                                                 label={"Current Password"}
                                                 name='oldPassword'
-                                                type={
-                                                    passwordShown
-                                                        ? "text"
-                                                        : "password"
-                                                }
+                                                type={passwordShown ? "text" : "password"}
                                                 placeholder='Current Password...'
                                                 style={{ paddingRight: "30px" }}
                                             />
                                             <i
-                                                className={`fa ${passwordShown
-                                                    ? "fa-eye-slash"
-                                                    : "fa-eye"
-                                                    } fa-lg password-icon`}
+                                                className={`fa ${
+                                                    passwordShown ? "fa-eye-slash" : "fa-eye"
+                                                } fa-lg password-icon`}
                                                 onClick={togglePassword}
                                             />
                                         </div>
@@ -599,19 +554,14 @@ function UserDetails() {
                                             <TextField
                                                 label={"New Password"}
                                                 name='newPassword'
-                                                type={
-                                                    passwordShown
-                                                        ? "text"
-                                                        : "password"
-                                                }
+                                                type={passwordShown ? "text" : "password"}
                                                 placeholder='New Password...'
                                                 style={{ paddingRight: "30px" }}
                                             />
                                             <i
-                                                className={`fa ${passwordShown
-                                                    ? "fa-eye-slash"
-                                                    : "fa-eye"
-                                                    } fa-lg password-icon`}
+                                                className={`fa ${
+                                                    passwordShown ? "fa-eye-slash" : "fa-eye"
+                                                } fa-lg password-icon`}
                                                 onClick={togglePassword}
                                             />
                                         </div>
@@ -619,33 +569,24 @@ function UserDetails() {
                                             <TextField
                                                 label={"Confirm Password"}
                                                 name='confirmPassword'
-                                                type={
-                                                    passwordShown
-                                                        ? "text"
-                                                        : "password"
-                                                }
+                                                type={passwordShown ? "text" : "password"}
                                                 placeholder='Confirm Password...'
                                                 style={{ paddingRight: "30px" }}
                                             />
                                             <i
-                                                className={`fa ${passwordShown
-                                                    ? "fa-eye-slash"
-                                                    : "fa-eye"
-                                                    } fa-lg password-icon`}
+                                                className={`fa ${
+                                                    passwordShown ? "fa-eye-slash" : "fa-eye"
+                                                } fa-lg password-icon`}
                                                 onClick={togglePassword}
                                             />
                                         </div>
                                     </div>
                                     <hr />
                                     <div className='list-button'>
-                                        <button
-                                            className={"btn btn-info"}
-                                            type='reset'>
+                                        <button className={"btn btn-info"} type='reset'>
                                             Refresh
                                         </button>
-                                        <button
-                                            className={"btn btn-success"}
-                                            type='submit'>
+                                        <button className={"btn btn-success"} type='submit'>
                                             Update
                                         </button>
                                     </div>
@@ -654,10 +595,7 @@ function UserDetails() {
                         </Formik>
                     </div>
                     {errorData.code !== 1 ? (
-                        <ErrorMessagePopUp
-                            closebtn={setErrorData}
-                            errorMess={errorData.message}
-                        />
+                        <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
                     ) : (
                         <></>
                     )}
