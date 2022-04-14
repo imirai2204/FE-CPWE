@@ -11,6 +11,8 @@
         margin-right: auto;
         border-radius: 20px;
         margin-bottom: 3rem;
+        max-height: 25rem;
+        width: 100%;
     }
 
     .sort-list {
@@ -23,6 +25,20 @@
         .select {
             width: 100%;
             margin: 1rem;
+        }
+    }
+
+    @media screen and (max-width: 1095px) {
+        .sort-list {
+            flex-wrap: wrap;
+            .select {
+                width: 48%;
+                margin: 0.5rem 1%;
+
+                &-sort {
+                    width: 100%;
+                }
+            }
         }
     }
 }

@@ -142,5 +142,17 @@
         &-avatar {
             width: 15rem;
         }
+
+        &-export {
+            background-color: $color-yellow-00;
+            color: $color-black;
+            font-weight: 500;
+            width: 15rem;
+
+            .icon {
+                font-size: 20px;
+                margin-right: 5px;
+            }
+        }
     }
 }

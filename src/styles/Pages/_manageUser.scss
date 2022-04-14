@@ -22,6 +22,26 @@
                 height: 20rem;
             }
         }
+
+        @media screen and (max-width: 800px) {
+            display: block;
+
+            .layout-left {
+                flex: 100%;
+                margin-right: 0;
+            }
+    
+            .layout-right {
+                flex: 100%;
+                margin-left: 0;
+    
+                .MuiGrid-grid-xs-4 {
+                    max-width: 50% !important;
+                    flex-basis: 50% !important;
+                    height: 20rem;
+                }
+            }
+        }
     }
 
     .password-icon {

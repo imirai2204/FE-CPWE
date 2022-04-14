@@ -1,0 +1,97 @@
+.dashboard-page {
+    .page-title {
+        color: $color-red-24;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .layout {
+        &-export {
+            background-color: $color-white-FA;
+            border-radius: 12px;
+            box-shadow: 6px 6px 8px rgb(0 0 0 / 40%);
+            border-bottom: 1px solid $color-black-B3;
+            border-right: 1px solid $color-black-B3;
+        }
+
+        &-flex {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        &-data {
+            margin-top: 5rem;
+            display: flex;
+            justify-content: space-around;
+
+            .left {
+                margin-right: 0.5rem;
+            }
+
+            .right {
+                margin-left: 0.5rem;
+            }
+        }
+    }
+
+    .input-section {
+        margin-left: 2rem;
+        margin-right: 2rem;
+        width: 100%;
+    }
+
+    .data {
+        background-color: $color-white-FA;
+        border-radius: 12px;
+        box-shadow: 6px 6px 8px rgb(0 0 0 / 40%);
+        border-bottom: 1px solid $color-black-B3;
+        border-right: 1px solid $color-black-B3;
+        padding: 20px;
+        width: 100%;
+        // margin-left: 1rem;
+        // margin-right: 1rem;
+
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        &-title {
+            font-size: 20px;
+            word-wrap: normal;
+        }
+
+        &-icon {
+            background-color: $color-black-B3;
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+            border-radius: 50%;
+            margin-left: 3rem;
+        }
+
+        .icon {
+            font-size: 25px;
+        }
+
+        &-body {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        &-left {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            // margin-right: 0.5rem;
+        }
+
+        &-right {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            // margin-left: 0.5rem;
+        }
+    }
+}

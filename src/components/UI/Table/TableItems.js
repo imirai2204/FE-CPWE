@@ -21,7 +21,7 @@ export const ColumnsPermission = [
 export const ColumnsRole = [
     { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
     { id: "roleName", label: "Role Name", width: "20%", align: "left" },
-    { id: "permission", label: "Permission", width: "20%", align: "center", style: { left: "13px" }  },
+    { id: "permission", label: "Permission", width: "20%", align: "center", style: { left: "13px" } },
 ];
 
 export const ColumnsCategory = [
@@ -52,6 +52,6 @@ export const ColumnsSemester = [
 export const ColumnsIdea = [
     { id: "topic", label: "Topic", width: "10%", align: "center", style: { left: "13px" } },
     { id: "category", label: "Tag", width: "10%", align: "center", style: { left: "13px" } },
-    { id: "title", label: "Title", width: "20%", align: "left" },
+    { id: "title", label: "Title", width: "20%", align: "left", url: true},
     { id: "author", label: "Author", width: "15%", align: "left" },
 ];

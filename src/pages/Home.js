@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
 import { EnhancedTable } from "../components/UI/Table/Table";
-import { IdeaUrl, AcademicUrl, DepartmentUrl, TopicUrl, CategoryUrl} from "../api/EndPoint";
+import { IdeaUrl, AcademicUrl, DepartmentUrl, TopicUrl, CategoryUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import { ColumnsIdea } from "../components/UI/Table/TableItems"
 import Select from "react-select";
 import { SortOptions } from "../components/Navbar/dropdown/DropdownItems";
+
+import { Link } from "react-router-dom";
 
 // const handleGet = async (setIdeaDetail, setListDocument, setListImage) => {
 //     await AxiosInstance.get(IdeaUrl.get, {
@@ -163,7 +165,40 @@ const getCategory = async (values, setCategoryOption) => {
         });
 };
 
+const handleChangeSort = (value, setSortBy, setSortType) => {
+    switch (value) {
+        case "mostlike":
+            setSortBy("like")
+            setSortType("desc")
+            break;
+        case "mostdislike":
+            setSortBy("dislike")
+            setSortType("desc")
+            break;
+        case "mostview":
+            setSortBy("view")
+            setSortType("desc")
+            break;
+        case "lastidea":
+            setSortBy("createDate")
+            setSortType("desc")
+            break;
+        case "lastcomment":
+            setSortBy("createDate")
+            setSortType("desc")
+            break;
+        default:
+            console.log("No Value")
+            break;
+    }
+}
+
+function handleChangeFilter(value, setFilterBy) {
+    setFilterBy(value);
+}
+
 function Home() {
+    const [permission, setPermission] = useState(true)
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const currentPage = useSelector((state) => state.table.page);
@@ -173,9 +208,12 @@ function Home() {
     const [topicOption, setTopicOption] = useState([]);
     const [categoryOption, setCategoryOption] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [sortBy, setSortBy] = useState(null);
+    const [sortType, setSortType] = useState(null);
+    const [filterBy, setFilterBy] = useState(null);
 
     useEffect(() => {
-        if(isLoading){
+        if (isLoading) {
 
             getSemester(null, setSemesterOption);
             getDepartment(null, setDepartmentOption);
@@ -185,65 +223,73 @@ function Home() {
         }
     }, [isLoading])
 
+    const tableDatas = {
+        searchKey: null,
+        limit: currentLimit,
+        page: currentPage,
+        sortBy: sortBy,
+        sortType: sortType,
+    };
 
     return (
         <div className='home-page container'>
-            <img
-                className="banner-img"
-                src="https://duhocnamphong.vn/images/news/2020/05/original/dai-hoc-greenwich_1590138469.jpg"
-            />
+            <div>
+                <img
+                    className="banner-img"
+                    src="https://login.gre.ac.uk/adfs/portal/illustration/illustration.jpg?id=E59222772F7DA10A27598E8B24D23319BF6C4E5B715402648EA5FFA75EE1C337"
+                    alt="banner"
+                />
+            </div>
             <h2 className='page-title'>Idea List</h2>
             <div className="sort-list">
-                <Select
-                    className='select'
-                    name='academicId'
-                    id='academicId'
-                    options={semesterOption}
-                    placeholder={"Semester"}
-                    onChange={(selectOption) => {
-                        // setFieldValue(
-                        //     "academicId",
-                        //     selectOption.value
-                        // );
-                    }}
-                    menuPortalTarget={document.body}
-                    styles={{
-                        menuPortal: (base) => ({
-                            ...base,
-                            zIndex: 9999,
-                        }),
-                        menu: (base) => ({
-                            ...base,
-                            fontSize: "15px",
-                            color: "#707070",
-                        }),
-                    }}
-                />
-                <Select
-                    className='select'
-                    name='departmentId'
-                    id='departmentId'
-                    options={departmentOption}
-                    placeholder={"Department"}
-                    onChange={(selectOption) => {
-                        // setFieldValue(
-                        //     "departmentId",
-                        //     selectOption.value
-                        // );
-                    }}
-                    menuPortalTarget={document.body}
-                    styles={{
-                        menuPortal: (base) => ({
-                            ...base,
-                            zIndex: 9999,
-                        }),
-                        menu: (base) => ({
-                            ...base,
-                            fontSize: "15px",
-                            color: "#707070",
-                        }),
-                    }}
-                />
+                {permission &&
+                    <>
+                        <Select
+                            className='select'
+                            name='academicId'
+                            id='academicId'
+                            options={semesterOption}
+                            placeholder={"Semester"}
+                            onChange={(selectOption) => {
+                                handleChangeFilter(selectOption.value, setFilterBy)
+                            }}
+                            menuPortalTarget={document.body}
+                            styles={{
+                                menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                }),
+                                menu: (base) => ({
+                                    ...base,
+                                    fontSize: "15px",
+                                    color: "#707070",
+                                }),
+                            }}
+                        />
+                        <Select
+                            className='select'
+                            name='departmentId'
+                            id='departmentId'
+                            options={departmentOption}
+                            placeholder={"Department"}
+                            onChange={(selectOption) => {
+                                handleChangeFilter(selectOption.value, setFilterBy)
+                            }}
+                            menuPortalTarget={document.body}
+                            styles={{
+                                menuPortal: (base) => ({
+                                    ...base,
+                                    zIndex: 9999,
+                                }),
+                                menu: (base) => ({
+                                    ...base,
+                                    fontSize: "15px",
+                                    color: "#707070",
+                                }),
+                            }}
+                        />
+                    </>
+                }
                 <Select
                     className='select'
                     name='topicId'
@@ -251,10 +297,7 @@ function Home() {
                     options={topicOption}
                     placeholder={"Topic"}
                     onChange={(selectOption) => {
-                        // setFieldValue(
-                        //     "topicId",
-                        //     selectOption.value
-                        // );
+                        handleChangeFilter(selectOption.value, setFilterBy)
                     }}
                     menuPortalTarget={document.body}
                     styles={{
@@ -276,10 +319,7 @@ function Home() {
                     options={categoryOption}
                     placeholder={"Tag"}
                     onChange={(selectOption) => {
-                        // setFieldValue(
-                        //     "categoryId",
-                        //     selectOption.value
-                        // );
+                        handleChangeFilter(selectOption.value, setFilterBy)
                     }}
                     menuPortalTarget={document.body}
                     styles={{
@@ -295,16 +335,13 @@ function Home() {
                     }}
                 />
                 <Select
-                    className='select'
+                    className='select select-sort'
                     name='sortType'
                     id='sortType'
                     options={SortOptions}
                     placeholder={"Sort"}
                     onChange={(selectOption) => {
-                        // setFieldValue(
-                        //     "sortType",
-                        //     selectOption.value
-                        // );
+                        handleChangeSort(selectOption.value, setSortBy, setSortType)
                     }}
                     menuPortalTarget={document.body}
                     styles={{

@@ -2,7 +2,7 @@
     .MuiTableCell-head {
         background-color: $color-yellow-00 !important;
         color: $color-red-24 !important;
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: "Montserrat", sans-serif !important;
         font-size: 15px !important;
         line-height: 28px !important;
         font-weight: 600 !important;
@@ -10,7 +10,7 @@
 
     .MuiTableCell-body {
         color: $color-black-40 !important;
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: "Montserrat", sans-serif !important;
         font-size: 15px !important;
         line-height: 28px !important;
     }
@@ -21,12 +21,18 @@
     }
 }
 
-.MuiTablePagination-selectLabel, 
-.MuiTablePagination-displayedRows, 
+// .css-i4bv87-MuiSvgIcon-root {
+//     @media screen and (max-width: 583px) {
+//         right: 13% !important;
+//     }
+// }
+
+.MuiTablePagination-selectLabel,
+.MuiTablePagination-displayedRows,
 .MuiSelect-standard,
 .css-10by3a5-MuiButtonBase-root-MuiMenuItem-root-MuiTablePagination-menuItem {
     color: $color-black-40 !important;
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: "Montserrat", sans-serif !important;
     font-size: 15px !important;
     line-height: 28px !important;
 }
@@ -57,8 +63,8 @@
 }
 
 .MuiTablePagination-toolbar {
-//     flex-flow: wrap !important;
-//     justify-content: center !important;
+    //     flex-flow: wrap !important;
+    //     justify-content: center !important;
     padding: 0 !important;
 }
 
@@ -79,5 +85,47 @@
 
     fieldset {
         display: none;
+    }
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    width: 50%;
+}
+
+.css-e53awj-MuiStack-root {
+    justify-content: space-between;
+    padding: 0px 55px;
+}
+
+.css-1oj2twp-MuiPagination-root {
+    align-self: center;
+}
+
+@media screen and (max-width: 850px) {
+    .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+        width: 80%;
+    }
+
+    .css-i4bv87-MuiSvgIcon-root {
+        right: 11% !important;
+    }
+}
+
+@media screen and (max-width: 583px) {
+    .css-e53awj-MuiStack-root {
+        flex-wrap: wrap-reverse;
+    }
+
+    .css-jtlhu6-MuiTablePagination-root {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10px;
+    }
+
+    .css-1oj2twp-MuiPagination-root {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 20px !important;
+        margin-bottom: 10px !important;
     }
 }

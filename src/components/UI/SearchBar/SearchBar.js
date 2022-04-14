@@ -44,7 +44,7 @@ const SearchBar = (props) => {
                     name='title'
                     type='text'
                     placeholder='Search...'
-                    sx={{ width: "50%" }}
+                    // sx={{ width: "50%" }}
                     onChange={(event) => setSearchData(event.target.value)}
                 />
             </div>

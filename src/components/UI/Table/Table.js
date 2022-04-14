@@ -23,6 +23,7 @@ import ViewListPopUp from "../Modal/ViewListPopUp";
 import SearchBar from "../SearchBar/SearchBar";
 import Stack from "@mui/material/Stack";
 import { pageActions } from "../../../redux-store/table/table.slice";
+import { Link } from "react-router-dom";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -241,10 +242,21 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                     <TableCell
                                                         key={column.id}
                                                         align={column.align}>
-                                                        {column.format &&
-                                                            typeof value === "number"
-                                                            ? column.format(value)
-                                                            : value}
+                                                        {column.url === true ?
+                                                            <Link to={`${row.url}`} target={"_blank"}>
+                                                                {column.format &&
+                                                                    typeof value === "number"
+                                                                    ? column.format(value)
+                                                                    : value}
+                                                            </Link> 
+                                                            :
+                                                            <>
+                                                                {column.format &&
+                                                                    typeof value === "number"
+                                                                    ? column.format(value)
+                                                                    : value}
+                                                            </>
+                                                        }
                                                     </TableCell>
                                                 );
                                             })}
@@ -312,7 +324,6 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                             ) : (
                                                 <Fragment />
                                             )}
-
                                             {props.hasViewedBtn ? (
                                                 <TableCell
                                                     key={index + 5}
@@ -321,8 +332,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                         style={{
                                                             fontSize: "20px",
                                                         }}
-                                                        onClick={() => 
-                                                            {
+                                                        onClick={() => {
                                                             setOpenPopUp({
                                                                 isOpen: true,
                                                                 itemList: row.listItem,
@@ -343,10 +353,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                 <Stack
                     direction='row'
                     spacing={2}
-                    sx={{
-                        justifyContent: "space-between",
-                        padding: "0px 55px",
-                    }}>
+                    >
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         rowsPerPage={currentLimit}
@@ -371,7 +378,6 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                         shape='rounded'
                         showFirstButton={true}
                         showLastButton={true}
-                        sx={{ alignSelf: "center" }}
                     />
                 </Stack>
                 <ConfirmDialog
