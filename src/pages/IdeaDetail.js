@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Comments from "../components/Comment/Comments";
 import "../styles/style.scss";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ImageGallery from 'react-image-gallery';
 import { IdeaUrl } from "../api/EndPoint";
@@ -15,8 +15,8 @@ import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { convertDate, getFormattedDate } from "../function/library";
 
-const handleGet = async (setIdeaDetail, setListDocument, setListImage) => {
-    await AxiosInstance.get(IdeaUrl.get + 9, {
+const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
+    await AxiosInstance.get(IdeaUrl.get + id, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then((res) => {
@@ -61,9 +61,12 @@ function IdeaDetail() {
     const [listImage, setListImage] = useState([])
     const [listDocument, setListDocument] = useState([])
     const [isLoading, setisLoading] = useState(false);
+    const userInfo = useSelector((state) => state.user.userInfo)
+
+    let { id } = useParams();
 
     useEffect(() => {
-        handleGet(setIdeaDetail, setListDocument, setListImage);
+        handleGet(setIdeaDetail, setListDocument, setListImage, id);
         setIsAnonymous(ideaDetail.isAnonymous);
     }, [isLoading])
 
@@ -78,10 +81,12 @@ function IdeaDetail() {
                             </label>
                             <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
                         </div>
-                        <VisibilityIcon
-                            className='author-view'
-                            onClick={() => setIsAnonymous(!isAnonymous)}
-                        />
+                        {(userInfo.userRole === "ADMIN" || userInfo.userRole === "QA COORDINATOR") && isAnonymous === true ?
+                            <VisibilityIcon
+                                className='author-view'
+                                onClick={() => setIsAnonymous(!isAnonymous)}
+                            /> : <></>
+                        }
                     </div>
                     <h2 className='idea-title'>{ideaDetail.title}</h2>
                     <div className='idea-category'>

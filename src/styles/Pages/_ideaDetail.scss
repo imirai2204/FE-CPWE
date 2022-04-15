@@ -3,6 +3,10 @@
     padding-top: 2rem;
     padding-bottom: 2rem;
     margin: 3rem 20rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+    border-bottom: 1px solid $color-black-B3;
+    border-right: 1px solid $color-black-B3;
 
     label {
         font-size: 20px;
@@ -15,12 +19,13 @@
 
     .author {
         display: flex;
-        width: 24rem;
+        max-width: 35%;
         box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
         padding: 5px;
         border-bottom: 2px solid $color-black-B3;
         border-right: 2px solid $color-black-B3;
         border-radius: 5px;
+        justify-content: space-between;
 
         &-name {
             font-size: 15px;

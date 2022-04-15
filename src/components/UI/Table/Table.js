@@ -196,19 +196,22 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         setCurrentPage(1);
     };
 
-    const handleEditUser = (setFieldValue, index) => {
-        setFieldValue("firstname", rows[index].firstname)
-        setFieldValue("lastname", rows[index].lastname)
-        setFieldValue("address", rows[index].address)
-        setFieldValue("sex", rows[index].sex)
-        setFieldValue("email", rows[index].email)
-        setFieldValue("phone", rows[index].phone)
-        setFieldValue("departmentId", rows[index].departmentId)
-        setFieldValue("roleId", rows[index].roleId)
-        setFieldValue("userId", rows[index].id)
-        setFieldValue("roleName", rows[index].roleName)
-        setFieldValue("id", rows[index].id)
-        setOptionValues(rows[index].listItem)
+    const handleEdit = (setFieldValue, setOptionValues, types , index) => {
+        if(types === "user"){
+            setFieldValue("firstname", rows[index].firstname)
+            setFieldValue("lastname", rows[index].lastname)
+            setFieldValue("address", rows[index].address)
+            setFieldValue("sex", rows[index].sex)
+            setFieldValue("email", rows[index].email)
+            setFieldValue("phone", rows[index].phone)
+            setFieldValue("departmentId", rows[index].departmentId)
+            setFieldValue("roleId", rows[index].roleId)
+            setFieldValue("userId", rows[index].id)
+        } else {
+            setFieldValue("roleName", rows[index].roleName)
+            setFieldValue("id", rows[index].id)
+            setOptionValues(rows[index].listItem)
+        }
     }
 
     return (
@@ -270,7 +273,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                             fontSize: "20px",
                                                         }}
                                                         onClick={() => {
-                                                            handleEditUser(setFieldValue, index, setOptionValues);
+                                                            handleEdit(setFieldValue, setOptionValues, props.type, index);
                                                             setItemIndex(index);
                                                         }}
                                                     />

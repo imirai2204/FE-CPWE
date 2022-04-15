@@ -48,9 +48,9 @@ export const Departments = [
 ];
 
 export const Topics = [
-    { value: 1, label: "Topic 1", key: "1" },
-    { value: 2, label: "Topic 2", key: "2" },
-    { value: 3, label: "Topic 3", key: "3" },
+    { value: 1, label: "Topic 1", key: "1", startDate: "02/02/2022", endDate: "02/02/2022", finalDate: "02/02/2022" },
+    { value: 2, label: "Topic 2", key: "2", startDate: "03/03/2022", endDate: "03/03/2022", finalDate: "03/03/2022"  },
+    { value: 3, label: "Topic 3", key: "3", startDate: "04/04/2022", endDate: "04/04/2022", finalDate: "04/04/2022" },
 ];
 
 export const Tags = [
@@ -83,11 +83,11 @@ export const YearOptions = [
 ];
 
 export const SortOptions = [
-    { value: "mostlike", label: "Most Likes", key: "1" },
-    { value: "mostdislike", label: "Most Dislikes", key: "2" },
-    { value: "mostview", label: "Most Views", key: "3" },
-    { value: "lastidea", label: "Last Idea", key: "4" },
-    { value: "lastcomment", label: "Last Comment", key: "5" },
+    { value: 1, label: "Latest Idea", key: "1" },
+    { value: 2, label: "Most Likes", key: "2" },
+    { value: 3, label: "Most Dislikes", key: "3" },
+    { value: 4, label: "Most Views", key: "4" },
+    { value: 5, label: "Latest Comment", key: "5" },
 ];
 
 

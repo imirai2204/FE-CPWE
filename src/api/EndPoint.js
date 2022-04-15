@@ -5,7 +5,9 @@ export const Authen = {
 
 export const IdeaUrl = {
     create: "/idea/create",
-    get: "/idea/get/"
+    get: "/idea/get/",
+    getList: "/idea/get",
+    comment: "/idea/comment/create",
 };
 
 export const AcademicUrl = {
@@ -33,7 +35,7 @@ export const UserUrl = {
     create: "authen/signup",
     get: "user/get",
     update: "user/update/",
-    changePass: "user/change-pass"
+    changePass: "user/change-pass",
 };
 
 export const PermissionUrl = {
@@ -45,7 +47,7 @@ export const RoleUrl = {
     create: "/role/create",
     get: "/role/get",
     update: "/role/update/",
-    authen: "role/permission/check/"
+    authen: "role/permission/check/",
 };
 
 export const Flag = {
@@ -54,10 +56,10 @@ export const Flag = {
     manageSemester: "MSEMES",
     manageDepartment: "MDEPT",
     manageTopic: "MTOPIC",
-    manageCategory: "MCATE"
-}
+    manageCategory: "MCATE",
+};
 
 export const Warn = {
     noPermission: "You have no permission",
-    noExist: "The requested page was not found"
-}
+    noExist: "The requested page was not found",
+};

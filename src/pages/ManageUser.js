@@ -60,15 +60,14 @@ const handleGet = async (values, setReturnData, setPagination) => {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "userId" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(UserUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         params: paramsValue,
     })
         .then((res) => {
-            console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
@@ -139,6 +138,7 @@ const getRole = async (values, setRoleOption) => {
         limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
         sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        selectBox: true,
     };
     await AxiosInstance.get(RoleUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -263,32 +263,6 @@ function ManageUser() {
                                                     value={values.firstname}
                                                 />
                                             </div>
-                                            <div className='input-section'>
-                                                <TextField
-                                                    label={"Address"}
-                                                    name='address'
-                                                    type='text'
-                                                    placeholder='Address...'
-                                                    value={values.address}
-                                                />
-                                            </div>
-                                            <div className='input-section label-mark'>
-                                                <TextField
-                                                    label={"Email"}
-                                                    name='email'
-                                                    type='email'
-                                                    placeholder='Email...'
-                                                    disabled={itemIndex === null ? false : true}
-                                                />
-                                            </div>
-                                            <div className='input-section'>
-                                                <TextField
-                                                    label={"Phone"}
-                                                    name='phone'
-                                                    type='text'
-                                                    placeholder='Phone...'
-                                                />
-                                            </div>
                                         </div>
                                         <div className='layout-right'>
                                             <div className='input-section label-mark'>
@@ -300,6 +274,44 @@ function ManageUser() {
                                                     value={values.lastname}
                                                 />
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className='user-form'>
+                                        <div className='layout-left'>
+                                            <div className='input-section label-mark'>
+                                                <TextField
+                                                    label={"Email"}
+                                                    name='email'
+                                                    type='email'
+                                                    placeholder='Email...'
+                                                    disabled={itemIndex === null ? false : true}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='layout-right'>
+                                            <div className='input-section'>
+                                                <TextField
+                                                    label={"Phone"}
+                                                    name='phone'
+                                                    type='text'
+                                                    placeholder='Phone...'
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='user-form'>
+                                        <div className='layout-left'>
+                                            <div className='input-section'>
+                                                <TextField
+                                                    label={"Address"}
+                                                    name='address'
+                                                    type='text'
+                                                    placeholder='Address...'
+                                                    value={values.address}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='layout-right'>
                                             <div className='input-section'>
                                                 <label className='label'>Gender</label>
                                                 <Select
@@ -428,7 +440,7 @@ function ManageUser() {
                                     <button
                                         className={"btn btn-warning"}
                                         type='button'
-                                        disabled={itemIndex === null ? true : false}
+                                        disabled={values.userId === "" || values.userId === null ? true : false}
                                         onClick={
                                             () => isValid === true ?
                                                 handelUpdate(values, setIsSubmiting) :
@@ -447,7 +459,7 @@ function ManageUser() {
                                     <button
                                         className={"btn btn-success"}
                                         type='submit'
-                                        disabled={itemIndex === null ? false : true}
+                                        disabled={values.userId === "" || values.userId === null ? false : true}
                                     >
                                         Create
                                     </button>
@@ -462,17 +474,20 @@ function ManageUser() {
                                         totalPages={returnPagination.totalPages}
                                         setFieldValue={setFieldValue}
                                         formikValue={values}
+                                        type={"user"}
                                     />
                                 </div>
                             </Form>
-                        )}
-                    </Formik>
-                </div>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
-                    <></>
+                        )
+                        }
+                    </Formik >
+                </div >
+                {
+                    errorData.code !== 1 ?
+                        <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                        <></>
                 }
-            </div>
+            </div >
         );
     } else {
         return (
