@@ -93,6 +93,21 @@ const getReaction = async (id, setReaction) => {
         });
 }
 
+const countView = async (id) => {
+    await AxiosInstance.post(IdeaUrl.countView + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then((res) => {
+            console.log(res);
+            console.log("Create success");
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
 function IdeaDetail() {
     const [isAnonymous, setIsAnonymous] = useState(true);
     const currentUserId = useSelector((state) => state.user.userInfo.userId);
@@ -112,14 +127,13 @@ function IdeaDetail() {
         handleGet(setIdeaDetail, setListDocument, setListImage, id);
         setIsAnonymous(ideaDetail.isAnonymous);
         getReaction(id, setReaction);
+        countView(id);
     }, [isLoading])
 
-    useEffect(() => {
-        if(click === true){
-            getReaction(id, setReaction);
-            setClick(false);
-        }
-    }, [click])
+    if(click){
+        getReaction(id, setReaction);
+        setClick(false)
+    }
 
     return (
         // <div className='container'>
@@ -199,7 +213,7 @@ function IdeaDetail() {
                 <hr />
                 <div className="idea-button">
                     <button
-                        className={reaction.status === 1 ? "btn btn--outline" : "btn btn--outline btn--outline__active"}
+                        className={reaction.status === 1 ? "btn btn--outline btn--outline__active" : "btn btn--outline"}
                         type="button"
                         onClick={() => {
                             handleReaction(1, id);
