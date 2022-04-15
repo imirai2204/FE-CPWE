@@ -8,13 +8,13 @@ import Select from "react-select";
 import { Link } from "react-router-dom";
 import { Contributor } from "../components/Navbar/dropdown/DropdownItems";
 import { DropzoneArea } from "material-ui-dropzone";
-import { IdeaUrl, Authen, DepartmentUrl, TopicUrl, CategoryUrl } from "../api/EndPoint";
+import { IdeaUrl, DepartmentUrl, TopicUrl, CategoryUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { useSelector } from "react-redux";
 import { storage } from "../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { current } from "@reduxjs/toolkit";
+import { convertDate, getFormattedDate } from "../function/library";
 
 const errorMessage = (error) => {
     if (error && error.response) {
@@ -95,6 +95,9 @@ const getTopic = async (values, setTopicOption) => {
                     value: content.id,
                     label: content.topic,
                     key: content.id,
+                    startDate: content.startDate,
+                    closureDate: content.closureDate,
+                    finalDate: content.finalDate,
                 };
             });
             setTopicOption(topicOption);
@@ -132,22 +135,6 @@ const getCategory = async (values, setCategoryOption) => {
         });
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            errorMessage(error);
-        });
-};
-
 const initialValues = {
     departmentId: 0,
     topicId: 0,
@@ -163,7 +150,6 @@ const SubmitPage = (props) => {
     const [isClickSubmit, setIsClickSubmit] = useState(false);
     const [fileUpload, setFileUpload] = useState([{}]);
     const [dataUpload, setDataUpload] = useState([]);
-    const [permission, setPermission] = useState(true);
     const [topicName, setTopicName] = useState("");
     const [departmentOption, setDepartmentOption] = useState([]);
     const [topicOption, setTopicOption] = useState([]);
@@ -172,10 +158,23 @@ const SubmitPage = (props) => {
         code: 1,
         message: "ok",
     });
-    const userInfo = useSelector((state) => state.user.userInfo);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [finalDate, setFinalDate] = useState("");
+    const userInfo = useSelector((state) => state.user.userInfo)
+
+    function handleSetInfo(option) {
+        console.log(option)
+        var startDate = getFormattedDate(convertDate(option.startDate));
+        var endDate = getFormattedDate(convertDate(option.closureDate));
+        var finalDate = getFormattedDate(convertDate(option.finalDate));
+        setStartDate(startDate)
+        setEndDate(endDate)
+        setFinalDate(finalDate)
+    }
 
     const dataDepartment = {
-        searchKey: userInfo.departmentName,
+        searchKey: userInfo.userRole !== "ADMIN" ? userInfo.departmentName : null,
         limit: 5,
         page: 1,
         sortBy: null,
@@ -187,10 +186,6 @@ const SubmitPage = (props) => {
         getTopic(null, setTopicOption);
         getCategory(null, setCategoryOption);
     }, [userInfo]);
-
-    const changeTopicName = (topic) => {
-        setTopicName(topic);
-    };
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -252,13 +247,12 @@ const SubmitPage = (props) => {
         });
     };
 
-    if (permission) {
         return (
             <div className='submit-panel'>
                 <h2 className='submit-title'>Create idea</h2>
                 <Formik
                     initialValues={initialValues}
-                    // validationSchema={IdeaSchema}
+                    validationSchema={IdeaSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         handleSubmit(values, setErrorData, firebaseUploadFile);
                     }}>
@@ -313,8 +307,8 @@ const SubmitPage = (props) => {
                                             options={topicOption}
                                             placeholder={"Select topic"}
                                             onChange={(selectOption) => {
-                                                setFieldValue("topicId", selectOption.value);
-                                                changeTopicName(selectOption.label);
+                                                setTopicName(selectOption.label);
+                                                handleSetInfo(selectOption);
                                             }}
                                             onBlur={() => {
                                                 handleBlur({ target: { name: "topic" } });
@@ -357,15 +351,15 @@ const SubmitPage = (props) => {
                                         <div className='info-content'>
                                             <div className='time'>
                                                 <label>Start Date: </label>
-                                                <p>01/01/2022</p>
+                                                <p>{startDate}</p>
                                             </div>
                                             <div className='time'>
                                                 <label>End Date: </label>
-                                                <p>01/01/2022</p>
+                                                <p>{endDate}</p>
                                             </div>
                                             <div className='time'>
                                                 <label>Final End Date: </label>
-                                                <p>01/01/2022</p>
+                                                <p>{finalDate}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -480,13 +474,6 @@ const SubmitPage = (props) => {
                 )}
             </div>
         );
-    } else {
-        return (
-            <div>
-                <p>You have no permission</p>
-            </div>
-        );
-    }
 };
 
 export default SubmitPage;

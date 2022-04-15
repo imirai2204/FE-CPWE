@@ -8,6 +8,9 @@ export const IdeaUrl = {
     get: "/idea/get/",
     getList: "/idea/get",
     comment: "/idea/comment/create",
+    reaction: "/idea/reaction",
+    getReaction: "/idea/get/status/",
+    countView: "idea/view/create/",
 };
 
 export const AcademicUrl = {

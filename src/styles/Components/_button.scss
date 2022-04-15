@@ -78,7 +78,7 @@
         font-size: 15px;
         font-weight: 500;
 
-        &:active{
+        &__active{
             background-color: $color-blue-FF;
             border: 2px solid $color-blue-CC;
             color: $color-white-FA;

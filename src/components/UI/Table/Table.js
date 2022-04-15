@@ -246,7 +246,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                         key={column.id}
                                                         align={column.align}>
                                                         {column.url === true ?
-                                                            <Link to={`${row.url}`} target={"_blank"}>
+                                                            <Link to={`${row.url}`}>
                                                                 {column.format &&
                                                                     typeof value === "number"
                                                                     ? column.format(value)
