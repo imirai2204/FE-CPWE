@@ -48,9 +48,9 @@ export const Departments = [
 ];
 
 export const Topics = [
-    { value: 1, label: "Topic 1", key: "1" },
-    { value: 2, label: "Topic 2", key: "2" },
-    { value: 3, label: "Topic 3", key: "3" },
+    { value: 1, label: "Topic 1", key: "1", startDate: "02/02/2022", endDate: "02/02/2022", finalDate: "02/02/2022" },
+    { value: 2, label: "Topic 2", key: "2", startDate: "03/03/2022", endDate: "03/03/2022", finalDate: "03/03/2022"  },
+    { value: 3, label: "Topic 3", key: "3", startDate: "04/04/2022", endDate: "04/04/2022", finalDate: "04/04/2022" },
 ];
 
 export const Tags = [

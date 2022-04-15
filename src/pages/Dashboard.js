@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
-import { ErrorMessage, Formik, Form } from "formik";
+import { Formik, Form } from "formik";
 import Select from "react-select";
 import { YearOptions } from "../components/Navbar/dropdown/DropdownItems";
 import { DepartmentUrl, TopicUrl, AcademicUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
+import { useSelector } from "react-redux";
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import CommentsDisabledOutlinedIcon from '@mui/icons-material/CommentsDisabledOutlined';
 import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
+import { Bar, Doughnut } from "react-chartjs-2";
+import Chart from 'chart.js/auto';
 
 const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
@@ -101,16 +104,24 @@ const initialValues = {
 };
 
 function Dashboard() {
-    const [permission, setPermission] = useState(true);
+    const userInfo = useSelector((state) => state.user.userInfo)
     const [semesterOption, setSemesterOption] = useState([]);
     const [departmentOption, setDepartmentOption] = useState([]);
     const [topicOption, setTopicOption] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    var departmentData = {
+        searchKey: userInfo.userRole === "ADMIN" ? null : userInfo.departmentName,
+        limit: 5,
+        page: 1,
+        sortBy: null,
+        sortType: null,
+    }
+
     useEffect(() => {
         if (isLoading) {
             getSemester(null, setSemesterOption);
-            getDepartment(null, setDepartmentOption);
+            getDepartment(departmentData, setDepartmentOption);
             getTopic(null, setTopicOption);
             setIsLoading(!isLoading);
         }
@@ -119,106 +130,106 @@ function Dashboard() {
     return (
         <div className="dashboard-page container">
             <h2 className="page-title">Dashboard</h2>
-            {permission &&
-                <div className="layout-export">
-                    <div className="layout-form">
-                        <Formik
-                            initialValues={initialValues}
-                            onSubmit={(values) => {
-                                // handleSubmit(values);
-                            }}>
-                            {({
-                                isSubmiting,
-                                handleChange,
-                                handleBlur,
-                                handleSubmit,
-                                values,
-                                errors,
-                                touched,
-                                setFieldValue,
-                            }) => (
-                                <Form className='submit-form'>
-                                    <div className="layout-flex">
-                                        <div className='input-section'>
-                                            <label className='label'>Year</label>
-                                            <Select
-                                                className='select'
-                                                name='year'
-                                                id='year'
-                                                options={YearOptions}
-                                                placeholder={"Select Year"}
-                                                onChange={(selectOption) => {
-                                                    setFieldValue(
-                                                        "year",
-                                                        selectOption.value
-                                                    );
-                                                    getSemester(
-                                                        selectOption.value,
-                                                        setSemesterOption
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                        <div className='input-section'>
-                                            <label className='label'>Semester</label>
-                                            <Select
-                                                className='select'
-                                                name='academicId'
-                                                id='academicId'
-                                                options={semesterOption}
-                                                placeholder={"Select Semester"}
-                                                onChange={(selectOption) => {
-                                                    setFieldValue(
-                                                        "academicId",
-                                                        selectOption.value
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                        <div className='input-section'>
-                                            <label className='label'>Department</label>
-                                            <Select
-                                                className='select'
-                                                name='departmentId'
-                                                id='departmentId'
-                                                options={departmentOption}
-                                                placeholder={"Select Department"}
-                                                onChange={(selectOption) => {
-                                                    setFieldValue(
-                                                        "departmentId",
-                                                        selectOption.value
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                        <div className='input-section'>
-                                            <label className='label'>Topic</label>
-                                            <Select
-                                                className='select'
-                                                name='topicId'
-                                                id='topic'
-                                                options={topicOption}
-                                                placeholder={"Select Topic"}
-                                                onChange={(selectOption) => {
-                                                    setFieldValue(
-                                                        "topicId",
-                                                        selectOption.value
-                                                    );
-                                                }}
-                                            />
-                                        </div>
+            <div className="layout-export">
+                <div className="layout-form">
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={(values) => {
+                            // handleSubmit(values);
+                        }}>
+                        {({
+                            isSubmiting,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            touched,
+                            setFieldValue,
+                        }) => (
+                            <Form className='submit-form'>
+                                <div className="layout-flex">
+                                    <div className='input-section'>
+                                        <label className='label'>Year</label>
+                                        <Select
+                                            className='select'
+                                            name='year'
+                                            id='year'
+                                            options={YearOptions}
+                                            placeholder={"Select Year"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "year",
+                                                    selectOption.value
+                                                );
+                                                getSemester(
+                                                    selectOption.value,
+                                                    setSemesterOption
+                                                );
+                                            }}
+                                        />
                                     </div>
-                                    <div className="list-button">
+                                    <div className='input-section'>
+                                        <label className='label'>Semester</label>
+                                        <Select
+                                            className='select'
+                                            name='academicId'
+                                            id='academicId'
+                                            options={semesterOption}
+                                            placeholder={"Select Semester"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "academicId",
+                                                    selectOption.value
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='input-section'>
+                                        <label className='label'>Department</label>
+                                        <Select
+                                            className='select'
+                                            name='departmentId'
+                                            id='departmentId'
+                                            options={departmentOption}
+                                            placeholder={"Select Department"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "departmentId",
+                                                    selectOption.value
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                    <div className='input-section'>
+                                        <label className='label'>Topic</label>
+                                        <Select
+                                            className='select'
+                                            name='topicId'
+                                            id='topic'
+                                            options={topicOption}
+                                            placeholder={"Select Topic"}
+                                            onChange={(selectOption) => {
+                                                setFieldValue(
+                                                    "topicId",
+                                                    selectOption.value
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="list-button">
+                                    {userInfo.userRole === "ADMIN" ?
                                         <button className={"btn btn-export"} type='submit'>
                                             <FileDownloadOutlinedIcon className="icon" /> Export CSV
-                                        </button>
-                                    </div>
-                                </Form>
-                            )}
-                        </Formik>
-                    </div>
+                                        </button> : <></>
+                                    }
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
                 </div>
-            }
+            </div>
             <div className="layout-data">
                 <div className="data-left left">
                     <div className="data left">
@@ -262,7 +273,110 @@ function Dashboard() {
                 </div>
             </div>
             <div className="layout-chart">
+                <div className="chart">
+                    <Bar
+                        data={{
+                            labels: ['Department 1', 'Department 2', 'Department 3', 'Department 4', 'Department 5', 'Department 6'],
+                            datasets: [
+                                {
+                                    label: 'total ideas of department',
+                                    data: [12, 19, 63, 5, 2, 3],
+                                    backgroundColor: [
+                                        '#0052CC',
+                                    ],
+                                    borderColor: [
+                                        '#0052CC',
+                                    ],
+                                },
+                                {
+                                    label: 'total ideas of comment',
+                                    data: [6, 3, 18, 6, 5, 93],
+                                    backgroundColor: [
+                                        '#f02c2c',
+                                    ],
+                                    borderColor: [
+                                        '#f02c2c',
+                                    ],
+                                },
+                            ]
+                        }}
+                        options={{
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: "Bar chart of total ideas in each department"
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }}
+                    />
+                    <label className="chart-title">Bar chart of total ideas in each department</label>
+                </div>
 
+                <div className="chart">
+                    <Doughnut
+                        data={{
+                            labels: ['Department 1', 'Department 2', 'Department 3', 'Department 4', 'Department 5', 'Department 6'],
+                            datasets: [
+                                {
+                                    label: 'percentage idea of department',
+                                    data: [12, 19, 63, 5, 2, 3],
+                                    backgroundColor: [
+                                        '#0052CC', '#f02c2c', '#FFF000', '#4FA800', '#5036C4', '#FCD2DD6E',
+                                    ],
+                                    borderColor: [
+                                        '#0052CC', '#f02c2c', '#FFF000', '#4FA800', '#5036C4', '#FCD2DD6E',
+                                    ],
+                                },
+                            ]
+                        }}
+                        options={{
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: "Doughnut chart of percentage idea of each department"
+                            },
+                            aspectRatio: 3,
+                        }}
+                    />
+                    <label className="chart-title">Doughnut chart of percentage idea of each department</label>
+                </div>
+
+                <div className="chart">
+                    <Bar
+                        data={{
+                            labels: ['Department 1', 'Department 2', 'Department 3', 'Department 4', 'Department 5', 'Department 6'],
+                            datasets: [
+                                {
+                                    label: 'total contributors of department',
+                                    data: [12, 19, 63, 5, 2, 3],
+                                    backgroundColor: [
+                                        '#0052CC',
+                                    ],
+                                    borderColor: [
+                                        '#0052CC',
+                                    ],
+                                },
+                            ]
+                        }}
+                        options={{
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: "Bar chart of total contributors in each department"
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }}
+                    />
+                    <label className="chart-title">Bar chart of total contributors in each department</label>
+                </div>
             </div>
         </div>
     )

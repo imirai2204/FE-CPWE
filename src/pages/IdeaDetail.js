@@ -61,6 +61,7 @@ function IdeaDetail() {
     const [listImage, setListImage] = useState([])
     const [listDocument, setListDocument] = useState([])
     const [isLoading, setisLoading] = useState(false);
+    const userInfo = useSelector((state) => state.user.userInfo)
 
     let { id } = useParams();
 
@@ -80,10 +81,12 @@ function IdeaDetail() {
                             </label>
                             <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
                         </div>
-                        <VisibilityIcon
-                            className='author-view'
-                            onClick={() => setIsAnonymous(!isAnonymous)}
-                        />
+                        {(userInfo.userRole === "ADMIN" || userInfo.userRole === "QA COORDINATOR") && isAnonymous === true ?
+                            <VisibilityIcon
+                                className='author-view'
+                                onClick={() => setIsAnonymous(!isAnonymous)}
+                            /> : <></>
+                        }
                     </div>
                     <h2 className='idea-title'>{ideaDetail.title}</h2>
                     <div className='idea-category'>

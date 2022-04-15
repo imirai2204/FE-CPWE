@@ -311,14 +311,20 @@ function UserDetails() {
                                                         placeholder='First Name...'
                                                     />
                                                 </div>
-                                                <div className='input-section'>
+                                            </div>
+                                            <div className='layout-right'>
+                                                <div className='input-section label-mark'>
                                                     <TextField
-                                                        label={"Address"}
-                                                        name='address'
+                                                        label={"Last Name"}
+                                                        name='lastname'
                                                         type='text'
-                                                        placeholder='Address...'
+                                                        placeholder='Last Name...'
                                                     />
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div className='user-form'>
+                                            <div className='layout-left'>
                                                 <div className='input-section label-mark'>
                                                     <TextField
                                                         label={"Email"}
@@ -331,14 +337,28 @@ function UserDetails() {
                                                 </div>
                                             </div>
                                             <div className='layout-right'>
-                                                <div className='input-section label-mark'>
+                                                <div className='input-section'>
                                                     <TextField
-                                                        label={"Last Name"}
-                                                        name='lastname'
+                                                        label={"Phone"}
+                                                        name='phone'
                                                         type='text'
-                                                        placeholder='Last Name...'
+                                                        placeholder='Phone...'
                                                     />
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div className='user-form'>
+                                            <div className='layout-left'>
+                                                <div className='input-section'>
+                                                    <TextField
+                                                        label={"Address"}
+                                                        name='address'
+                                                        type='text'
+                                                        placeholder='Address...'
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className='layout-right'>
                                                 <div className='input-section'>
                                                     <label className='label'>
                                                         Gender
@@ -376,14 +396,6 @@ function UserDetails() {
                                                         component='div'
                                                         name={"sex"}
                                                         className='error'
-                                                    />
-                                                </div>
-                                                <div className='input-section'>
-                                                    <TextField
-                                                        label={"Phone"}
-                                                        name='phone'
-                                                        type='text'
-                                                        placeholder='Phone...'
                                                     />
                                                 </div>
                                             </div>

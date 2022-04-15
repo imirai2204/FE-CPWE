@@ -14,6 +14,7 @@ import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { useSelector } from "react-redux";
 import { storage } from "../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { convertDate, getFormattedDate } from "../function/library";
 
 const handleSubmit = async (values, setErrorData, imageUpload) => {
     const body = {
@@ -111,7 +112,6 @@ const getTopic = async (values, setTopicOption) => {
 };
 
 const getCategory = async (values, setCategoryOption) => {
-    console.log(values);
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
@@ -140,25 +140,6 @@ const getCategory = async (values, setCategoryOption) => {
         });
 };
 
-const checkPermission = async (setPermission) => {
-    await AxiosInstance.post(Authen.checkPermission, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-        .then((response) => {
-            if (response.data.code === 1) {
-                setPermission(true);
-            } else {
-                setPermission(false);
-            }
-        })
-        .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
-        });
-};
-
 const initialValues = {
     departmentId: 0,
     topicId: 0,
@@ -174,8 +155,11 @@ const SubmitPage = (props) => {
     const [isClickSubmit, setIsClickSubmit] = useState(false);
     const [imageUpload, setImageUpload] = useState([]);
     const [imgDownloadUrl, setImgDownloadUrl] = useState([]);
-    const [permission, setPermission] = useState(true);
+    // const [permission, setPermission] = useState(true);
     const [topicName, setTopicName] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [finalDate, setFinalDate] = useState("");
     const [departmentOption, setDepartmentOption] = useState([]);
     const [topicOption, setTopicOption] = useState([]);
     const [categoryOption, setCategoryOption] = useState([]);
@@ -185,8 +169,17 @@ const SubmitPage = (props) => {
     });
     const userInfo = useSelector((state) => state.user.userInfo)
 
+    function handleSetInfo(option) {
+        var startDate = getFormattedDate(convertDate(option.startDate));
+        var endDate = getFormattedDate(convertDate(option.endDate));
+        var finalDate = getFormattedDate(convertDate(option.finalDate));
+        setStartDate(startDate)
+        setEndDate(endDate)
+        setFinalDate(finalDate)
+    }
+
     const dataDepartment = {
-        searchKey: userInfo.departmentName,
+        searchKey: userInfo.userRole !== "ADMIN" ? userInfo.departmentName : null,
         limit: 5,
         page: 1,
         sortBy: null,
@@ -222,12 +215,6 @@ const SubmitPage = (props) => {
         setImageUpload(event.target.value);
     };
 
-    // checkPermission(setPermission);
-
-    const changeTopicName = (topic) => {
-        setTopicName(topic);
-    };
-
     const clickTerms = () => {
         setButtonShown(!buttonShown);
     };
@@ -236,246 +223,239 @@ const SubmitPage = (props) => {
         setIsClickSubmit(true);
     }
 
-    if (permission) {
-        return (
-            <div className='submit-panel'>
-                <h2 className='submit-title'>Create idea</h2>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={IdeaSchema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setErrorData, imageUpload);
-                    }}>
-                    {({
-                        isSubmiting,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                        setFieldValue,
-                    }) => (
-                        <Form className='submit-form'>
-                            <div className='layout-1'>
-                                <div className='layout-1--left'>
-                                    <div className='input-section label-mark'>
-                                        <label className='label' htmlFor='department'>
-                                            Department
-                                        </label>
-                                        <Select
-                                            className='select'
-                                            name='department'
-                                            id='department'
-                                            options={departmentOption}
-                                            placeholder={"Select depertment"}
-                                            isDisabled={false}
-                                            defaultValue={departmentOption[0]}
-                                            onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "departmentId",
-                                                    selectOption.value
-                                                );
-                                            }}
-                                            onBlur={() => {
-                                                handleBlur({
-                                                    target: { name: "department" },
-                                                });
-                                            }}
-                                        />
-                                        <ErrorMessage
-                                            component='div'
-                                            name={"departmentId"}
-                                            className='error'
-                                        />
-                                    </div>
-                                    <div className='input-section label-mark'>
-                                        <label className='label' htmlFor='topic'>
-                                            Topic
-                                        </label>
-                                        <Select
-                                            className='select'
-                                            name='topic'
-                                            id='topic'
-                                            options={topicOption}
-                                            placeholder={"Select topic"}
-                                            onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "topicId",
-                                                    selectOption.value
-                                                );
-                                                changeTopicName(selectOption.label);
-                                            }}
-                                            onBlur={() => {
-                                                handleBlur({ target: { name: "topic" } });
-                                            }}
-                                        />
-                                        <ErrorMessage
-                                            component='div'
-                                            name={"topicId"}
-                                            className='error'
-                                        />
-                                    </div>
-                                    <div className='input-section label-mark'>
-                                        <label className='label' htmlFor='tag'>
-                                            Tag
-                                        </label>
-                                        <Select
-                                            className='select'
-                                            name='tag'
-                                            id='tag'
-                                            options={categoryOption}
-                                            placeholder={"Select tag"}
-                                            onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "categoryId",
-                                                    selectOption.value
-                                                );
-                                            }}
-                                            onBlur={() => {
-                                                handleBlur({ target: { name: "tag" } });
-                                            }}
-                                        />
-                                        <ErrorMessage
-                                            component='div'
-                                            name={"categoryId"}
-                                            className='error'
-                                        />
-                                    </div>
+    return (
+        <div className='submit-panel'>
+            <h2 className='submit-title'>Create idea</h2>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={IdeaSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    handleSubmit(values, setErrorData, imageUpload);
+                }}>
+                {({
+                    isSubmiting,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                    touched,
+                    setFieldValue,
+                }) => (
+                    <Form className='submit-form'>
+                        <div className='layout-1'>
+                            <div className='layout-1--left'>
+                                <div className='input-section label-mark'>
+                                    <label className='label' htmlFor='department'>
+                                        Department
+                                    </label>
+                                    <Select
+                                        className='select'
+                                        name='department'
+                                        id='department'
+                                        options={departmentOption}
+                                        placeholder={"Select depertment"}
+                                        isDisabled={userInfo.userRole === "ADMIN" ? false : true}
+                                        defaultValue={departmentOption[0]}
+                                        onChange={(selectOption) => {
+                                            setFieldValue(
+                                                "departmentId",
+                                                selectOption.value
+                                            );
+                                        }}
+                                        onBlur={() => {
+                                            handleBlur({
+                                                target: { name: "department" },
+                                            });
+                                        }}
+                                    />
+                                    <ErrorMessage
+                                        component='div'
+                                        name={"departmentId"}
+                                        className='error'
+                                    />
                                 </div>
-                                <div className='layout-1--right'>
-                                    <div className='information-box'>
-                                        <h2>Information</h2>
-                                        <h4>of {topicName}</h4>
-                                        <div className='info-content'>
-                                            <div className='time'>
-                                                <label>Start Date: </label>
-                                                <p>01/01/2022</p>
-                                            </div>
-                                            <div className='time'>
-                                                <label>End Date: </label>
-                                                <p>01/01/2022</p>
-                                            </div>
-                                            <div className='time'>
-                                                <label>Final End Date: </label>
-                                                <p>01/01/2022</p>
-                                            </div>
+                                <div className='input-section label-mark'>
+                                    <label className='label' htmlFor='topic'>
+                                        Topic
+                                    </label>
+                                    <Select
+                                        className='select'
+                                        name='topic'
+                                        id='topic'
+                                        options={topicOption}
+                                        placeholder={"Select topic"}
+                                        onChange={(selectOption) => {
+                                            setFieldValue(
+                                                "topicId",
+                                                selectOption.value
+                                            );
+                                            setTopicName(selectOption.label);
+                                            handleSetInfo(selectOption);
+                                        }}
+                                        onBlur={() => {
+                                            handleBlur({ target: { name: "topic" } });
+                                        }}
+                                    />
+                                    <ErrorMessage
+                                        component='div'
+                                        name={"topicId"}
+                                        className='error'
+                                    />
+                                </div>
+                                <div className='input-section label-mark'>
+                                    <label className='label' htmlFor='tag'>
+                                        Tag
+                                    </label>
+                                    <Select
+                                        className='select'
+                                        name='tag'
+                                        id='tag'
+                                        options={categoryOption}
+                                        placeholder={"Select tag"}
+                                        onChange={(selectOption) => {
+                                            setFieldValue(
+                                                "categoryId",
+                                                selectOption.value
+                                            );
+                                        }}
+                                        onBlur={() => {
+                                            handleBlur({ target: { name: "tag" } });
+                                        }}
+                                    />
+                                    <ErrorMessage
+                                        component='div'
+                                        name={"categoryId"}
+                                        className='error'
+                                    />
+                                </div>
+                            </div>
+                            <div className='layout-1--right'>
+                                <div className='information-box'>
+                                    <h2>Information</h2>
+                                    <h4>of {topicName}</h4>
+                                    <div className='info-content'>
+                                        <div className='time'>
+                                            <label>Start Date: </label>
+                                            <p>{startDate}</p>
+                                        </div>
+                                        <div className='time'>
+                                            <label>End Date: </label>
+                                            <p>{endDate}</p>
+                                        </div>
+                                        <div className='time'>
+                                            <label>Final End Date: </label>
+                                            <p>{finalDate}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <hr />
-                            <div className='input-section label-mark'>
-                                <TextField
-                                    label={"Title"}
-                                    name='title'
-                                    type='text'
-                                    placeholder='Title'
-                                />
-                            </div>
-                            <div className='input-section'>
-                                <TextArea
-                                    label={"Description"}
-                                    className='textarea'
-                                    name='description'
-                                    rows={8}
-                                    style={{ width: "100%", resize: "none" }}></TextArea>
-                            </div>
-                            <div className='input-section contributor'>
-                                <label className='label' htmlFor='contributor'>
-                                    Post Status
-                                </label>
-                                <Select
-                                    className='select'
-                                    name='contributor'
-                                    id='contributor'
-                                    options={Contributor}
-                                    defaultValue={Contributor[0]}
-                                    placeholder={"Select state of the post"}
-                                    onChange={(selectOption) => {
-                                        setFieldValue("contributor", selectOption.value);
-                                    }}
-                                    onBlur={() => {
-                                        handleBlur({ target: { name: "contributor" } });
-                                    }}
-                                />
-                                <ErrorMessage
-                                    component='div'
-                                    name={"contributor"}
-                                    className='error'
-                                />
-                            </div>
-                            <div className='input-section attachment'>
-                                <label className='label' htmlFor='file'>
-                                    Attachment
-                                </label>
-                                <DropzoneArea
-                                    acceptedFiles={[
-                                        ".png,.jpg,.jpeg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf",
-                                    ]}
-                                    showPreviews={true}
-                                    maxFileSize={10000000}
-                                    fullWidth={true}
-                                    dropzoneText='Drop files to attach or browse'
-                                    filesLimit={5}
-                                    showFileNamesInPreview={true}
-                                    showPreviewsInDropzone={false}
-                                    showAlerts={false}
-                                    name='file'
-                                    id='attachment'
-                                    onDrop={(dropFiles) => {
-                                        let event = {
-                                            target: {
-                                                name: "files",
-                                                value: dropFiles,
-                                            },
-                                        };
-                                        handleChange(event);
-                                    }}
-                                />
-                            </div>
-                            <div className='check-submit'>
-                                <label className='checkbox'>
-                                    <input type='checkbox' onClick={clickTerms} />
-                                    <span></span>
-                                    <Link
-                                        to='/terms-conditions'
-                                        className='terms-link'
-                                        target='_blank'>
-                                        Terms & Conditions
-                                    </Link>
-                                </label>
-                                <div></div>
-                                <button
-                                    className='btn btn--noline'
-                                    type='button'
-                                    onClick={props.onClose}>
-                                    Cancel
-                                </button>
-                                <button
-                                    className={`btn btn--medium ${buttonShown ? "" : "disabled"
-                                        }`}
-                                    type='submit'
-                                    onClick={clickSubmitHandler}>
-                                    Submit
-                                </button>
-                            </div>
-                        </Form>
-                    )}
-                </Formik>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
-                    <></>
-                }
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <p>You have no permission</p>
-            </div>
-        );
-    }
+                        </div>
+                        <hr />
+                        <div className='input-section label-mark'>
+                            <TextField
+                                label={"Title"}
+                                name='title'
+                                type='text'
+                                placeholder='Title'
+                            />
+                        </div>
+                        <div className='input-section'>
+                            <TextArea
+                                label={"Description"}
+                                className='textarea'
+                                name='description'
+                                rows={8}
+                                style={{ width: "100%", resize: "none" }}></TextArea>
+                        </div>
+                        <div className='input-section contributor'>
+                            <label className='label' htmlFor='contributor'>
+                                Post Status
+                            </label>
+                            <Select
+                                className='select'
+                                name='contributor'
+                                id='contributor'
+                                options={Contributor}
+                                defaultValue={Contributor[0]}
+                                placeholder={"Select state of the post"}
+                                onChange={(selectOption) => {
+                                    setFieldValue("contributor", selectOption.value);
+                                }}
+                                onBlur={() => {
+                                    handleBlur({ target: { name: "contributor" } });
+                                }}
+                            />
+                            <ErrorMessage
+                                component='div'
+                                name={"contributor"}
+                                className='error'
+                            />
+                        </div>
+                        <div className='input-section attachment'>
+                            <label className='label' htmlFor='file'>
+                                Attachment
+                            </label>
+                            <DropzoneArea
+                                acceptedFiles={[
+                                    ".png,.jpg,.jpeg,.xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf",
+                                ]}
+                                showPreviews={true}
+                                maxFileSize={10000000}
+                                fullWidth={true}
+                                dropzoneText='Drop files to attach or browse'
+                                filesLimit={5}
+                                showFileNamesInPreview={true}
+                                showPreviewsInDropzone={false}
+                                showAlerts={false}
+                                name='file'
+                                id='attachment'
+                                onDrop={(dropFiles) => {
+                                    let event = {
+                                        target: {
+                                            name: "files",
+                                            value: dropFiles,
+                                        },
+                                    };
+                                    handleChange(event);
+                                }}
+                            />
+                        </div>
+                        <div className='check-submit'>
+                            <label className='checkbox'>
+                                <input type='checkbox' onClick={clickTerms} />
+                                <span></span>
+                                <Link
+                                    to='/terms-conditions'
+                                    className='terms-link'
+                                    target='_blank'>
+                                    Terms & Conditions
+                                </Link>
+                            </label>
+                            <div></div>
+                            <button
+                                className='btn btn--noline'
+                                type='button'
+                                onClick={props.onClose}>
+                                Cancel
+                            </button>
+                            <button
+                                className={`btn btn--medium ${buttonShown ? "" : "disabled"
+                                    }`}
+                                type='submit'
+                                onClick={clickSubmitHandler}>
+                                Submit
+                            </button>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+            {errorData.code !== 1 ?
+                <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                <></>
+            }
+        </div>
+    );
 };
 
 export default SubmitPage;

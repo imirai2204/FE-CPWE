@@ -68,7 +68,6 @@ const handleGet = async (values, setReturnData, setPagination) => {
         params: paramsValue,
     })
         .then((res) => {
-            console.log(res);
             var pagination = {
                 page: res.data.data.page,
                 size: res.data.data.size,
@@ -264,32 +263,6 @@ function ManageUser() {
                                                     value={values.firstname}
                                                 />
                                             </div>
-                                            <div className='input-section'>
-                                                <TextField
-                                                    label={"Address"}
-                                                    name='address'
-                                                    type='text'
-                                                    placeholder='Address...'
-                                                    value={values.address}
-                                                />
-                                            </div>
-                                            <div className='input-section label-mark'>
-                                                <TextField
-                                                    label={"Email"}
-                                                    name='email'
-                                                    type='email'
-                                                    placeholder='Email...'
-                                                    disabled={itemIndex === null ? false : true}
-                                                />
-                                            </div>
-                                            <div className='input-section'>
-                                                <TextField
-                                                    label={"Phone"}
-                                                    name='phone'
-                                                    type='text'
-                                                    placeholder='Phone...'
-                                                />
-                                            </div>
                                         </div>
                                         <div className='layout-right'>
                                             <div className='input-section label-mark'>
@@ -301,6 +274,44 @@ function ManageUser() {
                                                     value={values.lastname}
                                                 />
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className='user-form'>
+                                        <div className='layout-left'>
+                                            <div className='input-section label-mark'>
+                                                <TextField
+                                                    label={"Email"}
+                                                    name='email'
+                                                    type='email'
+                                                    placeholder='Email...'
+                                                    disabled={itemIndex === null ? false : true}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='layout-right'>
+                                            <div className='input-section'>
+                                                <TextField
+                                                    label={"Phone"}
+                                                    name='phone'
+                                                    type='text'
+                                                    placeholder='Phone...'
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='user-form'>
+                                        <div className='layout-left'>
+                                            <div className='input-section'>
+                                                <TextField
+                                                    label={"Address"}
+                                                    name='address'
+                                                    type='text'
+                                                    placeholder='Address...'
+                                                    value={values.address}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className='layout-right'>
                                             <div className='input-section'>
                                                 <label className='label'>Gender</label>
                                                 <Select
@@ -467,14 +478,16 @@ function ManageUser() {
                                     />
                                 </div>
                             </Form>
-                        )}
-                    </Formik>
-                </div>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
-                    <></>
+                        )
+                        }
+                    </Formik >
+                </div >
+                {
+                    errorData.code !== 1 ?
+                        <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                        <></>
                 }
-            </div>
+            </div >
         );
     } else {
         return (
