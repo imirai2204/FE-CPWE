@@ -25,8 +25,9 @@ const authSlice = createSlice({
             state.errorMessage = action.payload.errorMessage;
             state.errorCode = action.payload.errorCode;
         },
-        logout() {
+        logout(state) {
             localStorage.clear();
+            state.isLoggedIn = false;
             return initialState;
         },
     },

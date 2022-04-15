@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { saveState, getState } from "../localStorage";
 import { storage } from "../../firebase/firebase";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { ref } from "firebase/storage";
 
 const currentUserInfo = getState("userData");
 
@@ -40,9 +40,7 @@ const userSlice = createSlice({
     reducers: {
         updateUserInfo(state, action) {
             state.userInfo.fullName =
-                action.payload.userInfo.firstname +
-                " " +
-                action.payload.userInfo.lastname;
+                action.payload.userInfo.firstname + " " + action.payload.userInfo.lastname;
             state.userInfo.email = action.payload.userInfo.email;
             state.userInfo.departmentName = action.payload.userInfo.departmentName;
             state.userInfo.departmentId = action.payload.userInfo.departmentId;
@@ -51,16 +49,6 @@ const userSlice = createSlice({
             if (isEmpty(action.payload.userInfo.avatar)) {
                 state.userInfo.avatar = "/default-avatar.png";
             } else {
-                let imageName = action.payload.userInfo.userId + ".png";
-                listAll(imageRef).then((response) => {
-                    response.items.forEach((item) => {
-                        if (item.name === imageName) {
-                            getDownloadURL(item).then((url) => {
-                                state.userInfo.avatar = url;
-                            });
-                        }
-                    });
-                });
                 state.userInfo.avatar = action.payload.userInfo.avatar;
             }
             saveState("userData", state.userInfo);

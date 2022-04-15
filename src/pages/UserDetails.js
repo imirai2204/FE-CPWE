@@ -16,7 +16,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { storage } from "../firebase/firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const errorMessage = (error) => {
     if (error && error.response) {
@@ -24,7 +24,7 @@ const errorMessage = (error) => {
     }
 };
 
-const handelUpdate = async (values) => {
+const handleUpdate = async (values) => {
     await AxiosInstance.post(UserUrl.update + values.userId, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
@@ -36,7 +36,7 @@ const handelUpdate = async (values) => {
         });
 };
 
-const handelUpdatePassword = async (values, setErrorData) => {
+const handleUpdatePassword = async (values, setErrorData) => {
     await AxiosInstance.post(UserUrl.changePass, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
@@ -161,6 +161,7 @@ function UserDetails() {
     });
     const [imageUpload, setImageUpload] = useState(null);
     const [isClickUpdateAvatar, setIsClickUpdateAvatar] = useState(false);
+    const [downloadURL, setDownloadURL] = useState(null);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
@@ -176,6 +177,7 @@ function UserDetails() {
         departmentId: 0,
         roleId: 0,
         userId: "",
+        avatar: null,
     };
 
     if (isLoaded) {
@@ -230,21 +232,31 @@ function UserDetails() {
     };
 
     useEffect(() => {
+        console.log(downloadURL);
+        initialValue.avatar = downloadURL;
+        handleUpdate(initialValue);
+    }, [downloadURL]);
+
+    useEffect(() => {
         if (imageUpload == null) {
-            console.log(imageUpload);
             return;
         }
         if (isClickUpdateAvatar) {
-            let imageName = userData.userId + "test.png";
+            let imageName = userInfo.userId + "-avatar.png";
             const imageRef = ref(storage, `user-avatar/${imageName}`);
-            uploadBytes(imageRef, imageUpload).then(() => {
-                alert("Image Upload");
-            });
+            uploadBytes(imageRef, imageUpload)
+                .then(() => {
+                    alert("Image Upload");
+                })
+                .then(() => {
+                    getDownloadURL(imageRef).then((url) => {
+                        setDownloadURL(url);
+                    });
+                });
 
-            console.log(imageUpload);
             setIsClickUpdateAvatar(false);
         }
-    }, [isClickUpdateAvatar]);
+    }, [isClickUpdateAvatar, imageUpload]);
 
     const handleImageUpload = (event) => {
         setImageUpload(event.target.value[0]);
@@ -280,7 +292,7 @@ function UserDetails() {
                             initialValues={initialValue}
                             validationSchema={UserSchema}
                             onSubmit={(values, { setSubmitting }) => {
-                                handelUpdate(values);
+                                handleUpdate(values);
                             }}>
                             {({
                                 isSubmiting,
@@ -521,7 +533,7 @@ function UserDetails() {
                             initialValues={initialPassword}
                             validationSchema={PasswordSchema}
                             onSubmit={(values, { setSubmitting }) => {
-                                handelUpdatePassword(values, setErrorData);
+                                handleUpdatePassword(values, setErrorData);
                             }}>
                             {({
                                 isSubmiting,

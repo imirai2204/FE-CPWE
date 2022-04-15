@@ -14,8 +14,16 @@ import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { useSelector } from "react-redux";
 import { storage } from "../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { current } from "@reduxjs/toolkit";
 
-const handleSubmit = async (values, setErrorData, imageUpload) => {
+const errorMessage = (error) => {
+    if (error && error.response) {
+        console.log("Error: ", error);
+    }
+};
+
+const handleSubmit = async (values, setErrorData, handleFirebaseUpload) => {
+    let files = await handleFirebaseUpload();
     const body = {
         departmentId: values.departmentId,
         topicId: values.topicId,
@@ -23,16 +31,8 @@ const handleSubmit = async (values, setErrorData, imageUpload) => {
         title: values.title,
         description: values.description,
         contributor: values.contributor,
-        files: imageUpload
-        // files: values.files.map((item, index) => {
-        //     return item[index]
-        // })
-    }
-    // if (values.files.length > 0) {
-    //     for (var i = 0; i < values.files.length; i++) {
-    //         formData.append("files", values.files[i]);
-    //     }
-    // }
+        files,
+    };
     await AxiosInstance.post(IdeaUrl.create, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
@@ -40,14 +40,12 @@ const handleSubmit = async (values, setErrorData, imageUpload) => {
             var errorData = {
                 code: res.data.code,
                 message: res.data.message,
-            }
+            };
             setErrorData(errorData);
             console.log("Create success");
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -75,9 +73,7 @@ const getDepartment = async (values, setDepartmenOption) => {
             setDepartmenOption(departmentOption);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -104,9 +100,7 @@ const getTopic = async (values, setTopicOption) => {
             setTopicOption(topicOption);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -134,9 +128,7 @@ const getCategory = async (values, setCategoryOption) => {
             setCategoryOption(categoryOption);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -152,10 +144,7 @@ const checkPermission = async (setPermission) => {
             }
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                // setHasError(true);
-            }
+            errorMessage(error);
         });
 };
 
@@ -166,14 +155,14 @@ const initialValues = {
     title: "",
     description: "",
     contributor: false,
-    files: [],
+    files: [{}],
 };
 
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
     const [isClickSubmit, setIsClickSubmit] = useState(false);
-    const [imageUpload, setImageUpload] = useState([]);
-    const [imgDownloadUrl, setImgDownloadUrl] = useState([]);
+    const [fileUpload, setFileUpload] = useState([{}]);
+    const [dataUpload, setDataUpload] = useState([]);
     const [permission, setPermission] = useState(true);
     const [topicName, setTopicName] = useState("");
     const [departmentOption, setDepartmentOption] = useState([]);
@@ -181,9 +170,9 @@ const SubmitPage = (props) => {
     const [categoryOption, setCategoryOption] = useState([]);
     const [errorData, setErrorData] = useState({
         code: 1,
-        message: "ok"
+        message: "ok",
     });
-    const userInfo = useSelector((state) => state.user.userInfo)
+    const userInfo = useSelector((state) => state.user.userInfo);
 
     const dataDepartment = {
         searchKey: userInfo.departmentName,
@@ -199,31 +188,6 @@ const SubmitPage = (props) => {
         getCategory(null, setCategoryOption);
     }, [userInfo]);
 
-    /**Handle upload image to firebase */
-    useEffect(() => {
-        if (imageUpload.length == 0) {
-            return;
-        }
-        if (isClickSubmit) {
-            let imageRef;
-            imageUpload.forEach((image) => {
-                imageRef = ref(storage, `idea-attachment/${userInfo.userId}/${image.fileName}`)
-                uploadBytes(imageRef, image).then(() => {
-                    alert("Image Upload");
-                    setImgDownloadUrl([...imgDownloadUrl, getDownloadURL(imageRef)])
-                })
-            })
-        }
-        console.log(imageUpload)
-        setIsClickSubmit(false)
-    }, [isClickSubmit])
-
-    const handleImageUpload = (event) => {
-        setImageUpload(event.target.value);
-    };
-
-    // checkPermission(setPermission);
-
     const changeTopicName = (topic) => {
         setTopicName(topic);
     };
@@ -234,7 +198,59 @@ const SubmitPage = (props) => {
 
     const clickSubmitHandler = () => {
         setIsClickSubmit(true);
-    }
+    };
+
+    /** Handle upload image to firebase */
+    const firebaseUploadFile = () => {
+        console.log(dataUpload);
+        if (dataUpload.length == 0) {
+            return;
+        }
+        let upFiles = [];
+        if (isClickSubmit) {
+            dataUpload.forEach((data) => {
+                let fileName = `idea-attachment/${userInfo.userId}-${data.name}`;
+                let imageRef = ref(storage, fileName);
+                uploadBytes(imageRef, data).then(() => {
+                    getDownloadURL(imageRef).then((url) => {
+                        upFiles.push({
+                            fileName: fileName.replace("idea-attachment/", ""),
+                            downloadUrl: url,
+                            filePath: url
+                                .replace(
+                                    "https://firebasestorage.googleapis.com/v0/b/cpwe-storage.appspot.com/o",
+                                    ""
+                                )
+                                .replace("%", ""),
+                        });
+                    });
+                });
+            });
+        }
+        alert("Image Upload");
+        setFileUpload(upFiles);
+        setIsClickSubmit(false);
+        return fileUpload;
+    };
+
+    const handleFileUpload = (event) => {
+        setDataUpload((prevState) => {
+            setDataUpload([...prevState, event.target.value[0]]);
+        });
+    };
+
+    const handleFileRemove = (file) => {
+        setDataUpload((prevState) => {
+            let currentData = prevState;
+            currentData.forEach((data) => {
+                if (data.path === file.path) {
+                    let index = currentData.indexOf(data);
+                    currentData.splice(index, 1);
+                }
+            });
+            setDataUpload(currentData);
+        });
+    };
 
     if (permission) {
         return (
@@ -242,9 +258,9 @@ const SubmitPage = (props) => {
                 <h2 className='submit-title'>Create idea</h2>
                 <Formik
                     initialValues={initialValues}
-                    validationSchema={IdeaSchema}
+                    // validationSchema={IdeaSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values, setErrorData, imageUpload);
+                        handleSubmit(values, setErrorData, firebaseUploadFile);
                     }}>
                     {({
                         isSubmiting,
@@ -272,10 +288,7 @@ const SubmitPage = (props) => {
                                             isDisabled={false}
                                             defaultValue={departmentOption[0]}
                                             onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "departmentId",
-                                                    selectOption.value
-                                                );
+                                                setFieldValue("departmentId", selectOption.value);
                                             }}
                                             onBlur={() => {
                                                 handleBlur({
@@ -300,10 +313,7 @@ const SubmitPage = (props) => {
                                             options={topicOption}
                                             placeholder={"Select topic"}
                                             onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "topicId",
-                                                    selectOption.value
-                                                );
+                                                setFieldValue("topicId", selectOption.value);
                                                 changeTopicName(selectOption.label);
                                             }}
                                             onBlur={() => {
@@ -327,10 +337,7 @@ const SubmitPage = (props) => {
                                             options={categoryOption}
                                             placeholder={"Select tag"}
                                             onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "categoryId",
-                                                    selectOption.value
-                                                );
+                                                setFieldValue("categoryId", selectOption.value);
                                             }}
                                             onBlur={() => {
                                                 handleBlur({ target: { name: "tag" } });
@@ -423,6 +430,9 @@ const SubmitPage = (props) => {
                                     showAlerts={false}
                                     name='file'
                                     id='attachment'
+                                    onDelete={(file) => {
+                                        handleFileRemove(file);
+                                    }}
                                     onDrop={(dropFiles) => {
                                         let event = {
                                             target: {
@@ -431,6 +441,7 @@ const SubmitPage = (props) => {
                                             },
                                         };
                                         handleChange(event);
+                                        handleFileUpload(event);
                                     }}
                                 />
                             </div>
@@ -453,8 +464,7 @@ const SubmitPage = (props) => {
                                     Cancel
                                 </button>
                                 <button
-                                    className={`btn btn--medium ${buttonShown ? "" : "disabled"
-                                        }`}
+                                    className={`btn btn--medium ${buttonShown ? "" : "disabled"}`}
                                     type='submit'
                                     onClick={clickSubmitHandler}>
                                     Submit
@@ -463,10 +473,11 @@ const SubmitPage = (props) => {
                         </Form>
                     )}
                 </Formik>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                {errorData.code !== 1 ? (
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
+                ) : (
                     <></>
-                }
+                )}
             </div>
         );
     } else {
