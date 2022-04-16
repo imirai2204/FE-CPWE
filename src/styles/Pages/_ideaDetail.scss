@@ -2,7 +2,6 @@
     background-color: $color-white;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    // margin: 3rem 20rem 2rem;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
     border-bottom: 1px solid $color-black-B3;
@@ -19,7 +18,7 @@
 
     .author {
         display: flex;
-        max-width: 35%;
+        max-width: 28rem;
         box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
         padding: 5px;
         border-bottom: 2px solid $color-black-B3;
@@ -29,6 +28,7 @@
 
         &-name {
             font-size: 15px;
+            word-wrap: break-word;
         }
 
         &-info {
@@ -122,9 +122,23 @@
             display: flex;
             justify-content: space-between;
 
-            .btn-icon{
+            .btn-icon {
                 font-size: 18px;
                 margin-right: 1rem;
+            }
+
+            @media screen and (max-width: 615px) {
+                margin-left: 0;
+                margin-right: 0;
+
+                .btn--outline {
+                    font-size: 0px;
+                }
+
+                .btn-icon {
+                    font-size: 25px;
+                    margin-right: 0;
+                }
             }
         }
     }

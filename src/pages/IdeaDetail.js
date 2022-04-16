@@ -130,127 +130,127 @@ function IdeaDetail() {
         countView(id);
     }, [isLoading])
 
-    if(click){
+    if (click) {
         getReaction(id, setReaction);
         setClick(false)
     }
 
     return (
-        // <div className='container'>
-        <div className='idea-detail-page container'>
-            <div className='idea-body'>
-                <div className='author'>
-                    <div className='author-info'>
-                        <label className='author-name'>
-                            {isAnonymous ? "Anonymous" : ideaDetail.createdUser}
-                        </label>
-                        <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
+        <div className='container'>
+            <div className='idea-detail-page'>
+                <div className='idea-body'>
+                    <div className='author'>
+                        <div className='author-info'>
+                            <label className='author-name'>
+                                {isAnonymous ? "Anonymous" : ideaDetail.createdUser}
+                            </label>
+                            <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
+                        </div>
+                        {(userInfo.userRole === "ADMIN" || userInfo.userRole === "QA COORDINATOR") && isAnonymous === true ?
+                            <VisibilityIcon
+                                className='author-view'
+                                onClick={() => setIsAnonymous(!isAnonymous)}
+                            /> : <></>
+                        }
                     </div>
-                    {(userInfo.userRole === "ADMIN" || userInfo.userRole === "QA COORDINATOR") && isAnonymous === true ?
-                        <VisibilityIcon
-                            className='author-view'
-                            onClick={() => setIsAnonymous(!isAnonymous)}
-                        /> : <></>
+                    <h2 className='idea-title'>{ideaDetail.title}</h2>
+                    <div className='idea-category'>
+                        <label className='topic-name'>
+                            <PushPinIcon className="icon" />
+                            {ideaDetail.topic}
+                        </label>
+                        <label className='category-name'>
+                            <TagIcon className="icon" />
+                            {ideaDetail.category}
+                        </label>
+                    </div>
+                    <div className='idea-description'>
+                        <p>{ideaDetail.description}</p>
+                    </div>
+                    <div className='idea-document'>
+                        <label className="idea-label">List upload document</label>
+                        <ol>
+                            {listDocument.map((item, index) => {
+                                return (<li key={index}>
+                                    <Link
+                                        to={item.downloadUrl}
+                                        className='link-item'
+                                        target='_blank'>
+                                        {item.fileName}
+                                    </Link>
+                                </li>)
+                            }
+                            )}
+                        </ol>
+                    </div>
+                    <div className='idea-image'>
+                        <label className="idea-label">List upload image</label>
+                        <ImageGallery showPlayButton={false} showFullscreenButton={false} items={listImage} />
+                    </div>
+                    <hr />
+                    <div className='idea-data'>
+                        <div>
+                            <label className='data-detail'>
+                                <ThumbUpOutlinedIcon className="icon" />
+                                {reaction.like}
+                            </label>
+                            <label className='data-detail'>
+                                <ThumbDownOutlinedIcon className="icon" />
+                                {reaction.dislike}
+                            </label>
+                            <label className='data-detail'>
+                                <CommentOutlinedIcon className="icon" />
+                                {reaction.comment}
+                            </label>
+                        </div>
+                        <div>
+                            <label className='data-detail'>
+                                <VisibilityOutlinedIcon className="icon" />
+                                {reaction.view}
+                            </label>
+                        </div>
+                    </div>
+                    <hr />
+                    <div className="idea-button">
+                        <button
+                            className={reaction.status === 1 ? "btn btn--outline btn--outline__active" : "btn btn--outline"}
+                            type="button"
+                            onClick={() => {
+                                handleReaction(1, id);
+                                setClick(true)
+                            }}
+                        >
+                            <ThumbUpOutlinedIcon className="btn-icon" />
+                            Like
+                        </button>
+                        <button
+                            className={reaction.status === -1 ? "btn btn--outline btn--outline__active" : "btn btn--outline"}
+                            type="button"
+                            onClick={() => {
+                                handleReaction(-1, id);
+                                setClick(true)
+                            }}
+                        >
+                            <ThumbDownOutlinedIcon className="btn-icon" />
+                            Dislike
+                        </button>
+                        <button
+                            className="btn btn--outline"
+                            type="button"
+                            onClick={() => setIsShowComment(!isShowComment)}
+                        >
+                            <CommentOutlinedIcon className="btn-icon" />
+                            Comment
+                        </button>
+                    </div>
+                    <hr />
+                    {isShowComment ?
+                        <Comments currentUserId={currentUserId} currentUserName={currentUserName} /> :
+                        <></>
                     }
                 </div>
-                <h2 className='idea-title'>{ideaDetail.title}</h2>
-                <div className='idea-category'>
-                    <label className='topic-name'>
-                        <PushPinIcon className="icon" />
-                        {ideaDetail.topic}
-                    </label>
-                    <label className='category-name'>
-                        <TagIcon className="icon" />
-                        {ideaDetail.category}
-                    </label>
-                </div>
-                <div className='idea-description'>
-                    <p>{ideaDetail.description}</p>
-                </div>
-                <div className='idea-document'>
-                    <label className="idea-label">List upload document</label>
-                    <ol>
-                        {listDocument.map((item, index) => {
-                            return (<li key={index}>
-                                <Link
-                                    to={item.downloadUrl}
-                                    className='link-item'
-                                    target='_blank'>
-                                    {item.fileName}
-                                </Link>
-                            </li>)
-                        }
-                        )}
-                    </ol>
-                </div>
-                <div className='idea-image'>
-                    <label className="idea-label">List upload image</label>
-                    <ImageGallery showPlayButton={false} items={listImage} />
-                </div>
-                <hr />
-                <div className='idea-data'>
-                    <div>
-                        <label className='data-detail'>
-                            <ThumbUpOutlinedIcon className="icon" />
-                            {reaction.like}
-                        </label>
-                        <label className='data-detail'>
-                            <ThumbDownOutlinedIcon className="icon" />
-                            {reaction.dislike}
-                        </label>
-                        <label className='data-detail'>
-                            <CommentOutlinedIcon className="icon" />
-                            {reaction.comment}
-                        </label>
-                    </div>
-                    <div>
-                        <label className='data-detail'>
-                            <VisibilityOutlinedIcon className="icon" />
-                            {reaction.view}
-                        </label>
-                    </div>
-                </div>
-                <hr />
-                <div className="idea-button">
-                    <button
-                        className={reaction.status === 1 ? "btn btn--outline btn--outline__active" : "btn btn--outline"}
-                        type="button"
-                        onClick={() => {
-                            handleReaction(1, id);
-                            setClick(true)
-                        }}
-                    >
-                        <ThumbUpOutlinedIcon className="btn-icon" />
-                        Like
-                    </button>
-                    <button
-                        className={reaction.status === -1 ? "btn btn--outline btn--outline__active" : "btn btn--outline"}
-                        type="button"
-                        onClick={() => {
-                            handleReaction(-1, id);
-                            setClick(true)
-                        }}
-                    >
-                        <ThumbDownOutlinedIcon className="btn-icon" />
-                        Dislike
-                    </button>
-                    <button
-                        className="btn btn--outline"
-                        type="button"
-                        onClick={() => setIsShowComment(!isShowComment)}
-                    >
-                        <CommentOutlinedIcon className="btn-icon" />
-                        Comment
-                    </button>
-                </div>
-                <hr />
-                {isShowComment ?
-                    <Comments currentUserId={currentUserId} currentUserName={currentUserName} /> :
-                    <></>
-                }
             </div>
         </div>
-        // </div>
     );
 }
 
