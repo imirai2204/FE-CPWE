@@ -166,6 +166,7 @@ function RoleManagement() {
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
     const [isChecked, setIsChecked] = useState(false);
     const [optionValues, setOptionValues] = useState([]);
+    const [updateValues, setUpdateValues] = useState(null);
     const itemIndex = useSelector((state) => state.table.itemIndex);
     const [isResetting, setIsResetting] = useState(false);
 
@@ -196,6 +197,41 @@ function RoleManagement() {
         setIsChecked(allOptionsSelected ? true : false);
         setOptionValues(option);
     };
+
+    // useEffect(() => {
+    //     if (updateValues !== null) {
+    //         let indexsAll = permissionOption;
+    //         let indexs = updateValues.entries();
+    //         let values = []
+    //         for (let permission of indexs) {
+    //             for(let option of indexsAll) {
+    //                 if (option.value === permission.permissionId) {
+    //                     values.push(option)
+    //                 }
+    //             }
+    //         }
+    //         console.log(values)
+    //         setOptionValues(values)
+    //     }
+    // }, [updateValues])
+
+    useEffect(() => {
+        if (updateValues !== null) {
+            let optionIndex;
+            let valueIndex;
+            let editedValues = [];
+            for (optionIndex = 0; optionIndex < permissionOption.length; optionIndex++) {
+                for (valueIndex = 0; valueIndex < updateValues.length; valueIndex++) {
+                    if (
+                        updateValues[valueIndex].permissionId === permissionOption[optionIndex].value
+                    ) {
+                        editedValues.push(permissionOption[optionIndex]);
+                    }
+                }
+            }
+            setOptionValues(editedValues);
+        }
+    }, [updateValues]);
 
     useEffect(() => {
         AuthorizationAPI(Flag.manageSemester, setPermission);
@@ -263,7 +299,6 @@ function RoleManagement() {
                                                     target: { name: "permission" },
                                                 });
                                             }}
-                                            // components={{ Option }}
                                             closeMenuOnSelect={false}
                                             hideSelectedOptions={false}
                                             maxMenuHeight={200}
@@ -337,7 +372,7 @@ function RoleManagement() {
                                         totalPages={returnPagination.totalPages}
                                         setFieldValue={setFieldValue}
                                         formikValue={values}
-                                        setOptionValues={setOptionValues}
+                                        setUpdateValues={setUpdateValues}
                                         type={"role"}
                                     />
                                 </div>
