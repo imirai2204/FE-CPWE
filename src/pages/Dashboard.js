@@ -44,7 +44,7 @@ const getDepartment = async (values, setDepartmenOption) => {
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(DepartmentUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -73,7 +73,7 @@ const getTopic = async (values, setTopicOption) => {
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(TopicUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -219,6 +219,9 @@ function Dashboard() {
                                     </div>
                                 </div>
                                 <div className="list-button">
+                                    {/* <button className={"btn btn-info"} type='reset'>
+                                        Refresh
+                                    </button> */}
                                     {userInfo.userRole === "ADMIN" ?
                                         <button className={"btn btn-export"} type='submit'>
                                             <FileDownloadOutlinedIcon className="icon" /> Export CSV

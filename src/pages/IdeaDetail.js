@@ -52,6 +52,62 @@ const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
         });
 };
 
+const handleReaction = async (reaction, id) => {
+    var values = {
+        ideaId: id,
+        evaluation: reaction,
+    };
+    await AxiosInstance.post(IdeaUrl.reaction, values, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then((res) => {
+            console.log(res);
+            console.log("Create success");
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const getReaction = async (id, setReaction) => {
+    await AxiosInstance.get(IdeaUrl.getReaction + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then((res) => {
+            console.log(res);
+            var reaction = {
+                like: res.data.data.like,
+                dislike: res.data.data.dislike,
+                view: res.data.data.viewCount,
+                comment: res.data.data.commentCount,
+                status: res.data.data.currentStatus,
+            };
+            setReaction(reaction);
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
+const countView = async (id) => {
+    await AxiosInstance.post(IdeaUrl.countView + id, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then((res) => {
+            console.log(res);
+            console.log("Create success");
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+};
+
 function IdeaDetail() {
     const [isAnonymous, setIsAnonymous] = useState(true);
     const currentUserId = useSelector((state) => state.user.userInfo.userId);
@@ -62,13 +118,22 @@ function IdeaDetail() {
     const [listDocument, setListDocument] = useState([]);
     const [isLoading, setisLoading] = useState(false);
     const userInfo = useSelector((state) => state.user.userInfo);
+    const [reaction, setReaction] = useState({});
+    const [click, setClick] = useState(false);
 
     let { id } = useParams();
 
     useEffect(() => {
         handleGet(setIdeaDetail, setListDocument, setListImage, id);
         setIsAnonymous(ideaDetail.isAnonymous);
+        getReaction(id, setReaction);
+        countView(id);
     }, [isLoading]);
+
+    if (click) {
+        getReaction(id, setReaction);
+        setClick(false);
+    }
 
     return (
         <div className='container'>
@@ -125,36 +190,62 @@ function IdeaDetail() {
                     </div>
                     <div className='idea-image'>
                         <label className='idea-label'>List upload image</label>
-                        <ImageGallery showPlayButton={false} items={listImage} />
+                        <ImageGallery
+                            showPlayButton={false}
+                            showFullscreenButton={false}
+                            items={listImage}
+                        />
                     </div>
                     <hr />
                     <div className='idea-data'>
                         <div>
                             <label className='data-detail'>
                                 <ThumbUpOutlinedIcon className='icon' />
-                                10
+                                {reaction.like}
                             </label>
                             <label className='data-detail'>
-                                <ThumbDownOutlinedIcon className='icon' />3
+                                <ThumbDownOutlinedIcon className='icon' />
+                                {reaction.dislike}
                             </label>
                             <label className='data-detail'>
-                                <CommentOutlinedIcon className='icon' />4
+                                <CommentOutlinedIcon className='icon' />
+                                {reaction.comment}
                             </label>
                         </div>
                         <div>
                             <label className='data-detail'>
                                 <VisibilityOutlinedIcon className='icon' />
-                                300
+                                {reaction.view}
                             </label>
                         </div>
                     </div>
                     <hr />
                     <div className='idea-button'>
-                        <button className='btn btn--outline' type='button'>
+                        <button
+                            className={
+                                reaction.status === 1
+                                    ? "btn btn--outline btn--outline__active"
+                                    : "btn btn--outline"
+                            }
+                            type='button'
+                            onClick={() => {
+                                handleReaction(1, id);
+                                setClick(true);
+                            }}>
                             <ThumbUpOutlinedIcon className='btn-icon' />
                             Like
                         </button>
-                        <button className='btn btn--outline' type='button'>
+                        <button
+                            className={
+                                reaction.status === -1
+                                    ? "btn btn--outline btn--outline__active"
+                                    : "btn btn--outline"
+                            }
+                            type='button'
+                            onClick={() => {
+                                handleReaction(-1, id);
+                                setClick(true);
+                            }}>
                             <ThumbDownOutlinedIcon className='btn-icon' />
                             Dislike
                         </button>
@@ -173,6 +264,7 @@ function IdeaDetail() {
                             currentUserName={currentUserName}
                             ideaId={id}
                             isAnonymous={isAnonymous}
+                            isShowComment={isShowComment}
                         />
                     ) : (
                         <></>
