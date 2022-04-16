@@ -8,7 +8,7 @@ const Comment = ({
     deleteComment,
     activeComment,
     setActiveComment,
-    parentId = null,
+    parent = null,
     addComment,
     updateComment,
 }) => {
@@ -20,7 +20,7 @@ const Comment = ({
         activeComment && activeComment.type === "Reply" && activeComment.id === comment.id;
     const isEdit =
         activeComment && activeComment.type === "Edit" && activeComment.id === comment.id;
-    const replyId = parentId ? parentId : comment.id;
+    const replyId = parent ? parent : comment.id;
 
     return (
         <div className='comment'>
@@ -29,7 +29,7 @@ const Comment = ({
             </div>
             <div className='comment-right-part'>
                 <div className='comment-content'>
-                    <div className='comment-author'>{comment.createdUser}</div>
+                    <div className='comment-author'>{comment.userName}</div>
                     <div className='comment-date'>{createdAt}</div>
                 </div>
                 {!isEdit && <div className='comment-text'>{comment.content}</div>}
@@ -46,7 +46,10 @@ const Comment = ({
                     {allowReply && (
                         <div
                             className='comment-action'
-                            onClick={() => setActiveComment({ id: comment.id, type: "Reply" })}>
+                            onClick={() => {
+                                console.log(comment.id);
+                                setActiveComment({ id: comment.id, type: "Reply" });
+                            }}>
                             Reply
                         </div>
                     )}
@@ -82,7 +85,7 @@ const Comment = ({
                                 setActiveComment={setActiveComment}
                                 addComment={addComment}
                                 updateComment={updateComment}
-                                parentId={comment.id}
+                                parent={comment.id}
                             />
                         ))}
                     </div>

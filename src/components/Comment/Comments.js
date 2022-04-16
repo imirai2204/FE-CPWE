@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
 import CommentForm from "../UI/Form/CommentForm";
-import {
-    getComments as getCommentsApi,
-    // createComment as createCommentApi,
-    deleteComment as deleteCommentApi,
-    updateComment as updateCommentApi,
-} from "./dummy-data"; //Dummy comments data for testing
+import { deleteComment as deleteCommentApi, updateComment as updateCommentApi } from "./dummy-data"; //Dummy comments data for testing
 
 import {
     createIdeaComment as createCommentApi,
-    fetchIdeaComments as getCommentsApiReal,
+    fetchIdeaComments as getCommentsApi,
 } from "./CommentApi";
 
 const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
 
-    const rootComments = backendComments.filter(
-        (backendComment) => backendComment.parentId === null
-    );
+    const rootComments = backendComments.filter((backendComment) => backendComment.parent === null);
 
     const getReplies = (commentId) => {
+        console.log(backendComments);
         return backendComments
-            .filter((backendComment) => backendComment.parentId === commentId)
+            .filter((backendComment) => backendComment.parent === commentId)
             .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     };
 
     /** Integrate with API from Backend to Create/Update/Delete/Read comments */
     const addComment = (text, parentId) => {
-        console.log("addComment", text, parentId, currentUserId, currentUserName);
+        console.log("Add Comment Action", text, parentId, currentUserId, currentUserName);
         const body = {
             parentId: parentId ?? null,
             ideaId,
@@ -68,14 +62,8 @@ const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
     };
 
     useEffect(() => {
-        /** Integrate with API from Backend
-         * current code is for testing only
-         */
-        getCommentsApi().then((data) => {
+        getCommentsApi(ideaId).then((data) => {
             setBackendComments(data);
-        });
-        getCommentsApiReal(ideaId).then((data) => {
-            console.log(data);
         });
     }, []);
 
