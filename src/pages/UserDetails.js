@@ -232,7 +232,6 @@ function UserDetails() {
     };
 
     useEffect(() => {
-        console.log(downloadURL);
         initialValue.avatar = downloadURL;
         handleUpdate(initialValue);
     }, [downloadURL]);

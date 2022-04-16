@@ -22,7 +22,7 @@ const errorMessage = (error) => {
     }
 };
 
-const handleSubmit = async (values, setErrorData, files) => {
+const handleSubmit = async (values, setErrorData) => {
     const body = {
         departmentId: values.departmentId,
         topicId: values.topic,
@@ -30,7 +30,7 @@ const handleSubmit = async (values, setErrorData, files) => {
         title: values.title,
         description: values.description,
         contributor: values.contributor,
-        files,
+        files: values.files,
     };
     await AxiosInstance.post(IdeaUrl.create, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -147,11 +147,11 @@ const initialValues = {
 
 const SubmitPage = (props) => {
     const [buttonShown, setButtonShown] = useState(false);
-    const [isClickSubmit, setIsClickSubmit] = useState(false);
     const [isSubmiting, setIsSubmiting] = useState(false);
-    const [values, setValues] = useState(null);
-    const [fileUpload, setFileUpload] = useState([{}]);
+    const [clickSubmit, setClickSubmit] = useState(false);
+    const [payloadData, setPayloadData] = useState(null);
     const [dataUpload, setDataUpload] = useState([]);
+    const [filesUpload, setFilesUpload] = useState([]);
     const [topicName, setTopicName] = useState("");
     const [departmentOption, setDepartmentOption] = useState([]);
     const [topicOption, setTopicOption] = useState([]);
@@ -220,13 +220,22 @@ const SubmitPage = (props) => {
     };
 
     /** Handle upload image to firebase */
-    const firebaseUploadFile = async () => {
+    useEffect(() => {
+        if (isSubmiting === false) {
+            return;
+        } else {
+            payloadData.files = filesUpload;
+            handleSubmit(payloadData, setErrorData);
+        }
+    }, [isSubmiting]);
+
+    useEffect(() => {
         console.log(dataUpload);
         if (dataUpload.length === 0) {
             return;
         }
-        let upFiles = [];
-        if (isClickSubmit) {
+        if (clickSubmit === true) {
+            let upFiles = [];
             dataUpload.forEach((data) => {
                 let fileName = `idea-attachment/${userInfo.userId}-${data.name}`;
                 let imageRef = ref(storage, fileName);
@@ -246,12 +255,39 @@ const SubmitPage = (props) => {
                     });
                 });
             });
+            alert("Image Upload");
+            setClickSubmit(false);
+            setFilesUpload(upFiles);
         }
-        alert("Image Upload");
-        setFileUpload(upFiles);
-        setIsClickSubmit(false);
-        return fileUpload;
-    };
+    }, [clickSubmit]);
+    // const firebaseUploadFile = async () => {
+    //     console.log(dataUpload);
+    //     if (dataUpload.length === 0) {
+    //         return;
+    //     }
+    //     let upFiles = [];
+    //     dataUpload.forEach((data) => {
+    //         let fileName = `idea-attachment/${userInfo.userId}-${data.name}`;
+    //         let imageRef = ref(storage, fileName);
+    //         uploadBytes(imageRef, data).then(() => {
+    //             getDownloadURL(imageRef).then((url) => {
+    //                 upFiles.push({
+    //                     fileName: fileName.replace("idea-attachment/", ""),
+    //                     downloadUrl: url,
+    //                     fileType: data.type,
+    //                     filePath: url
+    //                         .replace(
+    //                             "https://firebasestorage.googleapis.com/v0/b/cpwe-storage.appspot.com/o",
+    //                             ""
+    //                         )
+    //                         .replace("%", ""),
+    //                 });
+    //             });
+    //         });
+    //     });
+    //     alert("Image Upload");
+    //     setFilesUpload(upFiles);
+    // };
 
     const handleFileUpload = (event) => {
         setDataUpload((prevState) => {
@@ -272,20 +308,16 @@ const SubmitPage = (props) => {
         });
     };
 
-    useEffect(() => {
-        let files = firebaseUploadFile();
-        handleSubmit(values, setErrorData, files);
-    }, [values, isSubmiting]);
     return (
         <div className='submit-panel'>
             <h2 className='submit-title'>Create idea</h2>
             <Formik
                 initialValues={initialValues}
-                validationSchema={IdeaSchema}
+                // validationSchema={IdeaSchema}
                 onSubmit={(values) => {
                     // handleSubmit(values, setErrorData, firebaseUploadFile);
                     setIsSubmiting(true);
-                    setValues(values);
+                    setPayloadData(values);
                 }}>
                 {({
                     isSubmiting,
@@ -486,7 +518,10 @@ const SubmitPage = (props) => {
                             </button>
                             <button
                                 className={`btn btn--medium ${buttonShown ? "" : "disabled"}`}
-                                type='submit'>
+                                type='submit'
+                                onClick={() => {
+                                    setClickSubmit(true);
+                                }}>
                                 Submit
                             </button>
                         </div>
