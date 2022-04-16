@@ -13,6 +13,8 @@ export const IdeaUrl = {
     reaction: "/idea/reaction",
     getReaction: "/idea/get/status/",
     countView: "idea/view/create/",
+    dashboard: "idea/dashboard/get",
+    export: "file/report"
 };
 
 export const AcademicUrl = {

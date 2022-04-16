@@ -62,7 +62,7 @@ const getDepartment = async (values, setDepartmenOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
@@ -90,7 +90,7 @@ const getTopic = async (values, setTopicOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? "" : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
         departmentId: values === null || values.departmentId === null ? null : values.departmentId,
@@ -121,7 +121,7 @@ const getCategory = async (values, setCategoryOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
         topicId: values === null || values.topicId === null ? null : values.topicId,
@@ -338,6 +338,7 @@ const SubmitPage = (props) => {
                                                 target: { name: "departmentId" },
                                             });
                                         }}
+                                        maxMenuHeight={200}
                                     />
                                     <ErrorMessage
                                         component='div'
@@ -364,6 +365,7 @@ const SubmitPage = (props) => {
                                         onBlur={() => {
                                             handleBlur({ target: { name: "topic" } });
                                         }}
+                                        maxMenuHeight={200}
                                     />
                                     <ErrorMessage
                                         component='div'
@@ -387,6 +389,7 @@ const SubmitPage = (props) => {
                                         onBlur={() => {
                                             handleBlur({ target: { name: "categoryId" } });
                                         }}
+                                        maxMenuHeight={200}
                                     />
                                     <ErrorMessage
                                         component='div'

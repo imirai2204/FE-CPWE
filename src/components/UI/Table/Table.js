@@ -130,7 +130,7 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
 
-export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formikValue, setOptionValues, ...props }) => {
+export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formikValue, setUpdateValues, ...props }) => {
     const dispatch = useDispatch();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("ID");
@@ -196,7 +196,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         setCurrentPage(1);
     };
 
-    const handleEdit = (setFieldValue, setOptionValues, types , index) => {
+    const handleEdit = (setFieldValue, setUpdateValues, types , index) => {
         if(types === "user"){
             setFieldValue("firstname", rows[index].firstname)
             setFieldValue("lastname", rows[index].lastname)
@@ -210,7 +210,8 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         } else {
             setFieldValue("roleName", rows[index].roleName)
             setFieldValue("id", rows[index].id)
-            setOptionValues(rows[index].listItem)
+            setUpdateValues(rows[index].listItem)
+            // console.log(rows[index].listItem)
         }
     }
 
@@ -273,7 +274,7 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                                                             fontSize: "20px",
                                                         }}
                                                         onClick={() => {
-                                                            handleEdit(setFieldValue, setOptionValues, props.type, index);
+                                                            handleEdit(setFieldValue, setUpdateValues, props.type, index);
                                                             setItemIndex(index);
                                                         }}
                                                     />

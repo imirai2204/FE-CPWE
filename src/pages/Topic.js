@@ -110,7 +110,7 @@ const getDepartment = async (values, setDepartmenOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
@@ -284,6 +284,7 @@ function Topic() {
                                                     target: { name: "department" },
                                                 });
                                             }}
+                                            maxMenuHeight={200}
                                         />
                                         <ErrorMessage
                                             component='div'

@@ -53,7 +53,7 @@ const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
@@ -83,7 +83,7 @@ const getDepartment = async (values, setDepartmenOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
@@ -113,7 +113,7 @@ const getTopic = async (values, setTopicOption) => {
     const paramsValue = {
         searchKey: values === null || values.searchKey === null ? "" : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
-        limit: values === null || values.limit === null ? 5 : values.limit,
+        limit: values === null || values.limit === null ? 100 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
@@ -145,6 +145,7 @@ const getCategory = async (values, setCategoryOption) => {
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
         sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
+        topicId: values === null || values.topicId === null ? null : values.topicId,
     };
     await AxiosInstance.get(CategoryUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -154,8 +155,8 @@ const getCategory = async (values, setCategoryOption) => {
             var categoryOption = res.data.data.content.map((content) => {
                 return {
                     value: content.id,
-                    label: content.topic,
-                    key: content.category,
+                    label: content.category,
+                    key: content.id,
                 };
             });
             setCategoryOption(categoryOption);
@@ -207,6 +208,7 @@ function Home() {
     }, [isLoading])
 
     useEffect(() => {
+        console.log("re render get home")
         handleGet(tableDatas, setReturnData, setPagination);
     }, [departmentFilter, 
         semesterFilter, 
@@ -250,6 +252,7 @@ function Home() {
                                     color: "#707070",
                                 }),
                             }}
+                            maxMenuHeight={200}
                         />
                         <Select
                             className='select'
@@ -272,6 +275,7 @@ function Home() {
                                     color: "#707070",
                                 }),
                             }}
+                            maxMenuHeight={200}
                         />
                     </>
                 }
@@ -296,6 +300,7 @@ function Home() {
                             color: "#707070",
                         }),
                     }}
+                    maxMenuHeight={200}
                 />
                 <Select
                     className='select'
@@ -318,6 +323,7 @@ function Home() {
                             color: "#707070",
                         }),
                     }}
+                    maxMenuHeight={200}
                 />
                 <Select
                     className='select select-sort'

@@ -90,3 +90,8 @@ export const PasswordSchema = Yup.object().shape({
 export const RoleSchema = Yup.object().shape({
     roleName: Yup.string().required("Sorry, Role name is required"),
 });
+
+
+export const DashboardSchema = Yup.object().shape({
+    year: Yup.string().required("Sorry, Year is required"),
+});

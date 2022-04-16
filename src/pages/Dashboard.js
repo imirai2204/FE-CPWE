@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../styles/style.scss";
-import { Formik, Form } from "formik";
+import { ErrorMessage, Formik, Form } from "formik";
 import Select from "react-select";
+import { DashboardSchema } from "../validation";
 import { YearOptions } from "../components/Navbar/dropdown/DropdownItems";
-import { DepartmentUrl, TopicUrl, AcademicUrl } from "../api/EndPoint";
+import { DepartmentUrl, TopicUrl, AcademicUrl, IdeaUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
@@ -12,6 +13,8 @@ import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
 import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
 import { Bar, Doughnut } from "react-chartjs-2";
 import Chart from 'chart.js/auto';
+import Moment from 'react-moment';
+import moment from "moment";
 
 const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
@@ -96,6 +99,76 @@ const getTopic = async (values, setTopicOption) => {
         });
 };
 
+const handleFilter = async (values, setValueData) => {
+    var paramsValue = {
+        year: values.year,
+        semester: values === null || values.academicId === 0 ? null : values.academicId,
+        department: values === null || values.departmentId === 0 ? null : values.departmentId,
+        topic: values === null || values.topicId === 0 ? null : values.topicId,
+    }
+    await AxiosInstance.get(IdeaUrl.dashboard, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        params: paramsValue,
+    })
+        .then((res) => {
+            var resData = res.data.data;
+            // const valueData = {
+            //     anonymousComment: resData.anonymousComment,
+            //     anonymousIdea: resData.anonymousIdea,
+            //     ideaNoComment: resData.ideaNoComment,
+            //     totalIdea: resData.totalIdea,
+            //     firstBarChart: {
+            //         listComment: resData.firstBarChart.listComment,
+            //         listDept: resData.firstBarChart.listDept,
+            //         listIdea: resData.firstBarChart.listIdea,
+            //     },
+            //     pieChart: {
+            //         listDept: resData.pieChart.listDept,
+            //         listValue: resData.pieChart.listValue,
+            //     },
+            //     secondBarChart: {
+            //         listDept: resData.secondBarChart.listDept,
+            //         userCount: resData.secondBarChart.userCount,
+            //     },
+            // };
+            console.log(resData)
+            // setValueData(resData)
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
+const handleExport = async (values) => {
+    var paramsValue = {
+        year: values.year,
+        semester: values === null || values.academicId === 0 ? null : values.academicId,
+        department: values === null || values.departmentId === 0 ? null : values.departmentId,
+        topic: values === null || values.topicId === 0 ? null : values.topicId,
+    }
+    await AxiosInstance.get(IdeaUrl.export, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, responseType: 'blob' },
+        params: paramsValue,
+    })
+        .then((res) => {
+            var date = moment().format("DD_MM_YYYY_hh:mm:ss");
+            var filename = "Report_" + date + ".csv"
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+        })
+        .catch((error) => {
+            if (error && error.response) {
+                console.log("Error: ", error);
+            }
+        });
+}
+
 const initialValues = {
     year: "",
     academicId: 0,
@@ -109,6 +182,27 @@ function Dashboard() {
     const [departmentOption, setDepartmentOption] = useState([]);
     const [topicOption, setTopicOption] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [valueData, setValueData] = useState(
+        {
+            anonymousComment: 0,
+            anonymousIdea: 0,
+            ideaNoComment: 0,
+            totalIdea: 0,
+            firstBarChart: {
+                listComment: [0],
+                listDept: [""],
+                listIdea: [0],
+            },
+            pieChart: {
+                listDept: [""],
+                listValue: [100],
+            },
+            secondBarChart: {
+                listDept: [""],
+                userCount: [0],
+            },
+        }
+    )
 
     var departmentData = {
         searchKey: userInfo.userRole === "ADMIN" ? null : userInfo.departmentName,
@@ -120,7 +214,6 @@ function Dashboard() {
 
     useEffect(() => {
         if (isLoading) {
-            getSemester(null, setSemesterOption);
             getDepartment(departmentData, setDepartmentOption);
             getTopic(null, setTopicOption);
             setIsLoading(!isLoading);
@@ -134,8 +227,9 @@ function Dashboard() {
                 <div className="layout-form">
                     <Formik
                         initialValues={initialValues}
+                        validationSchema={DashboardSchema}
                         onSubmit={(values) => {
-                            // handleSubmit(values);
+                            handleFilter(values, setValueData);
                         }}>
                         {({
                             isSubmiting,
@@ -168,6 +262,11 @@ function Dashboard() {
                                                 );
                                             }}
                                         />
+                                        <ErrorMessage
+                                            component='div'
+                                            name={"year"}
+                                            className='error'
+                                        />
                                     </div>
                                     <div className='input-section'>
                                         <label className='label'>Semester</label>
@@ -183,6 +282,7 @@ function Dashboard() {
                                                     selectOption.value
                                                 );
                                             }}
+                                            maxMenuHeight={200}
                                         />
                                     </div>
                                     <div className='input-section'>
@@ -199,6 +299,7 @@ function Dashboard() {
                                                     selectOption.value
                                                 );
                                             }}
+                                            maxMenuHeight={200}
                                         />
                                     </div>
                                     <div className='input-section'>
@@ -215,6 +316,7 @@ function Dashboard() {
                                                     selectOption.value
                                                 );
                                             }}
+                                            maxMenuHeight={200}
                                         />
                                     </div>
                                 </div>
@@ -223,10 +325,19 @@ function Dashboard() {
                                         Refresh
                                     </button> */}
                                     {userInfo.userRole === "ADMIN" ?
-                                        <button className={"btn btn-export"} type='submit'>
+                                        <button
+                                            className={"btn btn-export"}
+                                            type='button'
+                                            onClick={() => {
+                                                handleExport(values);
+                                            }}
+                                        >
                                             <FileDownloadOutlinedIcon className="icon" /> Export CSV
                                         </button> : <></>
                                     }
+                                    <button className={"btn btn-success"} type='submit'>
+                                        Report
+                                    </button>
                                 </div>
                             </Form>
                         )}
@@ -242,7 +353,7 @@ function Dashboard() {
                                 <LightbulbOutlinedIcon className="icon" />
                             </div>
                         </div>
-                        <p className="data-body">5,265</p>
+                        <p className="data-body">{valueData.totalIdea}</p>
                     </div>
                     <div className="data right">
                         <div className="data-header">
@@ -251,7 +362,7 @@ function Dashboard() {
                                 <CommentsDisabledOutlinedIcon className="icon" />
                             </div>
                         </div>
-                        <p className="data-body">312</p>
+                        <p className="data-body">{valueData.ideaNoComment}</p>
                     </div>
                 </div>
                 <div className="data-right right">
@@ -262,7 +373,7 @@ function Dashboard() {
                                 <PersonOffOutlinedIcon className="icon" />
                             </div>
                         </div>
-                        <p className="data-body">50</p>
+                        <p className="data-body">{valueData.anonymousIdea}</p>
                     </div>
                     <div className="data right">
                         <div className="data-header">
@@ -271,7 +382,7 @@ function Dashboard() {
                                 <PersonOffOutlinedIcon className="icon" />
                             </div>
                         </div>
-                        <p className="data-body">260</p>
+                        <p className="data-body">{valueData.anonymousComment}</p>
                     </div>
                 </div>
             </div>
@@ -279,11 +390,11 @@ function Dashboard() {
                 <div className="chart">
                     <Bar
                         data={{
-                            labels: ['Department 1', 'Department 2', 'Department 3', 'Department 4', 'Department 5', 'Department 6'],
+                            labels: valueData.firstBarChart.listDept,
                             datasets: [
                                 {
                                     label: 'total ideas of department',
-                                    data: [12, 19, 63, 5, 2, 3],
+                                    data: valueData.firstBarChart.listIdea,
                                     backgroundColor: [
                                         '#0052CC',
                                     ],
@@ -292,8 +403,8 @@ function Dashboard() {
                                     ],
                                 },
                                 {
-                                    label: 'total ideas of comment',
-                                    data: [6, 3, 18, 6, 5, 93],
+                                    label: 'total comments of department',
+                                    data: valueData.firstBarChart.listComment,
                                     backgroundColor: [
                                         '#f02c2c',
                                     ],
@@ -322,11 +433,11 @@ function Dashboard() {
                 <div className="chart">
                     <Doughnut
                         data={{
-                            labels: ['Department 1', 'Department 2', 'Department 3', 'Department 4', 'Department 5', 'Department 6'],
+                            labels: valueData.pieChart.listDept,
                             datasets: [
                                 {
                                     label: 'percentage idea of department',
-                                    data: [12, 19, 63, 5, 2, 3],
+                                    data: valueData.pieChart.listValue,
                                     backgroundColor: [
                                         '#0052CC', '#f02c2c', '#FFF000', '#4FA800', '#5036C4', '#FCD2DD6E',
                                     ],
@@ -351,11 +462,11 @@ function Dashboard() {
                 <div className="chart">
                     <Bar
                         data={{
-                            labels: ['Department 1', 'Department 2', 'Department 3', 'Department 4', 'Department 5', 'Department 6'],
+                            labels: valueData.secondBarChart.listDept,
                             datasets: [
                                 {
                                     label: 'total contributors of department',
-                                    data: [12, 19, 63, 5, 2, 3],
+                                    data: valueData.secondBarChart.userCount,
                                     backgroundColor: [
                                         '#0052CC',
                                     ],
