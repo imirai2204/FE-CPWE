@@ -5,6 +5,7 @@ export const Authen = {
 
 export const IdeaUrl = {
     create: "/idea/create",
+    update: "idea/update/files/",
     get: "/idea/get/",
     getList: "/idea/get",
     comment: "/idea/comment/create",
