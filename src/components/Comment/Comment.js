@@ -17,9 +17,7 @@ const Comment = ({
     const allowDelete = currentUserId === comment.userId;
     const createdAt = new Date(comment.createdAt).toLocaleDateString();
     const isReply =
-        activeComment &&
-        activeComment.type === "Reply" &&
-        activeComment.id === comment.id;
+        activeComment && activeComment.type === "Reply" && activeComment.id === comment.id;
     const isEdit =
         activeComment && activeComment.type === "Edit" && activeComment.id === comment.id;
     const replyId = parentId ? parentId : comment.id;
@@ -31,15 +29,15 @@ const Comment = ({
             </div>
             <div className='comment-right-part'>
                 <div className='comment-content'>
-                    <div className='comment-author'>{comment.username}</div>
+                    <div className='comment-author'>{comment.createdUser}</div>
                     <div className='comment-date'>{createdAt}</div>
                 </div>
-                {!isEdit && <div className='comment-text'>{comment.body}</div>}
+                {!isEdit && <div className='comment-text'>{comment.content}</div>}
                 {isEdit && (
                     <CommentForm
                         submitLabel='Edit Comment'
                         hasCancelBtn
-                        initialText={comment.body}
+                        initialText={comment.content}
                         handleSubmit={(text) => updateComment(text, comment.id)}
                         handleCancel={() => setActiveComment(null)}
                     />
@@ -48,25 +46,19 @@ const Comment = ({
                     {allowReply && (
                         <div
                             className='comment-action'
-                            onClick={() =>
-                                setActiveComment({ id: comment.id, type: "Reply" })
-                            }>
+                            onClick={() => setActiveComment({ id: comment.id, type: "Reply" })}>
                             Reply
                         </div>
                     )}
                     {allowEdit && (
                         <div
                             className='comment-action'
-                            onClick={() =>
-                                setActiveComment({ id: comment.id, type: "Edit" })
-                            }>
+                            onClick={() => setActiveComment({ id: comment.id, type: "Edit" })}>
                             Edit
                         </div>
                     )}
                     {allowDelete && (
-                        <div
-                            className='comment-action'
-                            onClick={() => deleteComment(comment.id)}>
+                        <div className='comment-action' onClick={() => deleteComment(comment.id)}>
                             Delete
                         </div>
                     )}

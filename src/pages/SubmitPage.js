@@ -14,7 +14,6 @@ import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import { useSelector } from "react-redux";
 import { storage } from "../firebase/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { current } from "@reduxjs/toolkit";
 
 const errorMessage = (error) => {
     if (error && error.response) {
@@ -55,7 +54,7 @@ const getDepartment = async (values, setDepartmenOption) => {
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(DepartmentUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -83,7 +82,7 @@ const getTopic = async (values, setTopicOption) => {
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
         sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(TopicUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -216,6 +215,7 @@ const SubmitPage = (props) => {
                         upFiles.push({
                             fileName: fileName.replace("idea-attachment/", ""),
                             downloadUrl: url,
+                            fileType: data.type,
                             filePath: url
                                 .replace(
                                     "https://firebasestorage.googleapis.com/v0/b/cpwe-storage.appspot.com/o",

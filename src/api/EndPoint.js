@@ -8,6 +8,7 @@ export const IdeaUrl = {
     get: "/idea/get/",
     getList: "/idea/get",
     comment: "/idea/comment/create",
+    fetchComment: "idea/comment/get",
 };
 
 export const AcademicUrl = {

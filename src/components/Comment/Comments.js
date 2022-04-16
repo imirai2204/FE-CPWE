@@ -3,12 +3,17 @@ import Comment from "./Comment";
 import CommentForm from "../UI/Form/CommentForm";
 import {
     getComments as getCommentsApi,
-    createComment as createCommentApi,
+    // createComment as createCommentApi,
     deleteComment as deleteCommentApi,
     updateComment as updateCommentApi,
 } from "./dummy-data"; //Dummy comments data for testing
 
-const Comments = ({ currentUserId, currentUserName }) => {
+import {
+    createIdeaComment as createCommentApi,
+    fetchIdeaComments as getCommentsApiReal,
+} from "./CommentApi";
+
+const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
 
@@ -19,21 +24,23 @@ const Comments = ({ currentUserId, currentUserName }) => {
     const getReplies = (commentId) => {
         return backendComments
             .filter((backendComment) => backendComment.parentId === commentId)
-            .sort(
-                (a, b) =>
-                    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-            );
+            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     };
 
     /** Integrate with API from Backend to Create/Update/Delete/Read comments */
     const addComment = (text, parentId) => {
         console.log("addComment", text, parentId, currentUserId, currentUserName);
-        createCommentApi(text, parentId, currentUserId, currentUserName).then(
-            (comment) => {
-                setBackendComments([comment, ...backendComments]);
-                setActiveComment(null);
-            }
-        );
+        const body = {
+            parentId: parentId ?? null,
+            ideaId,
+            userId: currentUserId,
+            content: text,
+            isAnonymous: isAnonymous ?? true,
+        };
+        createCommentApi(body).then((comment) => {
+            setBackendComments([comment, ...backendComments]);
+            setActiveComment(null);
+        });
     };
 
     const deleteComment = (commentId) => {
@@ -67,6 +74,9 @@ const Comments = ({ currentUserId, currentUserName }) => {
         getCommentsApi().then((data) => {
             setBackendComments(data);
         });
+        getCommentsApiReal(ideaId).then((data) => {
+            console.log(data);
+        });
     }, []);
 
     return (
@@ -93,6 +103,6 @@ const Comments = ({ currentUserId, currentUserName }) => {
             </div>
         </div>
     );
-};;
+};
 
 export default Comments;

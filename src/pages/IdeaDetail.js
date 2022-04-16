@@ -4,15 +4,15 @@ import Comments from "../components/Comment/Comments";
 import "../styles/style.scss";
 import { Link, useParams } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import ImageGallery from 'react-image-gallery';
+import ImageGallery from "react-image-gallery";
 import { IdeaUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
-import PushPinIcon from '@mui/icons-material/PushPin';
-import TagIcon from '@mui/icons-material/Tag';
-import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
-import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import PushPinIcon from "@mui/icons-material/PushPin";
+import TagIcon from "@mui/icons-material/Tag";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { convertDate, getFormattedDate } from "../function/library";
 
 const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
@@ -24,14 +24,14 @@ const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
             var createDate = getFormattedDate(convertDate(data.createdDate));
             var listImage = data.listAttachment.filter((item) => {
                 if (item.picture === 1) {
-                    return item
+                    return item;
                 }
-            })
+            });
             var listDocument = data.listAttachment.filter((item) => {
                 if (item.picture === 0) {
-                    return item
+                    return item;
                 }
-            })
+            });
             var ideaDetail = {
                 title: data.title,
                 description: data.content,
@@ -40,10 +40,10 @@ const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
                 isAnonymous: data.isAnonymous,
                 category: data.category,
                 topic: data.topic,
-            }
-            setIdeaDetail(ideaDetail)
-            setListDocument(listDocument)
-            setListImage(listImage)
+            };
+            setIdeaDetail(ideaDetail);
+            setListDocument(listDocument);
+            setListImage(listImage);
         })
         .catch((error) => {
             if (error && error.response) {
@@ -57,18 +57,18 @@ function IdeaDetail() {
     const currentUserId = useSelector((state) => state.user.userInfo.userId);
     const currentUserName = useSelector((state) => state.user.userInfo.fullName);
     const [isShowComment, setIsShowComment] = useState(false);
-    const [ideaDetail, setIdeaDetail] = useState({})
-    const [listImage, setListImage] = useState([])
-    const [listDocument, setListDocument] = useState([])
+    const [ideaDetail, setIdeaDetail] = useState({});
+    const [listImage, setListImage] = useState([]);
+    const [listDocument, setListDocument] = useState([]);
     const [isLoading, setisLoading] = useState(false);
-    const userInfo = useSelector((state) => state.user.userInfo)
+    const userInfo = useSelector((state) => state.user.userInfo);
 
     let { id } = useParams();
 
     useEffect(() => {
         handleGet(setIdeaDetail, setListDocument, setListImage, id);
         setIsAnonymous(ideaDetail.isAnonymous);
-    }, [isLoading])
+    }, [isLoading]);
 
     return (
         <div className='container'>
@@ -81,21 +81,25 @@ function IdeaDetail() {
                             </label>
                             <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
                         </div>
-                        {(userInfo.userRole === "ADMIN" || userInfo.userRole === "QA COORDINATOR") && isAnonymous === true ?
+                        {(userInfo.userRole === "ADMIN" ||
+                            userInfo.userRole === "QA COORDINATOR") &&
+                        isAnonymous === true ? (
                             <VisibilityIcon
                                 className='author-view'
                                 onClick={() => setIsAnonymous(!isAnonymous)}
-                            /> : <></>
-                        }
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <h2 className='idea-title'>{ideaDetail.title}</h2>
                     <div className='idea-category'>
                         <label className='topic-name'>
-                            <PushPinIcon className="icon" />
+                            <PushPinIcon className='icon' />
                             {ideaDetail.topic}
                         </label>
                         <label className='category-name'>
-                            <TagIcon className="icon" />
+                            <TagIcon className='icon' />
                             {ideaDetail.category}
                         </label>
                     </div>
@@ -103,75 +107,76 @@ function IdeaDetail() {
                         <p>{ideaDetail.description}</p>
                     </div>
                     <div className='idea-document'>
-                        <label className="idea-label">List upload document</label>
+                        <label className='idea-label'>List upload document</label>
                         <ol>
                             {listDocument.map((item, index) => {
-                                return (<li key={index}>
-                                    <Link
-                                        to={item.downloadUrl}
-                                        className='link-item'
-                                        target='_blank'>
-                                        {item.fileName}
-                                    </Link>
-                                </li>)
-                            }
-                            )}
+                                return (
+                                    <li key={index}>
+                                        <Link
+                                            to={item.downloadUrl}
+                                            className='link-item'
+                                            target='_blank'>
+                                            {item.fileName}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ol>
                     </div>
                     <div className='idea-image'>
-                        <label className="idea-label">List upload image</label>
+                        <label className='idea-label'>List upload image</label>
                         <ImageGallery showPlayButton={false} items={listImage} />
                     </div>
                     <hr />
                     <div className='idea-data'>
                         <div>
                             <label className='data-detail'>
-                                <ThumbUpOutlinedIcon className="icon" />
+                                <ThumbUpOutlinedIcon className='icon' />
                                 10
                             </label>
                             <label className='data-detail'>
-                                <ThumbDownOutlinedIcon className="icon" />
-                                3
+                                <ThumbDownOutlinedIcon className='icon' />3
                             </label>
                             <label className='data-detail'>
-                                <CommentOutlinedIcon className="icon" />
-                                4
+                                <CommentOutlinedIcon className='icon' />4
                             </label>
                         </div>
                         <div>
                             <label className='data-detail'>
-                                <VisibilityOutlinedIcon className="icon" />
+                                <VisibilityOutlinedIcon className='icon' />
                                 300
                             </label>
                         </div>
                     </div>
                     <hr />
-                    <div className="idea-button">
-                        <button
-                            className="btn btn--outline"
-                            type="button"
-                        >
-                            <ThumbUpOutlinedIcon className="btn-icon" />
+                    <div className='idea-button'>
+                        <button className='btn btn--outline' type='button'>
+                            <ThumbUpOutlinedIcon className='btn-icon' />
                             Like
                         </button>
-                        <button className="btn btn--outline" type="button">
-                            <ThumbDownOutlinedIcon className="btn-icon" />
+                        <button className='btn btn--outline' type='button'>
+                            <ThumbDownOutlinedIcon className='btn-icon' />
                             Dislike
                         </button>
                         <button
-                            className="btn btn--outline"
-                            type="button"
-                            onClick={() => setIsShowComment(!isShowComment)}
-                        >
-                            <CommentOutlinedIcon className="btn-icon" />
+                            className='btn btn--outline'
+                            type='button'
+                            onClick={() => setIsShowComment(!isShowComment)}>
+                            <CommentOutlinedIcon className='btn-icon' />
                             Comment
                         </button>
                     </div>
                     <hr />
-                    {isShowComment ?
-                        <Comments currentUserId={currentUserId} currentUserName={currentUserName} /> :
+                    {isShowComment ? (
+                        <Comments
+                            currentUserId={currentUserId}
+                            currentUserName={currentUserName}
+                            ideaId={id}
+                            isAnonymous={isAnonymous}
+                        />
+                    ) : (
                         <></>
-                    }
+                    )}
                 </div>
             </div>
         </div>
