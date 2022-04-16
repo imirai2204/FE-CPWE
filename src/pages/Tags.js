@@ -39,8 +39,8 @@ const handleGet = async (values, setReturnData, setPagination) => {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortBy: values === null || values.sortBy === null ? "createdDate" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(CategoryUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

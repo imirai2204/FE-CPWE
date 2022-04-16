@@ -106,8 +106,8 @@ const getDepartment = async (values, setDepartmenOption) => {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 100 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortBy: values === null || values.sortBy === null ? "createdIdea" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
     };
     await AxiosInstance.get(DepartmentUrl.get, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -136,8 +136,8 @@ const getRole = async (values, setRoleOption) => {
         searchKey: values === null || values.searchKey === null ? null : values.searchKey,
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 100 : values.limit,
-        sortBy: values === null || values.sortBy === null ? "id" : values.sortBy,
-        sortType: values === null || values.sortType === null ? "ASC" : values.sortType,
+        sortBy: values === null || values.sortBy === null ? "createdIdea" : values.sortBy,
+        sortType: values === null || values.sortType === null ? "DESC" : values.sortType,
         selectBox: true,
     };
     await AxiosInstance.get(RoleUrl.get, {
