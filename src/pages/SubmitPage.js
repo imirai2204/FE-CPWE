@@ -301,13 +301,13 @@ const SubmitPage = (props) => {
                         <div className='layout-1'>
                             <div className='layout-1--left'>
                                 <div className='input-section label-mark'>
-                                    <label className='label' htmlFor='department'>
+                                    <label className='label' htmlFor='departmentId'>
                                         Department
                                     </label>
                                     <Select
                                         className='select'
-                                        name='department'
-                                        id='department'
+                                        name='departmentId'
+                                        id='departmentId'
                                         options={departmentOption}
                                         placeholder={"Select depertment"}
                                         isDisabled={false}
@@ -318,7 +318,7 @@ const SubmitPage = (props) => {
                                         }}
                                         onBlur={() => {
                                             handleBlur({
-                                                target: { name: "department" },
+                                                target: { name: "departmentId" },
                                             });
                                         }}
                                     />
@@ -339,10 +339,10 @@ const SubmitPage = (props) => {
                                         options={topicOption}
                                         placeholder={"Select topic"}
                                         onChange={(selectOption) => {
+                                            setFieldValue("topic", selectOption.value);
                                             setTopicName(selectOption.label);
                                             handleSetInfo(selectOption);
                                             setTopicValue(selectOption.value);
-                                            console.log(selectOption.value);
                                         }}
                                         onBlur={() => {
                                             handleBlur({ target: { name: "topic" } });
@@ -355,20 +355,20 @@ const SubmitPage = (props) => {
                                     />
                                 </div>
                                 <div className='input-section label-mark'>
-                                    <label className='label' htmlFor='tag'>
+                                    <label className='label' htmlFor='categoryId'>
                                         Tag
                                     </label>
                                     <Select
                                         className='select'
-                                        name='tag'
-                                        id='tag'
+                                        name='categoryId'
+                                        id='categoryId'
                                         options={categoryOption}
                                         placeholder={"Select tag"}
                                         onChange={(selectOption) => {
                                             setFieldValue("categoryId", selectOption.value);
                                         }}
                                         onBlur={() => {
-                                            handleBlur({ target: { name: "tag" } });
+                                            handleBlur({ target: { name: "categoryId" } });
                                         }}
                                     />
                                     <ErrorMessage
