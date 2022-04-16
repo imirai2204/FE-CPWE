@@ -1,18 +1,17 @@
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    Typography,
-    DialogActions,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Typography, DialogActions } from "@mui/material";
 import React, { useState } from "react";
 import "../../../styles/style.scss";
 
-function ConfirmDialog({ confirmDialog, setConfirmDialog, props }) {
+function ConfirmDialog({ confirmDialog, setConfirmDialog, deleteTag, props }) {
     const [buttonShown, setButtonShown] = useState(false);
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
+    };
+
+    const handleClickYes = () => {
+        setConfirmDialog({ ...confirmDialog, isOpen: false });
+        deleteTag();
     };
 
     return (
@@ -39,7 +38,7 @@ function ConfirmDialog({ confirmDialog, setConfirmDialog, props }) {
                 </button>
                 <button
                     className={`btn btn-danger ${buttonShown ? "" : "disabled"}`}
-                    onClick={() => console.log(confirmDialog.selectDelete)}
+                    onClick={handleClickYes}
                     type='submit'>
                     YES
                 </button>

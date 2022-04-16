@@ -23,7 +23,7 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
             var errorData = {
                 code: res.data.code,
                 message: res.data.message,
-            }
+            };
             setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
@@ -88,7 +88,7 @@ function AcademicYear() {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [errorData, setErrorData] = useState({
         code: 1,
-        message: "ok"
+        message: "ok",
     });
     // const tableAttr = useSelector((state) => state.table);
     const currentPage = useSelector((state) => state.table.page);
@@ -104,15 +104,14 @@ function AcademicYear() {
     };
 
     useEffect(() => {
-        AuthorizationAPI(Flag.manageSemester, setPermission)
-    }, [permission])
+        AuthorizationAPI(Flag.manageSemester, setPermission);
+    }, [permission]);
 
     useEffect(() => {
         if (permission === true) {
             handleGet(tableDatas, setReturnData, setPagination);
         }
     }, [permission, currentPage, currentLimit]);
-
 
     if (isSubmiting === false) {
         handleGet(null, setReturnData, setPagination);
@@ -210,16 +209,15 @@ function AcademicYear() {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                {errorData.code !== 1 ? (
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
+                ) : (
                     <></>
-                }
+                )}
             </div>
         );
     } else {
-        return (
-            <PageNotFound warn={Warn.noPermission} />
-        );
+        return <PageNotFound warn={Warn.noPermission} />;
     }
 }
 

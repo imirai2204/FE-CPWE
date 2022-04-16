@@ -29,6 +29,7 @@ export const TopicUrl = {
 export const CategoryUrl = {
     create: "/category/create",
     get: "/category/get",
+    delete: "category/delete/",
 };
 
 export const DepartmentUrl = {

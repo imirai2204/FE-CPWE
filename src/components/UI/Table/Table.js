@@ -16,8 +16,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import TrashIcon from "@mui/icons-material/Delete";
 import UpArrow from "@mui/icons-material/ArrowDropUp";
 import ConfirmDialog from "../Modal/ConfirmDialog";
-import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Pagination from "@mui/material/Pagination";
 import ViewListPopUp from "../Modal/ViewListPopUp";
 import SearchBar from "../SearchBar/SearchBar";
@@ -130,7 +130,17 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
 
-export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formikValue, setOptionValues, ...props }) => {
+export const EnhancedTable = ({
+    columns,
+    rows,
+    totalPages,
+    setFieldValue,
+    formikValue,
+    setOptionValues,
+    setDeleteCategoryId,
+    deleteTag,
+    ...props
+}) => {
     const dispatch = useDispatch();
     const [order, setOrder] = useState("asc");
     const [orderBy, setOrderBy] = useState("ID");
@@ -142,8 +152,11 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         isOpen: false,
         itemList: [],
     });
-
-    // const [openPopUp, setOpenPopUp] = useState(false)
+    const [confirmDialog, setConfirmDialog] = useState({
+        isOpen: false,
+        title: "",
+        subTitle: "",
+    });
 
     const searchDataHandler = (data) => {
         setSearchKey(data);
@@ -175,12 +188,6 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         );
     }, [itemIndex]);
 
-    const [confirmDialog, setConfirmDialog] = useState({
-        isOpen: false,
-        title: "",
-        subTitle: "",
-    });
-
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");
@@ -196,23 +203,27 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
         setCurrentPage(1);
     };
 
-    const handleEdit = (setFieldValue, setOptionValues, types , index) => {
-        if(types === "user"){
-            setFieldValue("firstname", rows[index].firstname)
-            setFieldValue("lastname", rows[index].lastname)
-            setFieldValue("address", rows[index].address)
-            setFieldValue("sex", rows[index].sex)
-            setFieldValue("email", rows[index].email)
-            setFieldValue("phone", rows[index].phone)
-            setFieldValue("departmentId", rows[index].departmentId)
-            setFieldValue("roleId", rows[index].roleId)
-            setFieldValue("userId", rows[index].id)
+    const handleDeleteTag = () => {
+        deleteTag();
+    };
+
+    const handleEdit = (setFieldValue, setOptionValues, types, index) => {
+        if (types === "user") {
+            setFieldValue("firstname", rows[index].firstname);
+            setFieldValue("lastname", rows[index].lastname);
+            setFieldValue("address", rows[index].address);
+            setFieldValue("sex", rows[index].sex);
+            setFieldValue("email", rows[index].email);
+            setFieldValue("phone", rows[index].phone);
+            setFieldValue("departmentId", rows[index].departmentId);
+            setFieldValue("roleId", rows[index].roleId);
+            setFieldValue("userId", rows[index].id);
         } else {
-            setFieldValue("roleName", rows[index].roleName)
-            setFieldValue("id", rows[index].id)
-            setOptionValues(rows[index].listItem)
+            setFieldValue("roleName", rows[index].roleName);
+            setFieldValue("id", rows[index].id);
+            setOptionValues(rows[index].listItem);
         }
-    }
+    };
 
     return (
         <Fragment>
@@ -231,132 +242,119 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                             isViewCol={props.hasViewedBtn}
                         />
                         <TableBody>
-                            {stableSort(rows, getComparator(order, orderBy))
-                                .map((row, index) => {
-                                    return (
-                                        <TableRow
-                                            hover
-                                            role='checkbox'
-                                            tabIndex={-1}
-                                            key={row.id}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell
-                                                        key={column.id}
-                                                        align={column.align}>
-                                                        {column.url === true ?
-                                                            <Link to={`${row.url}`}>
-                                                                {column.format &&
-                                                                    typeof value === "number"
-                                                                    ? column.format(value)
-                                                                    : value}
-                                                            </Link> 
-                                                            :
-                                                            <>
-                                                                {column.format &&
-                                                                    typeof value === "number"
-                                                                    ? column.format(value)
-                                                                    : value}
-                                                            </>
-                                                        }
-                                                    </TableCell>
-                                                );
-                                            })}
-                                            {props.hasEditedBtn ? (
-                                                <TableCell
-                                                    key={index + 2}
-                                                    align={"center"}>
-                                                    <EditIcon
-                                                        style={{
-                                                            fill: "#FFC20E",
-                                                            fontSize: "20px",
-                                                        }}
-                                                        onClick={() => {
-                                                            handleEdit(setFieldValue, setOptionValues, props.type, index);
-                                                            setItemIndex(index);
-                                                        }}
-                                                    />
+                            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+                                return (
+                                    <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    {column.url === true ? (
+                                                        <Link to={`${row.url}`}>
+                                                            {column.format &&
+                                                            typeof value === "number"
+                                                                ? column.format(value)
+                                                                : value}
+                                                        </Link>
+                                                    ) : (
+                                                        <>
+                                                            {column.format &&
+                                                            typeof value === "number"
+                                                                ? column.format(value)
+                                                                : value}
+                                                        </>
+                                                    )}
                                                 </TableCell>
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                            {props.hasDeletedBtn ? (
-                                                <TableCell
-                                                    key={index + 3}
-                                                    align={"center"}>
-                                                    <TrashIcon
-                                                        style={{
-                                                            fill: "#EB1C24",
-                                                            fontSize: "20px",
-                                                        }}
-                                                        onClick={() => {
-                                                            setConfirmDialog({
-                                                                isOpen: true,
-                                                                title: "Are you sure you want to delete this record?",
-                                                                subTitle:
-                                                                    "You can't undo this operetion",
-                                                                selectDelete: row.id,
-                                                            });
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                            {props.hasDisabledBtn ? (
-                                                <TableCell
-                                                    key={index + 4}
-                                                    align={"center"}>
-                                                    <DoDisturbIcon
-                                                        style={{
-                                                            fill: "#636E72",
-                                                            fontSize: "20px",
-                                                        }}
-                                                        onClick={() => {
-                                                            setConfirmDialog({
-                                                                isOpen: true,
-                                                                title: "Are you sure you want to disabled this record?",
-                                                                subTitle:
-                                                                    "You can enable it again before final closure date",
-                                                                selectDisable: row.id,
-                                                            });
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                            {props.hasViewedBtn ? (
-                                                <TableCell
-                                                    key={index + 5}
-                                                    align={"center"}>
-                                                    <VisibilityIcon
-                                                        style={{
-                                                            fontSize: "20px",
-                                                        }}
-                                                        onClick={() => {
-                                                            setOpenPopUp({
-                                                                isOpen: true,
-                                                                itemList: row.listItem,
-                                                            })
-                                                            // setOpenPopUp(true)
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                        </TableRow>
-                                    );
-                                })}
+                                            );
+                                        })}
+                                        {props.hasEditedBtn ? (
+                                            <TableCell key={index + 2} align={"center"}>
+                                                <EditIcon
+                                                    style={{
+                                                        fill: "#FFC20E",
+                                                        fontSize: "20px",
+                                                    }}
+                                                    onClick={() => {
+                                                        handleEdit(
+                                                            setFieldValue,
+                                                            setOptionValues,
+                                                            props.type,
+                                                            index
+                                                        );
+                                                        setItemIndex(index);
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        ) : (
+                                            <Fragment />
+                                        )}
+                                        {props.hasDeletedBtn ? (
+                                            <TableCell key={index + 3} align={"center"}>
+                                                <TrashIcon
+                                                    style={{
+                                                        fill: "#EB1C24",
+                                                        fontSize: "20px",
+                                                    }}
+                                                    onClick={() => {
+                                                        setConfirmDialog({
+                                                            isOpen: true,
+                                                            title: "Are you sure you want to delete this record?",
+                                                            subTitle:
+                                                                "You can't undo this operetion",
+                                                        });
+                                                        setDeleteCategoryId(row.id);
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        ) : (
+                                            <Fragment />
+                                        )}
+                                        {props.hasDisabledBtn ? (
+                                            <TableCell key={index + 4} align={"center"}>
+                                                <DoDisturbIcon
+                                                    style={{
+                                                        fill: "#636E72",
+                                                        fontSize: "20px",
+                                                    }}
+                                                    onClick={() => {
+                                                        setConfirmDialog({
+                                                            isOpen: true,
+                                                            title: "Are you sure you want to disabled this record?",
+                                                            subTitle:
+                                                                "You can enable it again before final closure date",
+                                                            selectDisable: row.id,
+                                                        });
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        ) : (
+                                            <Fragment />
+                                        )}
+                                        {props.hasViewedBtn ? (
+                                            <TableCell key={index + 5} align={"center"}>
+                                                <VisibilityIcon
+                                                    style={{
+                                                        fontSize: "20px",
+                                                    }}
+                                                    onClick={() => {
+                                                        setOpenPopUp({
+                                                            isOpen: true,
+                                                            itemList: row.listItem,
+                                                        });
+                                                        // setOpenPopUp(true)
+                                                    }}
+                                                />
+                                            </TableCell>
+                                        ) : (
+                                            <Fragment />
+                                        )}
+                                    </TableRow>
+                                );
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Stack
-                    direction='row'
-                    spacing={2}
-                    >
+                <Stack direction='row' spacing={2}>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         rowsPerPage={currentLimit}
@@ -386,11 +384,9 @@ export const EnhancedTable = ({ columns, rows, totalPages, setFieldValue, formik
                 <ConfirmDialog
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}
+                    deleteTag={handleDeleteTag}
                 />
-                <ViewListPopUp
-                    openPopUp={openPopUp}
-                    setOpenPopUp={setOpenPopUp}
-                />
+                <ViewListPopUp openPopUp={openPopUp} setOpenPopUp={setOpenPopUp} />
             </Paper>
         </Fragment>
     );

@@ -13,6 +13,12 @@ import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import AuthorizationAPI from "../api/AuthorizationAPI";
 import PageNotFound from "../404";
 
+const errorMessage = (error) => {
+    if (error && error.response) {
+        console.log("Error: ", error);
+    }
+};
+
 const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
     await AxiosInstance.post(CategoryUrl.create, values, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -21,15 +27,13 @@ const handleSubmit = async (values, setIsSubmiting, setErrorData) => {
             var errorData = {
                 code: res.data.code,
                 message: res.data.message,
-            }
+            };
             setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -64,9 +68,7 @@ const handleGet = async (values, setReturnData, setPagination) => {
             setPagination(pagination);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
         });
 };
 
@@ -93,9 +95,22 @@ const getTopic = async (values, setTopicOption) => {
             setTopicOption(topicOption);
         })
         .catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-            }
+            errorMessage(error);
+        });
+};
+
+const deleteTopic = async (categoryId, setErrorData) => {
+    await AxiosInstance.delete(CategoryUrl.delete + categoryId, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+        .then((res) => {
+            setErrorData({
+                code: res.data.code,
+                message: res.data.message,
+            });
+        })
+        .catch((error) => {
+            errorMessage(error);
         });
 };
 
@@ -111,10 +126,10 @@ const Tags = (props) => {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [errorData, setErrorData] = useState({
         code: 1,
-        message: "ok"
+        message: "",
     });
     const [topicOption, setTopicOption] = useState([]);
-    // const tableAttr = useSelector((state) => state.table);
+    const [deleteCategoryId, setDeleteCategoryId] = useState(null);
     const currentPage = useSelector((state) => state.table.page);
     const currentLimit = useSelector((state) => state.table.rowsPerPage);
 
@@ -128,8 +143,8 @@ const Tags = (props) => {
     };
 
     useEffect(() => {
-        AuthorizationAPI(Flag.manageSemester, setPermission)
-    }, [permission])
+        AuthorizationAPI(Flag.manageSemester, setPermission);
+    }, [permission]);
 
     useEffect(() => {
         if (permission === true) {
@@ -142,6 +157,11 @@ const Tags = (props) => {
         getTopic(null, setTopicOption);
         setIsSubmiting(true);
     }
+
+    const handleDeleteTag = () => {
+        deleteTopic(deleteCategoryId, setErrorData);
+        handleGet(null, setReturnData, setPagination);
+    };
 
     if (permission) {
         return (
@@ -183,10 +203,7 @@ const Tags = (props) => {
                                             options={topicOption}
                                             placeholder={"Select Topic"}
                                             onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "topicId",
-                                                    selectOption.value
-                                                );
+                                                setFieldValue("topicId", selectOption.value);
                                             }}
                                             onBlur={() => {
                                                 handleBlur({ target: { name: "topic" } });
@@ -231,18 +248,19 @@ const Tags = (props) => {
                         rows={returnData}
                         hasDeletedBtn={true}
                         totalPages={returnPagination.totalPages}
+                        deleteTag={handleDeleteTag}
+                        setDeleteCategoryId={setDeleteCategoryId}
                     />
                 </div>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                {errorData.code !== 1 ? (
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
+                ) : (
                     <></>
-                }
+                )}
             </div>
         );
     } else {
-        return (
-            <PageNotFound warn={Warn.noPermission} />
-        );
+        return <PageNotFound warn={Warn.noPermission} />;
     }
 };
 

@@ -10,19 +10,19 @@ import { RoleUrl, PermissionUrl, Flag, Warn } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector, useDispatch } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
-import { pageActions } from "../redux-store/table/table.slice"
+import { pageActions } from "../redux-store/table/table.slice";
 import AuthorizationAPI from "../api/AuthorizationAPI";
 import PageNotFound from "../404";
 
 const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) => {
     let optionItem = optionValues.map((option) => {
-        return option.value
+        return option.value;
     });
 
     const body = {
         name: values.roleName,
-        permission: optionItem
-    }
+        permission: optionItem,
+    };
 
     await AxiosInstance.post(RoleUrl.create, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -31,7 +31,7 @@ const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) 
             var errorData = {
                 code: res.data.code,
                 message: res.data.message,
-            }
+            };
             setErrorData(errorData);
             console.log("Create success");
             setIsSubmiting(false);
@@ -45,13 +45,13 @@ const handleSubmit = async (values, optionValues, setIsSubmiting, setErrorData) 
 
 const handelUpdate = async (values, optionValues, setIsSubmiting, setErrorData) => {
     let optionItem = optionValues.map((option) => {
-        return option.value
+        return option.value;
     });
 
     const body = {
         name: values.roleName,
-        permission: optionItem
-    }
+        permission: optionItem,
+    };
 
     await AxiosInstance.post(RoleUrl.update + values.id, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -60,7 +60,7 @@ const handelUpdate = async (values, optionValues, setIsSubmiting, setErrorData) 
             var errorData = {
                 code: res.data.code,
                 message: res.data.message,
-            }
+            };
             setErrorData(errorData);
             console.log("update success");
             setIsSubmiting(false);
@@ -102,8 +102,8 @@ const handleGet = async (values, setReturnData, setPagination) => {
                         return {
                             permissionId: item.id,
                             permissionName: item.name,
-                        }
-                    })
+                        };
+                    }),
                 };
             });
             setReturnData(tableData);
@@ -148,7 +148,7 @@ const getPermission = async (values, setPermissionOption) => {
 
 const initialValues = {
     roleName: "",
-    id: ""
+    id: "",
 };
 
 function RoleManagement() {
@@ -159,7 +159,7 @@ function RoleManagement() {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [errorData, setErrorData] = useState({
         code: 1,
-        message: "ok"
+        message: "ok",
     });
     const [permissionOption, setPermissionOption] = useState([]);
     const currentPage = useSelector((state) => state.table.page);
@@ -187,19 +187,19 @@ function RoleManagement() {
     };
 
     const onChangeCheckbox = () => {
-        setIsChecked(!isChecked)
-        setOptionValues(!isChecked ? permissionOption : optionValues)
-    }
+        setIsChecked(!isChecked);
+        setOptionValues(!isChecked ? permissionOption : optionValues);
+    };
 
     const handleChangeOption = (option) => {
         const allOptionsSelected = option.length === permissionOption.length;
-        setIsChecked(allOptionsSelected ? true : false)
-        setOptionValues(option)
-    }
+        setIsChecked(allOptionsSelected ? true : false);
+        setOptionValues(option);
+    };
 
     useEffect(() => {
-        AuthorizationAPI(Flag.manageSemester, setPermission)
-    }, [permission])
+        AuthorizationAPI(Flag.manageSemester, setPermission);
+    }, [permission]);
 
     useEffect(() => {
         if (permission === true) {
@@ -255,10 +255,7 @@ function RoleManagement() {
                                             options={permissionOption}
                                             placeholder={"Select Permission"}
                                             onChange={(selectOption) => {
-                                                setFieldValue(
-                                                    "permission",
-                                                    selectOption.value
-                                                );
+                                                setFieldValue("permission", selectOption.value);
                                                 handleChangeOption(selectOption);
                                             }}
                                             onBlur={() => {
@@ -306,32 +303,32 @@ function RoleManagement() {
                                         className={"btn btn-warning"}
                                         type='button'
                                         disabled={itemIndex === null ? true : false}
-                                        onClick={
-                                            () => isValid === true ?
-                                                handelUpdate(values, optionValues, setIsSubmiting, setErrorData) :
-                                                console.log("update fail")
-                                        }
-                                    >
+                                        onClick={() =>
+                                            isValid === true
+                                                ? handelUpdate(
+                                                      values,
+                                                      optionValues,
+                                                      setIsSubmiting,
+                                                      setErrorData
+                                                  )
+                                                : console.log("update fail")
+                                        }>
                                         Update
                                     </button>
                                     <button
                                         className={"btn btn-info"}
                                         type='reset'
-                                        onClick={() => setIsResetting(true)}
-                                    >
+                                        onClick={() => setIsResetting(true)}>
                                         Refresh
                                     </button>
                                     <button
                                         className={"btn btn-success"}
                                         type='submit'
-                                        disabled={itemIndex === null ? false : true}
-                                    >
+                                        disabled={itemIndex === null ? false : true}>
                                         Create
                                     </button>
                                 </div>
-                                <div className='layout-table'
-                                    style={{ marginTop: "5rem" }}
-                                >
+                                <div className='layout-table' style={{ marginTop: "5rem" }}>
                                     <EnhancedTable
                                         columns={ColumnsRole}
                                         rows={returnData}
@@ -348,16 +345,15 @@ function RoleManagement() {
                         )}
                     </Formik>
                 </div>
-                {errorData.code !== 1 ?
-                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
+                {errorData.code !== 1 ? (
+                    <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
+                ) : (
                     <></>
-                }
+                )}
             </div>
         );
     } else {
-        return (
-            <PageNotFound warn={Warn.noPermission} />
-        );
+        return <PageNotFound warn={Warn.noPermission} />;
     }
 }
 

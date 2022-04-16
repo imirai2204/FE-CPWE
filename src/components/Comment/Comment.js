@@ -1,6 +1,8 @@
 import React from "react";
 import CommentForm from "../UI/Form/CommentForm";
 
+const TEN_MINUTE = 60000;
+
 const Comment = ({
     comment,
     replies,
@@ -13,7 +15,8 @@ const Comment = ({
     updateComment,
 }) => {
     const allowReply = Boolean(currentUserId);
-    const allowEdit = currentUserId === comment.userId;
+    const editTimePass = new Date() - new Date(comment.createdAt) > TEN_MINUTE;
+    const allowEdit = currentUserId === comment.userId && !editTimePass;
     const allowDelete = currentUserId === comment.userId;
     const createdAt = new Date(comment.createdAt).toLocaleDateString();
     const isReply =
