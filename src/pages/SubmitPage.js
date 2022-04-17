@@ -18,7 +18,7 @@ import { convertDate, getFormattedDate } from "../function/library";
 
 const errorMessage = (error) => {
     if (error && error.response) {
-        console.log("Error: ", error);
+        console.log("Error: ", error.message);
     }
 };
 
@@ -27,6 +27,7 @@ const updateIdeaAttachDownloadUrl = async (ideaId, body, clickSubmitHandler) => 
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then((res) => {
+            console.log(res.data);
             clickSubmitHandler(res.data.code);
         })
         .catch((error) => {
@@ -58,6 +59,10 @@ const handleSubmit = async (values, setErrorData, setIdeaId) => {
             console.log("Create success");
         })
         .catch((error) => {
+            setErrorData({
+                code: error.status,
+                message: error.message,
+            });
             errorMessage(error);
         });
 };
@@ -264,16 +269,12 @@ const SubmitPage = (props) => {
     }, [isSubmitting, dataUpload]);
 
     useEffect(() => {
-        console.log(ideaId);
-
         const waitingFirebaseResponse = setTimeout(() => {
             updateIdeaAttachDownloadUrl(ideaId, fileUpload, clickSubmitHandler);
-        }, 5000);
-
+        }, 3500);
         if (ideaId == 0) {
             clearTimeout(waitingFirebaseResponse);
         }
-
         return () => {
             clearTimeout(waitingFirebaseResponse);
         };
@@ -298,8 +299,8 @@ const SubmitPage = (props) => {
         });
     };
 
-    const clickSubmitHandler = (response) => {
-        if (response.code === 1) {
+    const clickSubmitHandler = (responseCode) => {
+        if (responseCode === 1) {
             props.onClose();
         }
     };
@@ -523,10 +524,11 @@ const SubmitPage = (props) => {
                     </Form>
                 )}
             </Formik>
-            {errorData.code !== 0 ? (
+            {errorData.code !== 0 && errorData.code !== 1 && (
                 <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
-            ) : (
-                <></>
+            )}
+            {errorData.code === 1 && (
+                <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
             )}
         </div>
     );
