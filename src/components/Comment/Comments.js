@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
 import CommentForm from "../UI/Form/CommentForm";
-// import { deleteComment as deleteCommentApi, updateComment as updateCommentApi } from "./dummy-data"; //Dummy comments data for testing
 
 import {
     createIdeaComment as createCommentApi,

@@ -32,11 +32,12 @@ const Comment = ({
     const replyId = parent ?? comment.id;
     const notAllowViewAuthor = currentUserId !== comment.userId;
     const isAdminRole = userInfo.userRole === "ADMIN";
+    const avatar = currentUserId === comment.userId ? userInfo.avatar : "/default-avatar.png";
 
     return (
         <div className='comment'>
             <div className='comment-image-container'>
-                <img src='/default-avatar.png' alt='default-avatar' />
+                <img src={avatar} alt='default-avatar' />
             </div>
             <div className='comment-right-part'>
                 <div className='comment-content'>
@@ -63,6 +64,9 @@ const Comment = ({
                                     <label className='author-user-name-active'>
                                         {comment.userName}
                                     </label>
+                                )}
+                                {isAnonymous && notAllowViewAuthor && !isAdminRole && (
+                                    <label className='author-name-user'>Anonymous</label>
                                 )}
                                 {!isAnonymous && !notAllowViewAuthor && !isAdminRole && (
                                     <label className='author-user-name-active'>

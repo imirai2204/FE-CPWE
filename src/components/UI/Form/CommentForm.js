@@ -18,7 +18,8 @@ const CommentForm = ({
     };
 
     const onChange = (event) => {
-        setCommentText(event.target.value);
+        let text = event.target.value.replace("\n", "");
+        setCommentText(text);
     };
 
     return (
