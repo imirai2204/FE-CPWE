@@ -369,8 +369,8 @@ function Dashboard() {
                     <div className='data lt'>
                         <div className='data-header'>
                             <label className='data-title'>Total ideas</label>
-                            <div className='data-icon'>
-                                <LightbulbOutlinedIcon className='icon' />
+                            <div className='data-icon' style={{backgroundColor: "#FFF9E5"}}>
+                                <LightbulbOutlinedIcon style={{color: "#FFC20E"}} className='icon' />
                             </div>
                         </div>
                         <p className='data-body'>{valueData.totalIdea}</p>
@@ -378,8 +378,8 @@ function Dashboard() {
                     <div className='data rt'>
                         <div className='data-header'>
                             <label className='data-title'>Total ideas without comment</label>
-                            <div className='data-icon'>
-                                <CommentsDisabledOutlinedIcon className='icon' />
+                            <div className='data-icon' style={{backgroundColor: "#E5F3FF"}}>
+                                <CommentsDisabledOutlinedIcon style={{color: "#1890FF"}} className='icon' />
                             </div>
                         </div>
                         <p className='data-body'>{valueData.ideaNoComment}</p>
@@ -389,8 +389,8 @@ function Dashboard() {
                     <div className='data lt'>
                         <div className='data-header'>
                             <label className='data-title'>Total anonymous ideas</label>
-                            <div className='data-icon'>
-                                <PersonOffOutlinedIcon className='icon' />
+                            <div className='data-icon' style={{backgroundColor: "#FDE8E8"}}>
+                                <PersonOffOutlinedIcon style={{color: "#BE1128"}} className='icon' />
                             </div>
                         </div>
                         <p className='data-body'>{valueData.anonymousIdea}</p>
@@ -398,8 +398,8 @@ function Dashboard() {
                     <div className='data rt'>
                         <div className='data-header'>
                             <label className='data-title'>Total anonymous comment</label>
-                            <div className='data-icon'>
-                                <PersonOffOutlinedIcon className='icon' />
+                            <div className='data-icon' style={{backgroundColor: "#FFF0E5"}}>
+                                <PersonOffOutlinedIcon style={{color: "#FF4500"}} className='icon' />
                             </div>
                         </div>
                         <p className='data-body'>{valueData.anonymousComment}</p>
