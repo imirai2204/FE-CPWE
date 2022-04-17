@@ -60,27 +60,27 @@ const Comment = ({
                                 ) : (
                                     <Fragment />
                                 )}
+                                {isAnonymous && isAdminRole && (
+                                    <label className='author-name'>Anonymous</label>
+                                )}
+                                {isAnonymous && notAllowViewAuthor && !isAdminRole && (
+                                    <label className='author-name-user'>Anonymous</label>
+                                )}
+                                {!isAnonymous && notAllowViewAuthor && !isAdminRole && (
+                                    <label className='author-name-user'>Anonymous</label>
+                                )}
+                                {!isAnonymous && isAdminRole && (
+                                    <label className='author-name-active'>{comment.userName}</label>
+                                )}
                                 {isAnonymous && !notAllowViewAuthor && !isAdminRole && (
                                     <label className='author-user-name-active'>
                                         {comment.userName}
                                     </label>
                                 )}
-                                {isAnonymous && notAllowViewAuthor && !isAdminRole && (
-                                    <label className='author-name-user'>Anonymous</label>
-                                )}
                                 {!isAnonymous && !notAllowViewAuthor && !isAdminRole && (
                                     <label className='author-user-name-active'>
                                         {comment.userName}
                                     </label>
-                                )}
-                                {!isAnonymous && notAllowViewAuthor && !isAdminRole && (
-                                    <label className='author-name-user'>Anonymous</label>
-                                )}
-                                {isAnonymous && isAdminRole && (
-                                    <label className='author-name'>Anonymous</label>
-                                )}
-                                {!isAnonymous && isAdminRole && (
-                                    <label className='author-name-active'>{comment.userName}</label>
                                 )}
                                 <div className='comment-date'>{createdAt}</div>
                             </label>
