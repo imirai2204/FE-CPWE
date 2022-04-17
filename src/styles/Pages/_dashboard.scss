@@ -12,11 +12,19 @@
             box-shadow: 6px 6px 8px rgb(0 0 0 / 40%);
             border-bottom: 1px solid $color-black-B3;
             border-right: 1px solid $color-black-B3;
+
+            @media screen and (max-width: 1095px) {
+                padding: 2rem;
+            }
         }
 
         &-flex {
             display: flex;
             justify-content: space-around;
+
+            @media screen and (max-width: 1095px) {
+                display: block;
+            }
         }
 
         &-data {
@@ -31,6 +39,40 @@
             .right {
                 margin-left: 0.5rem;
             }
+
+            .lt {
+                margin-right: 0.5rem;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .rt {
+                margin-left: 0.5rem;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            @media screen and (max-width: 1300px) {
+                display: block;
+
+                .left {
+                    margin-right: 0;
+                }
+
+                .right {
+                    margin-left: 0;
+                }
+            }
+
+            @media screen and (max-width: 640px) { 
+                .lt {
+                    margin-right: 0;
+                }
+    
+                .rt {
+                    margin-left: 0;
+                }
+            }
         }
 
         &-chart {
@@ -42,6 +84,11 @@
         margin-left: 2rem;
         margin-right: 2rem;
         width: 100%;
+
+        @media screen and (max-width: 1095px) {
+            margin-left: 0;
+            margin-right: 0;
+        }
     }
 
     .data {
@@ -52,8 +99,6 @@
         border-right: 1px solid $color-black-B3;
         padding: 20px;
         width: 100%;
-        // margin-left: 1rem;
-        // margin-right: 1rem;
 
         &-header {
             display: flex;
@@ -88,14 +133,22 @@
             display: flex;
             justify-content: space-around;
             width: 100%;
-            // margin-right: 0.5rem;
         }
 
         &-right {
             display: flex;
             justify-content: space-around;
             width: 100%;
-            // margin-left: 0.5rem;
+        }
+
+        @media screen and (max-width: 640px) { 
+            &-left {
+                display: block;
+            }
+
+            &-right {
+                display: block;
+            }
         }
     }
 
