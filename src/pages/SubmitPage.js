@@ -219,7 +219,6 @@ const SubmitPage = (props) => {
         departmentId: departmentaValue,
     };
     useEffect(() => {
-        console.log(departmentaValue);
         if (departmentaValue === null || !selectDepartment) {
             return;
         } else {
@@ -238,7 +237,6 @@ const SubmitPage = (props) => {
         topicId: topicValue,
     };
     useEffect(() => {
-        console.log(topicValue);
         if (topicValue === null || !selectTopic) {
             return;
         } else {
@@ -549,6 +547,6 @@ const SubmitPage = (props) => {
             )}
         </div>
     );
-};;
+};
 
 export default SubmitPage;
