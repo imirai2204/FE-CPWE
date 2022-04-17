@@ -4,7 +4,7 @@ import { EnhancedTable } from "../components/UI/Table/Table";
 import { IdeaUrl, AcademicUrl, DepartmentUrl, TopicUrl, CategoryUrl } from "../api/EndPoint";
 import { AxiosInstance } from "../api/AxiosClient";
 import { useSelector } from "react-redux";
-import { ColumnsIdea } from "../components/UI/Table/TableItems"
+import { ColumnsIdea } from "../components/UI/Table/TableItems";
 import Select from "react-select";
 import { SortOptions } from "../components/Navbar/dropdown/DropdownItems";
 
@@ -18,10 +18,10 @@ const handleGet = async (values, setReturnData, setPagination) => {
         page: values === null || values.page === null ? 1 : values.page,
         limit: values === null || values.limit === null ? 5 : values.limit,
         sort: values === null || values.sort === null ? 1 : values.sort,
-    }
+    };
     await AxiosInstance.get(IdeaUrl.getList, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        params: paramsValue
+        params: paramsValue,
     })
         .then((res) => {
             // console.log(res)
@@ -31,14 +31,14 @@ const handleGet = async (values, setReturnData, setPagination) => {
                 totalPages: res.data.data.totalPages,
             };
             var tableData = res.data.data.content.map((item) => {
-                return{
+                return {
                     topic: item.topic,
                     category: item.category,
                     title: item.ideaTitle,
                     author: item.createdUser,
                     url: "/idea-detail/" + item.id,
-                }           
-            })
+                };
+            });
             setReturnData(tableData);
             setPagination(pagination);
         })
@@ -169,7 +169,7 @@ const getCategory = async (values, setCategoryOption) => {
 };
 
 function Home() {
-    const userInfo = useSelector((state) => state.user.userInfo)
+    const userInfo = useSelector((state) => state.user.userInfo);
     const [returnData, setReturnData] = useState([]);
     const [returnPagination, setPagination] = useState({});
     const currentPage = useSelector((state) => state.table.page);
@@ -194,7 +194,7 @@ function Home() {
         page: currentPage,
         limit: currentLimit,
         sort: sortTable,
-    }
+    };
 
     useEffect(() => {
         if (isLoading) {
@@ -205,31 +205,32 @@ function Home() {
             getCategory(null, setCategoryOption);
             setIsLoading(!isLoading);
         }
-    }, [isLoading])
+    }, [isLoading]);
 
     useEffect(() => {
-        console.log("re render get home")
         handleGet(tableDatas, setReturnData, setPagination);
-    }, [departmentFilter, 
-        semesterFilter, 
-        topicFilter, 
-        categoryFilter, 
-        currentPage, 
-        currentLimit, 
-        sortTable])
+    }, [
+        departmentFilter,
+        semesterFilter,
+        topicFilter,
+        categoryFilter,
+        currentPage,
+        currentLimit,
+        sortTable,
+    ]);
 
     return (
         <div className='home-page container'>
             <div>
                 <img
-                    className="banner-img"
-                    src="https://login.gre.ac.uk/adfs/portal/illustration/illustration.jpg?id=E59222772F7DA10A27598E8B24D23319BF6C4E5B715402648EA5FFA75EE1C337"
-                    alt="banner"
+                    className='banner-img'
+                    src='https://login.gre.ac.uk/adfs/portal/illustration/illustration.jpg?id=E59222772F7DA10A27598E8B24D23319BF6C4E5B715402648EA5FFA75EE1C337'
+                    alt='banner'
                 />
             </div>
             <h2 className='page-title'>Idea List</h2>
-            <div className="sort-list">
-                {userInfo.userRole === "ADMIN" &&
+            <div className='sort-list'>
+                {userInfo.userRole === "ADMIN" && (
                     <>
                         <Select
                             className='select'
@@ -238,7 +239,7 @@ function Home() {
                             options={semesterOption}
                             placeholder={"Semester"}
                             onChange={(selectOption) => {
-                                setSemesterFilter(selectOption.value)
+                                setSemesterFilter(selectOption.value);
                             }}
                             menuPortalTarget={document.body}
                             styles={{
@@ -261,7 +262,7 @@ function Home() {
                             options={departmentOption}
                             placeholder={"Department"}
                             onChange={(selectOption) => {
-                                setDepartmentFilter(selectOption.value)
+                                setDepartmentFilter(selectOption.value);
                             }}
                             menuPortalTarget={document.body}
                             styles={{
@@ -278,7 +279,7 @@ function Home() {
                             maxMenuHeight={200}
                         />
                     </>
-                }
+                )}
                 <Select
                     className='select'
                     name='topicId'
@@ -286,7 +287,7 @@ function Home() {
                     options={topicOption}
                     placeholder={"Topic"}
                     onChange={(selectOption) => {
-                        setTopicFilter(selectOption.value)
+                        setTopicFilter(selectOption.value);
                     }}
                     menuPortalTarget={document.body}
                     styles={{
@@ -309,7 +310,7 @@ function Home() {
                     options={categoryOption}
                     placeholder={"Tag"}
                     onChange={(selectOption) => {
-                        setCategoryFilter(selectOption.value)
+                        setCategoryFilter(selectOption.value);
                     }}
                     menuPortalTarget={document.body}
                     styles={{
@@ -333,7 +334,7 @@ function Home() {
                     defaultValue={SortOptions[0]}
                     placeholder={"Sort"}
                     onChange={(selectOption) => {
-                        setSortTable(selectOption.value)
+                        setSortTable(selectOption.value);
                     }}
                     menuPortalTarget={document.body}
                     styles={{
@@ -357,7 +358,7 @@ function Home() {
                 />
             </div>
         </div>
-    )
+    );
 }
 
-export default Home
+export default Home;
