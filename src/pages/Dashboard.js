@@ -15,6 +15,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import Chart from 'chart.js/auto';
 import Moment from 'react-moment';
 import moment from "moment";
+import randomColor from "randomcolor";
 
 const getSemester = async (values, setSemesterOption) => {
     const paramsValue = {
@@ -220,6 +221,19 @@ function Dashboard() {
         }
     }, [isLoading])
 
+    let pieColor= []
+
+    useEffect(() => {
+        for(let i=0; i < valueData.pieChart.listDept.length; i++ ){
+            var color = randomColor({
+                format: 'rgba',
+                alpha: 0.5,
+            });
+            pieColor.push(color);
+        }
+        console.log(pieColor);
+    }, [valueData])
+
     return (
         <div className="dashboard-page container">
             <h2 className="page-title">Dashboard</h2>
@@ -321,9 +335,6 @@ function Dashboard() {
                                     </div>
                                 </div>
                                 <div className="list-button">
-                                    {/* <button className={"btn btn-info"} type='reset'>
-                                        Refresh
-                                    </button> */}
                                     {userInfo.userRole === "ADMIN" ?
                                         <button
                                             className={"btn btn-export"}
@@ -346,7 +357,7 @@ function Dashboard() {
             </div>
             <div className="layout-data">
                 <div className="data-left left">
-                    <div className="data left">
+                    <div className="data lt">
                         <div className="data-header">
                             <label className="data-title">Total ideas</label>
                             <div className="data-icon">
@@ -355,7 +366,7 @@ function Dashboard() {
                         </div>
                         <p className="data-body">{valueData.totalIdea}</p>
                     </div>
-                    <div className="data right">
+                    <div className="data rt">
                         <div className="data-header">
                             <label className="data-title">Total ideas without comment</label>
                             <div className="data-icon">
@@ -366,7 +377,7 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="data-right right">
-                    <div className="data left">
+                    <div className="data lt">
                         <div className="data-header">
                             <label className="data-title">Total anonymous ideas</label>
                             <div className="data-icon">
@@ -375,7 +386,7 @@ function Dashboard() {
                         </div>
                         <p className="data-body">{valueData.anonymousIdea}</p>
                     </div>
-                    <div className="data right">
+                    <div className="data rt">
                         <div className="data-header">
                             <label className="data-title">Total anonymous comment</label>
                             <div className="data-icon">
@@ -398,17 +409,11 @@ function Dashboard() {
                                     backgroundColor: [
                                         '#0052CC',
                                     ],
-                                    borderColor: [
-                                        '#0052CC',
-                                    ],
                                 },
                                 {
                                     label: 'total comments of department',
                                     data: valueData.firstBarChart.listComment,
                                     backgroundColor: [
-                                        '#f02c2c',
-                                    ],
-                                    borderColor: [
                                         '#f02c2c',
                                     ],
                                 },
@@ -438,12 +443,7 @@ function Dashboard() {
                                 {
                                     label: 'percentage idea of department',
                                     data: valueData.pieChart.listValue,
-                                    backgroundColor: [
-                                        '#0052CC', '#f02c2c', '#FFF000', '#4FA800', '#5036C4', '#FCD2DD6E',
-                                    ],
-                                    borderColor: [
-                                        '#0052CC', '#f02c2c', '#FFF000', '#4FA800', '#5036C4', '#FCD2DD6E',
-                                    ],
+                                    backgroundColor: pieColor,
                                 },
                             ]
                         }}
@@ -468,9 +468,6 @@ function Dashboard() {
                                     label: 'total contributors of department',
                                     data: valueData.secondBarChart.userCount,
                                     backgroundColor: [
-                                        '#0052CC',
-                                    ],
-                                    borderColor: [
                                         '#0052CC',
                                     ],
                                 },
