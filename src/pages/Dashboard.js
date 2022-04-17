@@ -233,23 +233,6 @@ function Dashboard() {
         }
     }, [isLoading]);
 
-    // const handleClickReport = () => {
-    //     let pieColor = [];
-    //     let index;
-    //     if (valueData.pieChart.listDept.length > 0 && isClickReport) {
-    //         for (index = 0; index < valueData.pieChart.listDept.length; index++) {
-    //             var color = randomColor({
-    //                 luminosity: "light",
-    //                 hue: "random",
-    //                 alpha: 0.5,
-    //             });
-    //             pieColor.push(color);
-    //         }
-    //         setBarChartColor((prevState) => ({ ...prevState, pieChartColor: pieColor }));
-    //         setIsClickReport(false);
-    //     }
-    // };
-
     let pieColor = [];
     useEffect(() => {
         let index;

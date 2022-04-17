@@ -26,7 +26,7 @@ const Login = () => {
     const [loginData, setLoginData] = useState(null);
     const [passwordShown, setPasswordShown] = useState(false);
     const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "ok"
     });
     // console.log(auth)
@@ -111,7 +111,7 @@ const Login = () => {
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {auth.errorCode !== 1 ?
+            {auth.errorCode !== 0 ?
                 <ErrorMessagePopUp closebtn={setErrorData} errorMess={auth.errorMessage} /> :
                 <></>
             }

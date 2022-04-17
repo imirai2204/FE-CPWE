@@ -125,7 +125,7 @@ const Tags = (props) => {
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "",
     });
     const [topicOption, setTopicOption] = useState([]);
@@ -253,7 +253,7 @@ const Tags = (props) => {
                         setDeleteCategoryId={setDeleteCategoryId}
                     />
                 </div>
-                {errorData.code !== 1 ? (
+                {errorData.code !== 0 ? (
                     <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
                 ) : (
                     <></>

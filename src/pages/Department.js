@@ -77,7 +77,7 @@ function Department() {
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "ok",
     });
     // const tableAttr = useSelector((state) => state.table);
@@ -160,7 +160,7 @@ function Department() {
                         totalPages={returnPagination.totalPages}
                     />
                 </div>
-                {errorData.code !== 1 ? (
+                {errorData.code !== 0 ? (
                     <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
                 ) : (
                     <></>
