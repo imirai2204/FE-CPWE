@@ -155,7 +155,10 @@
     font-weight: 600 !important;
     line-height: 28px !important;
     word-break: break-all;
-    white-space: normal;
+    // white-space: normal;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .MuiGrid-container {
