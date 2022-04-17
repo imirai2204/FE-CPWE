@@ -221,13 +221,13 @@ function Dashboard() {
         }
     }, [isLoading])
 
-    let pieColor= []
+    let pieColor = []
 
     useEffect(() => {
-        for(let i=0; i < valueData.pieChart.listDept.length; i++ ){
+        for (let i = 0; i < valueData.pieChart.listDept.length; i++) {
             var color = randomColor({
-                format: 'rgba',
-                alpha: 0.5,
+                luminosity: 'light',
+                hue: 'random'
             });
             pieColor.push(color);
         }
@@ -407,14 +407,20 @@ function Dashboard() {
                                     label: 'total ideas of department',
                                     data: valueData.firstBarChart.listIdea,
                                     backgroundColor: [
-                                        '#0052CC',
+                                        randomColor({
+                                            luminosity: 'light',
+                                            hue: 'random'
+                                        })
                                     ],
                                 },
                                 {
                                     label: 'total comments of department',
                                     data: valueData.firstBarChart.listComment,
                                     backgroundColor: [
-                                        '#f02c2c',
+                                        randomColor({
+                                            luminosity: 'light',
+                                            hue: 'random'
+                                        })
                                     ],
                                 },
                             ]
@@ -468,7 +474,10 @@ function Dashboard() {
                                     label: 'total contributors of department',
                                     data: valueData.secondBarChart.userCount,
                                     backgroundColor: [
-                                        '#0052CC',
+                                        randomColor({
+                                            luminosity: 'light',
+                                            hue: 'random'
+                                        })
                                     ],
                                 },
                             ]
