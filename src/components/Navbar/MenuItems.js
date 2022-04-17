@@ -12,21 +12,27 @@ export const MenuItems = [
         hasMenu: false,
     },
     {
-        title: "Manage User",
-        path: "/manage-user",
+        title: "Management",
+        path: "#",
         cName: "nav-link",
-        hasMenu: false,
+        isManagement: true,
     },
     {
         title: "Category",
         path: "#",
         cName: "nav-link",
-        hasDropdown: true,
+        isCategory: true,
     },
     {
         title: "CREATE",
         path: "/submit-page",
         cName: "nav-link-mobile",
+        hasMenu: false,
+    },
+    {
+        title: "ACCOUNT",
+        path: "#",
+        cName: "nav-link-mobile user-card",
         hasMenu: false,
     },
 ];

@@ -6,11 +6,11 @@
     cursor: pointer;
     text-decoration: none;
 
-    &:hover {
-        transition: all 0.2s ease-out;
-        background-color: $color-purple-C2CE;
-        color: $color-black-40;
-    }
+    // &:hover {
+    //     transition: all 0.2s ease-out;
+    //     background-color: $color-purple-C2CE;
+    //     color: $color-black-40;
+    // }
 
     &--primary {
         background-color: transparent;
@@ -22,10 +22,11 @@
         font-size: 15px;
         border: none;
         transition: all 0.3s ease-out;
-        
+
         &:hover {
             background-color: $color-white;
             color: $color-black-40;
+            text-decoration: underline;
         }
     }
 
@@ -57,7 +58,7 @@
     }
 
     &--linear {
-        background: linear-gradient(180deg, #FFF13C 0%, #FBC50C 51.04%, #F18F3F 100%);
+        background: linear-gradient(180deg, #fff13c 0%, #fbc50c 51.04%, #f18f3f 100%);
         border-radius: 8px;
         justify-content: center;
         align-items: center;
@@ -66,6 +67,25 @@
         font-size: 16px;
         line-height: 24px;
         color: $color-black;
+    }
+
+    &--outline {
+        background-color: $color-white-FA;
+        width: 30%;
+        border: 2px solid $color-black-B3;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 15px;
+        font-weight: 500;
+
+        &__active{
+            background-color: $color-blue-FF;
+            border: 2px solid $color-blue-CC;
+            color: $color-white-FA;
+        }
+        &:focus{
+            box-shadow: none;
+        }
     }
 }
 
@@ -86,6 +106,52 @@
             div {
                 color: $color-black-40;
                 font-weight: 600;
+            }
+        }
+    }
+}
+
+.list-button {
+    text-align: center;
+    margin-top: 2rem;
+
+    .btn {
+        margin: 0 0.5rem;
+        color: $color-white;
+        font-size: 15px;
+        width: 10rem;
+
+        &-warning {
+            &:hover {
+                background-color: #ffc107;
+            }
+        }
+
+        &-info {
+            &:hover {
+                background-color: #31d2f2;
+            }
+        }
+
+        &-success {
+            &:hover {
+                background-color: #157347;
+            }
+        }
+
+        &-avatar {
+            width: 15rem;
+        }
+
+        &-export {
+            background-color: $color-yellow-00;
+            color: $color-black;
+            font-weight: 500;
+            width: 15rem;
+
+            .icon {
+                font-size: 20px;
+                margin-right: 5px;
             }
         }
     }

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const date = new Date();
 
 const Greeting = (props) => {
+    const greetingUser = props.userName;
     let greetingMessage = "";
     let hour = date.getHours();
 
@@ -17,13 +18,13 @@ const Greeting = (props) => {
     }
 
     return (
-        <>
-            <p className='greeting-message'>
+        <Fragment>
+            <p className="greeting-message">
                 {`${greetingMessage},`}
                 <br />
-                <span className='greeting-message'>{props.data}</span>
+                <span className="greeting-message">{greetingUser}</span>
             </p>
-        </>
+        </Fragment>
     );
 };
 

@@ -1,65 +1,57 @@
-export const columns = [
-    { id: 'firstName', label: 'FirstName', minWidth: 170 },
-    { id: 'lastName', label: 'LastName', minWidth: 170 },
-    { id: 'username', label: 'Username', minWidth: 100 },
-    { id: 'email', label: 'Email', minWidth: 100 },
-    { id: 'passsword', label: 'Passsword', minWidth: 100 },
-
-    // { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    // {
-    //     id: 'population',
-    //     label: 'Population',
-    //     minWidth: 170,
-    //     align: 'right',
-    //     format: (value) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //     id: 'size',
-    //     label: 'Size\u00a0(km\u00b2)',
-    //     minWidth: 170,
-    //     align: 'right',
-    //     format: (value) => value.toLocaleString('en-US'),
-    // },
-    // {
-    //     id: 'density',
-    //     label: 'Density',
-    //     minWidth: 170,
-    //     align: 'right',
-    //     format: (value) => value.toFixed(2),
-    // },
-    // {
-    //     id: 'edit',
-    //     label: 'Edit',
-    //     minWidth: 50,
-    //     align: 'center',
-    // },
-    // {
-    //     id: 'delete',
-    //     label: 'Delete',
-    //     minWidth: 50,
-    //     align: 'center',
-    // },
+export const ColumnsDepartment = [
+    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
+    { id: "department", label: "Department Name", width: "50%", align: "left" },
 ];
 
-function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-}
+export const ColumnsUser = [
+    { id: "id", label: "User ID", width: "15%", align: "center", style: { left: "13px" } },
+    { id: "fullname", label: "Full Name", width: "15%", align: "left" },
+    { id: "email", label: "Email", width: "15%", align: "left" },
+    { id: "department", label: "Department", width: "10%", align: "left" },
+    { id: "role", label: "Role", width: "10%", align: "left" },
+    { id: "phone", label: "Phone", width: "10%", align: "left" },
+    { id: "address", label: "Address", width: "25%", align: "left" },
+];
 
-export const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
+export const ColumnsPermission = [
+    { id: "permissionName", label: "Permission Name", width: "20%", align: "left" },
+    { id: "permissionURL", label: "Screen URL", width: "30%", align: "left" },
+];
+
+export const ColumnsRole = [
+    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
+    { id: "roleName", label: "Role Name", width: "20%", align: "left" },
+    { id: "permission", label: "Permission", width: "20%", align: "center", style: { left: "13px" } },
+];
+
+export const ColumnsCategory = [
+    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
+    { id: "tagLabel", label: "Tag Name", width: "20%", align: "left" },
+    { id: "topicLabel", label: "Topic Name", width: "20%", align: "left" },
+];
+
+export const ColumnsTopic = [
+    { id: "id", label: "ID", width: "3%", align: "center", style: { left: "13px" } },
+    { id: "topic", label: "Topic", width: "10%", align: "left" },
+    { id: "year", label: "Year", width: "3%", align: "center", style: { left: "13px" } },
+    { id: "semester", label: "Semester", width: "15%", align: "left" },
+    { id: "department", label: "Department", width: "15%", align: "left" },
+    { id: "startDate", label: "Start Date", width: "10%", align: "left" },
+    { id: "closureDate", label: "Closure Date", width: "10%", align: "left" },
+    { id: "finalDate", label: "Final Date", width: "13%", align: "left" },
+];
+
+export const ColumnsSemester = [
+    { id: "id", label: "ID", width: "5%", align: "center", style: { left: "13px" } },
+    { id: "year", label: "Year", width: "5%", align: "center", style: { left: "13px" } },
+    { id: "semester", label: "Semester", width: "40%", align: "left" },
+    { id: "startDate", label: "Start Date", width: "20%", align: "left" },
+    { id: "endDate", label: "End Date", width: "20%", align: "left" },
+];
+
+export const ColumnsIdea = [
+    { id: "topic", label: "Topic", width: "10%", align: "center", style: { left: "13px" } },
+    { id: "category", label: "Tag", width: "10%", align: "center", style: { left: "13px" } },
+    { id: "title", label: "Title", width: "20%", align: "left", url: true},
+    { id: "author", label: "Author", width: "15%", align: "left" },
 ];

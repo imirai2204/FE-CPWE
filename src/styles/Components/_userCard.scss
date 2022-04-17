@@ -1,0 +1,89 @@
+.user-card-mobile {
+    display: none;
+
+    & .card-image {
+        padding-top: 30px;
+        padding-left: 27%;
+
+        & .MuiAvatar-root {
+            width: 160px;
+            height: 160px;
+        }
+    }
+
+    & .return {
+        width: 45px;
+        height: 45px;
+        background-color: $color-red-24;
+        border: none;
+        margin-left: 47.5%;
+        margin-top: 20px;
+
+        & svg {
+            font-size: 40px;
+        }
+    }
+}
+
+@media screen and (max-width: 1130px) {
+    .user-card-mobile {
+        display: inline-block;
+        background: $color-red-24;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 60px;
+        left: -105%;
+        margin: 0;
+        opacity: 1;
+        transition: all 0.5s ease;
+
+        &.active {
+            padding: 0;
+            left: 0;
+            opacity: 1;
+            transition: all 0.5s ease;
+            z-index: 20;
+
+            & .card-image {
+                padding-top: 30px;
+                padding-left: 27%;
+
+                & .MuiAvatar-root {
+                    width: 160px;
+                    height: 160px;
+                }
+            }
+
+            & .card--info--button {
+                height: 40px;
+                width: 100%;
+                padding: 0 20px;
+
+                & .user-settings-btn,
+                & .log-out-btn {
+                    display: flex;
+                    align-items: center;
+
+                    & a {
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+        & .return {
+            width: 45px;
+            height: 45px;
+            background-color: $color-red-24;
+            border: none;
+            margin-left: 46vw;
+            margin-top: 20px;
+
+            & svg {
+                font-size: 45px;
+            }
+        }
+    }
+}

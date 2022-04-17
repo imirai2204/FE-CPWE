@@ -1,0 +1,44 @@
+.home-page {
+    .page-title {
+        text-transform: uppercase;
+        color: $color-red-24;
+        text-align: center;
+    }
+
+    .banner-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 20px;
+        margin-bottom: 3rem;
+        max-height: 25rem;
+        width: 100%;
+    }
+
+    .sort-list {
+        // flex-flow: column wrap;
+        // justify-content: space-around;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-bottom: 3rem;
+
+        .select {
+            width: 100%;
+            margin: 1rem;
+        }
+    }
+
+    @media screen and (max-width: 1095px) {
+        .sort-list {
+            flex-wrap: wrap;
+            .select {
+                width: 48%;
+                margin: 0.5rem 1%;
+
+                &-sort {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

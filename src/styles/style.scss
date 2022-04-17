@@ -13,6 +13,9 @@
 @import './Components/modal';
 @import './Components/resetMui';
 @import './Components/message';
+@import './Components/table';
+@import './Components/userCard';
+@import './Components/comments';
 //Layouts
 @import './Layout/nav';
 @import './Layout/header';
@@ -23,3 +26,9 @@
 @import './Pages/register';
 @import './Pages/submit';
 @import './Pages/terms';
+@import './Pages/department';
+@import './Pages/manageUser';
+@import './Pages/ideaDetail';
+@import './Pages/dashboard';
+//webpack
+@import "~react-image-gallery/styles/scss/image-gallery.scss";

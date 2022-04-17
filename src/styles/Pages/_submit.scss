@@ -19,7 +19,11 @@
                         font-weight: 600;
                         line-height: 28px;
                         margin-right: 10px;
-                        width: 75px;
+                        width: 12rem;
+                        color: $color-red-09;
+                    }
+                    p {
+                        font-weight: 600;
                     }
                 }
             }
@@ -39,17 +43,38 @@
 
         .btn--medium {
             font-size: 15px;
+            font-weight: 600;
         }
     }
 
     &-title {
         text-align: center;
+        color: $color-black-40;
     }
 }
 
 .terms-link {
     text-decoration: underline;
     color: $color-blue-B8;
+}
+
+.information-box {
+    border-radius: 8%;
+    background: $color-blue-F2;
+    opacity: 0.7;
+    padding: 40px 30px;
+    width: 34rem;
+
+    h2, h4 {
+        color: $color-white;
+    }
+}
+
+.info-content {
+    border-radius: 15px;
+    background: $color-white;
+    padding: 20px;
+    margin-top: 18px;
 }
 
 @media screen and (max-width: 1095px) {

@@ -1,0 +1,206 @@
+.idea-detail-page {
+    background-color: $color-white;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+    border-bottom: 1px solid $color-black-B3;
+    border-right: 1px solid $color-black-B3;
+
+    label {
+        font-size: 20px;
+    }
+
+    .icon {
+        font-size: 20px;
+        align-self: center;
+    }
+
+    .author {
+        display: flex;
+        max-width: 28rem;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
+        padding: 5px;
+        border-bottom: 2px solid $color-black-B3;
+        border-right: 2px solid $color-black-B3;
+        border-radius: 5px;
+        justify-content: space-between;
+
+        &-name {
+            font-size: 15px;
+            word-wrap: break-word;
+
+            &-active {
+                font-size: 15px;
+                word-wrap: break-word;
+            }
+        }
+
+        &-info {
+            align-self: center;
+            margin-left: 20px;
+            height: 45px;
+        }
+
+        &-view {
+            margin-left: 3.2rem;
+        }
+
+        .comment-date {
+            font-size: 14px;
+        }
+    }
+
+    .author-comment {
+        display: inline-flex;
+        max-width: 35rem;
+        padding: 5px;
+        justify-content: space-between;
+
+        & .author-info {
+            align-self: center;
+            margin: 0;
+            height: 40px;
+        }
+
+        & .author-name {
+            font-size: 18px;
+            word-wrap: break-word;
+            // margin-left: 1rem;
+
+            &-active {
+                font-size: 18px;
+                word-wrap: break-word;
+                // margin-left: 1rem;
+                color: $color-blue-B8;
+            }
+
+            & .author-view {
+                margin: 0;
+                margin-right: 1rem;
+            }
+
+            & .author-user-name-active {
+                font-size: 18px;
+                word-wrap: break-word;
+                color: $color-blue-B8;
+            }
+
+            &-user {
+                font-size: 18px;
+                word-wrap: break-word;
+            }
+        }
+
+        &-info {
+            align-self: center;
+            margin-left: 20px;
+            height: 45px;
+        }
+
+        .comment-date {
+            font-size: 14px;
+        }
+    }
+
+    .idea {
+        &-body {
+            margin: 3rem 2rem 2rem;
+        }
+
+        &-title {
+            text-align: center;
+            color: $color-black-40;
+            margin-top: 3rem;
+            text-transform: uppercase;
+            word-wrap: break-word;
+        }
+
+        &-category {
+            padding-left: 3rem;
+
+            .topic-name {
+                color: $color-blue-CC;
+                margin-right: 1rem;
+            }
+
+            .category-name {
+                color: $color-green;
+            }
+        }
+
+        &-description {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            text-indent: 3rem;
+            text-align: justify;
+
+            p {
+                word-wrap: break-word;
+            }
+        }
+
+        &-label {
+            margin-bottom: 1rem;
+            margin-left: 3rem;
+        }
+
+        &-document {
+            ol {
+                font-size: 15px;
+                margin-left: 3rem;
+                margin-bottom: 2rem;
+            }
+
+            li::marker {
+                font-weight: 700;
+            }
+
+            .link-item {
+                margin-left: 1rem;
+            }
+        }
+
+        &-data {
+            margin-left: 3rem;
+            margin-right: 3rem;
+            display: flex;
+            justify-content: space-between;
+
+            .data-detail {
+                margin-right: 2rem;
+                font-family: "Montserrat", sans-serif;
+
+                .icon {
+                    margin-right: 1rem;
+                }
+            }
+        }
+
+        &-button {
+            margin-left: 3rem;
+            margin-right: 3rem;
+            display: flex;
+            justify-content: space-between;
+
+            .btn-icon {
+                font-size: 18px;
+                margin-right: 1rem;
+            }
+
+            @media screen and (max-width: 615px) {
+                margin-left: 0;
+                margin-right: 0;
+
+                .btn--outline {
+                    font-size: 0px;
+                }
+
+                .btn-icon {
+                    font-size: 25px;
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}

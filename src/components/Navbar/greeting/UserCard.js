@@ -1,41 +1,61 @@
-import * as React from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-const bull = (
+const dash = (
     <Box
         component='span'
-        sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}>
-        •
+        sx={{
+            display: "inline-block",
+            mx: "5px",
+            fontSize: "22px",
+        }}>
+        -
     </Box>
 );
 
 const UserCard = (props) => {
+    /**
+     * Get user info from Redux Store to retrieve:
+     * Full Name
+     * UserId
+     * Email
+     * Department
+     * Role
+     * After user has login successfully
+     */
+    const userData = useSelector((state) => state.user.userInfo);
+
+    const fullName = userData.fullName;
+    const email = userData.email;
+    const departmentName = userData.departmentName;
+    const role = userData.userRole;
+
     return (
-        <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-                    Word of the Day
+        <Card sx={{ boxShadow: 0, textAlign: "center" }}>
+            <CardContent sx={{ height: 170, mt: 1, lineHeight: 4 }}>
+                <Typography variant='h4' color='text.main' component='div'>
+                    {fullName}
                 </Typography>
-                <Typography variant='h5' component='div'>
-                    be{bull}nev{bull}o{bull}lent
+                <Typography variant='h5' sx={{ pt: 1.5 }} color='text.secondary'>
+                    {email}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-                    adjective
-                </Typography>
-                <Typography variant='body2'>
-                    well meaning and kindly.
+                <Typography
+                    variant='h5'
+                    sx={{
+                        pt: 1.8,
+                        lineHeight: 1.8,
+                        fontSize: "1.6rem",
+                        fontWeight: 500,
+                    }}
+                    color='text.secondary'>
+                    {departmentName}
                     <br />
-                    {'"a benevolent smile"'}
+                    {role}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <Button size='small'>Learn More</Button>
-            </CardActions>
         </Card>
     );
 };

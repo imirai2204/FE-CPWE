@@ -1,41 +1,93 @@
-import React from "react";
-import Button from "@mui/material/Button";
+import { useState, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../../redux-store/auth/auth.slice";
+import { userActions } from "../../../redux-store/user/user.slice";
+import Box from "@mui/material/Box";
+import Popper from "@mui/material/Popper";
+import Fade from "@mui/material/Fade";
 import Greeting from "./Greeting";
 import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 import UserCard from "./UserCard";
+import LogoutIcon from "@mui/icons-material/Logout";
 
-const defaultAvatar = "/default-avatar.png";
+const User = (props) => {
+    const dispatch = useDispatch();
+    const isCardShow = useSelector((state) => state.user.isCardOpen);
+    const [toggleDisplay, setToggleDisplay] = useState(null);
 
-export default function BasicMenu(props) {
-    const [showMenu, setShowMenu] = React.useState(null);
-    const open = Boolean(showMenu);
+    const onClickHandler = (event) => {
+        setToggleDisplay(event.currentTarget);
 
-    const openMenuHandler = (event) => {
-        setShowMenu(event.currentTarget);
+        if (isCardShow === true) {
+            dispatch(userActions.toggleUserCard(false));
+        } else {
+            dispatch(userActions.toggleUserCard(true));
+        }
     };
 
-    const closeMenuHandler = () => {
-        setShowMenu(null);
+    const closeCardHandler = () => {
+        dispatch(userActions.toggleUserCard(false));
     };
 
-    const hasImageSource = props.src !== undefined;
+    const logOutHandler = () => {
+        dispatch(userActions.toggleUserCard(false));
+        dispatch(authActions.logout());
+    };
+
+    const canBeOpen = isCardShow && Boolean(toggleDisplay);
+    const id = canBeOpen ? "transition-popper" : undefined;
 
     return (
-        <>
-            <Button
-                id='basic-button'
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup='true'
-                aria-expanded={open ? "true" : undefined}
-                onClick={openMenuHandler}>
-                <Greeting data={props.data} />
-                {hasImageSource ? (
-                    <Avatar id='user-avatar-navbar' src={props.src} />
-                ) : (
-                    <Avatar id='user-avatar-navbar' src={defaultAvatar} />
-                )}
+        <Fragment>
+            <Button id='basic-button' type='button' onClick={onClickHandler}>
+                <Greeting userName={props.userName} />
+                <Avatar id='user-avatar-navbar' src={props.src} />
             </Button>
-            {showMenu && <UserCard onClose={closeMenuHandler} />}
-        </>
+            <Popper id={id} open={isCardShow} anchorEl={toggleDisplay} transition>
+                {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={250}>
+                        <Box
+                            sx={{
+                                width: 280,
+                                height: 310,
+                                border: 0,
+                                borderRadius: 2,
+                                boxShadow: 4,
+                                p: 0,
+                                bgcolor: "background.paper",
+                            }}>
+                            <div className='card-image'>
+                                <Avatar src={props.src} />
+                            </div>
+                            <UserCard />
+                            <div className='card--info--button'>
+                                <div className='user-settings-btn'>
+                                    <Button onClick={closeCardHandler} size='small'>
+                                        <Link to='/user/user-settings'>
+                                            User Settings
+                                        </Link>
+                                    </Button>
+                                </div>
+                                <div className='log-out-btn'>
+                                    <Button
+                                        size='small'
+                                        color='error'
+                                        endIcon={<LogoutIcon />}
+                                        onClick={logOutHandler}>
+                                        <Link className='log-out' to='/login'>
+                                            Logout
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </div>
+                        </Box>
+                    </Fade>
+                )}
+            </Popper>
+        </Fragment>
     );
-}
+};
+
+export default User;

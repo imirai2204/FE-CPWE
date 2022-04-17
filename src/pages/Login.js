@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../redux-store/auth/auth.actions";
 import "../styles/style.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Formik, Form } from "formik";
 import { TextField } from "../components/UI/Form/TextField";
 import { SignInSchema } from "../validation";
-import axios from "axios";
-import ErrorMessage from "../components/UI/Modal/ErrorMessage";
+import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 
 const style = {
     display: "block",
@@ -19,43 +20,35 @@ const initialValues = {
     password: "",
 };
 
-function Login() {
+const Login = () => {
+    const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+    const [loginData, setLoginData] = useState(null);
     const [passwordShown, setPasswordShown] = useState(false);
-    const [hasError, setHasError] = useState(false);
-    const [isSuccessLogin, setIsSuccessLogin] = useState(false);
+    const [errorData, setErrorData] = useState({
+        code: 0,
+        message: "ok"
+    });
+    // console.log(auth)
+    
+    useEffect(() => {
+        if (loginData === null) {
+            return;
+        }
+        dispatch(userLogin(loginData));
+        setLoginData(null);
+    }, [loginData, auth, dispatch]);
 
     const togglePassword = () => {
         setPasswordShown(!passwordShown);
     };
 
-    const handleCheckBox = () => {
-        console.log("test");
-    };
-
-    if (hasError) {
-        document.body.classList.add("active-modal");
-    } else {
-        document.body.classList.remove("active-modal");
-    }
-
-    const clickLoginButtonHandler = () => {
-        setHasError(true);
-    };
+    // const handleCheckBox = () => {
+    //     console.log("test");
+    // };
 
     const handleSubmit = async (values) => {
-        const { ...data } = values;
-
-        const response = await axios.post(`/login`, data).catch((error) => {
-            if (error && error.response) {
-                console.log("Error: ", error);
-                setHasError(true);
-            }
-        });
-
-        if (response && response.data) {
-            setIsSuccessLogin(true);
-            console.log(response.data.data);
-        }
+        setLoginData(values);
     };
 
     return (
@@ -89,37 +82,41 @@ function Login() {
                                     name='password'
                                     type={passwordShown ? "text" : "password"}
                                     placeholder='Password'
+                                    style={{ paddingRight: "30px" }}
                                 />
                                 <i
-                                    className={`fa ${
-                                        passwordShown ? "fa-eye-slash" : "fa-eye"
-                                    } fa-lg password-icon`}
+                                    className={`fa ${passwordShown ? "fa-eye-slash" : "fa-eye"
+                                        } fa-lg password-icon`}
                                     onClick={togglePassword}
                                 />
                             </div>
-                            <label className='checkbox'>
+                            {/* <label className='checkbox'>
                                 <input type='checkbox' onChange={handleCheckBox} />
                                 <span></span>
                                 Remember login
-                            </label>
+                            </label> */}
                             <div className='text-right'>
                                 <button
                                     className='btn btn--linear'
                                     type='submit'
                                     style={style}
-                                    onClick={clickLoginButtonHandler}>
+                                // onClick={() => setErrorData(errorData.code === -1)}
+                                >
                                     LOGIN
                                 </button>
                             </div>
-                            {isSuccessLogin && <p>Login Success!</p>}
+                            {/* {auth.isLoggedIn && <p>Login Success!</p>} */}
                         </Form>
                     )}
                 </Formik>
             </div>
             <div className='login-background'></div>
-            {hasError && <ErrorMessage closebtn={setHasError} />}
+            {auth.errorCode !== 0 ?
+                <ErrorMessagePopUp closebtn={setErrorData} errorMess={auth.errorMessage} /> :
+                <></>
+            }
         </div>
     );
-}
+};
 
 export default Login;

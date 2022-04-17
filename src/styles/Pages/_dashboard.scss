@@ -1,0 +1,170 @@
+.dashboard-page {
+    .page-title {
+        color: $color-red-24;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .layout {
+        &-export {
+            background-color: $color-white-FA;
+            border-radius: 12px;
+            box-shadow: 6px 6px 8px rgb(0 0 0 / 40%);
+            border-bottom: 1px solid $color-black-B3;
+            border-right: 1px solid $color-black-B3;
+
+            @media screen and (max-width: 1095px) {
+                padding: 2rem;
+            }
+        }
+
+        &-flex {
+            display: flex;
+            justify-content: space-around;
+
+            @media screen and (max-width: 1095px) {
+                display: block;
+            }
+        }
+
+        &-data {
+            margin-top: 5rem;
+            display: flex;
+            justify-content: space-around;
+
+            .left {
+                margin-right: 0.5rem;
+            }
+
+            .right {
+                margin-left: 0.5rem;
+            }
+
+            .lt {
+                margin-right: 0.5rem;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .rt {
+                margin-left: 0.5rem;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            @media screen and (max-width: 1300px) {
+                display: block;
+
+                .left {
+                    margin-right: 0;
+                }
+
+                .right {
+                    margin-left: 0;
+                }
+            }
+
+            @media screen and (max-width: 640px) { 
+                .lt {
+                    margin-right: 0;
+                }
+    
+                .rt {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        &-chart {
+            margin-top: 5rem;
+        }
+    }
+
+    .input-section {
+        margin-left: 2rem;
+        margin-right: 2rem;
+        width: 100%;
+
+        @media screen and (max-width: 1095px) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    .data {
+        background-color: $color-white-FA;
+        border-radius: 12px;
+        box-shadow: 6px 6px 8px rgb(0 0 0 / 40%);
+        border-bottom: 1px solid $color-black-B3;
+        border-right: 1px solid $color-black-B3;
+        padding: 20px;
+        width: 100%;
+
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+
+        &-title {
+            font-size: 20px;
+            word-wrap: normal;
+        }
+
+        &-icon {
+            background-color: $color-black-B3;
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+            border-radius: 50%;
+            margin-left: 3rem;
+        }
+
+        .icon {
+            font-size: 25px;
+        }
+
+        &-body {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        &-left {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        &-right {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        @media screen and (max-width: 640px) { 
+            &-left {
+                display: block;
+            }
+
+            &-right {
+                display: block;
+            }
+        }
+    }
+
+    .chart {
+        background-color: $color-white-FA;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: 6px 6px 8px rgb(0 0 0 / 40%);
+        border-bottom: 1px solid $color-black-B3;
+        border-right: 1px solid $color-black-B3;
+        margin-bottom: 3rem;
+
+        &-title {
+            margin-top: 2rem;   
+            font-size: 25px;
+        }
+    }
+}

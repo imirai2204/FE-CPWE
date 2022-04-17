@@ -1,0 +1,24 @@
+.department-page {
+    .page-title {
+        color: $color-red-24;
+        text-align: center;
+    }
+
+    .layout-date {
+        display: flex;
+        .first {
+            flex: 45%;
+            margin-right: 5%;
+        }
+        .second {
+            flex: 45%;
+            margin-left: 5%;
+        }
+
+        .time {
+            input {
+                padding-right: 5px;
+            }
+        }
+    }
+}

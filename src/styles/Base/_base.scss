@@ -52,7 +52,11 @@ a {
 }
 
 .container {
-    margin: 0 141px;
+    max-width: 100%;
+    padding: 3% 5% 2%;
+    @media screen and (max-width: 1095px) {
+        padding: 6% 5% 20%;
+    }
 }
 
 img {
@@ -70,4 +74,8 @@ hr {
 
 #root {
     min-height: 100%;
+    background: url("../../asset/manage-bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
