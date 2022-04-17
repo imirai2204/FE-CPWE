@@ -165,7 +165,7 @@ const SubmitPage = (props) => {
     const [topicOption, setTopicOption] = useState([]);
     const [categoryOption, setCategoryOption] = useState([]);
     const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "ok",
     });
     const [startDate, setStartDate] = useState("");
@@ -513,7 +513,7 @@ const SubmitPage = (props) => {
                     </Form>
                 )}
             </Formik>
-            {errorData.code !== 1 ? (
+            {errorData.code !== 0 ? (
                 <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
             ) : (
                 <></>

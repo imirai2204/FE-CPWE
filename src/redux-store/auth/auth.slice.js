@@ -5,7 +5,7 @@ const initialState = {
     isLoggedIn: localStorage.getItem("login") === "true" ? true : false,
     hasError: false,
     errorMessage: "",
-    errorCode: 1,
+    errorCode: 0,
 };
 
 const authSlice = createSlice({

@@ -9,7 +9,7 @@ function ErrorMessagePopUp({ closebtn, errorMess }) {
     const [closePopUp, setClosePopUp] = useState(false);
 
     var errorData = {
-        code: 1,
+        code: 0,
         message: "ok",
     }
 
@@ -19,7 +19,7 @@ function ErrorMessagePopUp({ closebtn, errorMess }) {
         }
         dispatch(
             authActions.failLogin({
-                errorCode: 1,
+                errorCode: 0,
                 errorMessage: ""
             })
         );
@@ -43,7 +43,7 @@ function ErrorMessagePopUp({ closebtn, errorMess }) {
                     />
                 </div>
                 <div className='mess-title'>
-                    <h3>Error Message!</h3>
+                    <h3>Message!</h3>
                 </div>
                 <div className='mess-body'>
                     <p>{errorMess}</p>

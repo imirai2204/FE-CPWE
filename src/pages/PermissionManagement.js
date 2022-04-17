@@ -78,7 +78,7 @@ function PermissionManagement() {
 	const [returnPagination, setPagination] = useState({});
 	const [isSubmiting, setIsSubmiting] = useState(false);
 	const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "ok"
     });
 	const currentPage = useSelector((state) => state.table.page);
@@ -174,7 +174,7 @@ function PermissionManagement() {
 						totalPages={returnPagination.totalPages}
 					/>
 				</div>
-				{errorData.code !== 1 ?
+				{errorData.code !== 0 ?
                     <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} /> :
                     <></>
                 }

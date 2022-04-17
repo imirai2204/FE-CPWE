@@ -156,7 +156,7 @@ function UserDetails() {
     const [passwordShown, setPasswordShown] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "ok",
     });
     const [imageUpload, setImageUpload] = useState(null);
@@ -617,7 +617,7 @@ function UserDetails() {
                             )}
                         </Formik>
                     </div>
-                    {errorData.code !== 1 ? (
+                    {errorData.code !== 0 ? (
                         <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
                     ) : (
                         <></>

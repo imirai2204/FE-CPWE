@@ -158,7 +158,7 @@ function RoleManagement() {
     const [returnPagination, setPagination] = useState({});
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [errorData, setErrorData] = useState({
-        code: 1,
+        code: 0,
         message: "ok",
     });
     const [permissionOption, setPermissionOption] = useState([]);
@@ -380,7 +380,7 @@ function RoleManagement() {
                         )}
                     </Formik>
                 </div>
-                {errorData.code !== 1 ? (
+                {errorData.code !== 0 ? (
                     <ErrorMessagePopUp closebtn={setErrorData} errorMess={errorData.message} />
                 ) : (
                     <></>
