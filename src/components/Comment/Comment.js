@@ -33,12 +33,6 @@ const Comment = ({
     const notAllowViewAuthor = currentUserId !== comment.userId;
     const isAdminRole = userInfo.userRole === "ADMIN";
 
-    const getSubReplies = (commentId) => {
-        return replies
-            .filter((reply) => reply.parent === commentId)
-            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    };
-
     return (
         <div className='comment'>
             <div className='comment-image-container'>
@@ -140,7 +134,7 @@ const Comment = ({
                             <Comment
                                 key={reply.id}
                                 comment={reply}
-                                replies={getSubReplies(reply.id)} //Provide Empty Array as we only allow comment with 2 levels.
+                                replies={[]} //Provide Empty Array as we only allow comment with 2 levels.
                                 currentUserId={currentUserId}
                                 deleteComment={deleteComment}
                                 activeComment={activeComment}

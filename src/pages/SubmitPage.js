@@ -22,12 +22,16 @@ const errorMessage = (error) => {
     }
 };
 
-const updateIdeaAttachDownloadUrl = async (ideaId, body) => {
+const updateIdeaAttachDownloadUrl = async (ideaId, body, clickSubmitHandler) => {
     await AxiosInstance.post(IdeaUrl.update + ideaId, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    }).catch((error) => {
-        errorMessage(error);
-    });
+    })
+        .then((res) => {
+            clickSubmitHandler(res.data.code);
+        })
+        .catch((error) => {
+            errorMessage(error);
+        });
 };
 
 const handleSubmit = async (values, setErrorData, setIdeaId) => {
@@ -263,7 +267,7 @@ const SubmitPage = (props) => {
         console.log(ideaId);
 
         const waitingFirebaseResponse = setTimeout(() => {
-            updateIdeaAttachDownloadUrl(ideaId, fileUpload);
+            updateIdeaAttachDownloadUrl(ideaId, fileUpload, clickSubmitHandler);
         }, 5000);
 
         if (ideaId == 0) {
@@ -292,6 +296,12 @@ const SubmitPage = (props) => {
             });
             setDataUpload(currentData);
         });
+    };
+
+    const clickSubmitHandler = (response) => {
+        if (response.code === 1) {
+            props.onClose();
+        }
     };
 
     return (
