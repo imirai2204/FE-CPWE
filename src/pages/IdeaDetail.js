@@ -14,23 +14,31 @@ import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { convertDate, getFormattedDate } from "../function/library";
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const handleGet = async (setIdeaDetail, setListDocument, setListImage, id) => {
     await AxiosInstance.get(IdeaUrl.get + id, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then((res) => {
-            console.log(res)
+            console.log(res);
             var data = res.data.data;
             var createDate = getFormattedDate(convertDate(data.createdDate));
             var listImage = data.listAttachment.filter((item) => {
-                if (item.fileType === "image/jpg" || item.fileType === "image/png" || item.fileType === "image/jpeg") {
+                if (
+                    item.fileType === "image/jpg" ||
+                    item.fileType === "image/png" ||
+                    item.fileType === "image/jpeg"
+                ) {
                     return item;
                 }
             });
             var listDocument = data.listAttachment.filter((item) => {
-                if (item.fileType !== "image/jpg" && item.fileType !== "image/png" && item.fileType !== "image/jpeg") {
+                if (
+                    item.fileType !== "image/jpg" &&
+                    item.fileType !== "image/png" &&
+                    item.fileType !== "image/jpeg"
+                ) {
                     return item;
                 }
             });
@@ -131,7 +139,7 @@ function IdeaDetail() {
 
     useEffect(() => {
         setIsAnonymous(ideaDetail.isAnonymous);
-    }, [ideaDetail])
+    }, [ideaDetail]);
 
     if (click) {
         getReaction(id, setReaction);
@@ -149,18 +157,22 @@ function IdeaDetail() {
                             </label>
                             <p className='date-submit'>Post date: {ideaDetail.createDate}</p>
                         </div>
-                        {userInfo.userRole === "ADMIN" && isAnonymous === true ?
+                        {userInfo.userRole === "ADMIN" && isAnonymous === true ? (
                             <VisibilityIcon
                                 className='author-view'
                                 onClick={() => setIsAnonymous(!isAnonymous)}
-                            /> : <></>
-                        }
-                        {userInfo.userRole === "ADMIN" && isAnonymous === false ?
+                            />
+                        ) : (
+                            <></>
+                        )}
+                        {userInfo.userRole === "ADMIN" && isAnonymous === false ? (
                             <VisibilityOffIcon
                                 className='author-view'
                                 onClick={() => setIsAnonymous(!isAnonymous)}
-                            /> : <></>
-                        }
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <h2 className='idea-title'>{ideaDetail.title}</h2>
                     <div className='idea-category'>

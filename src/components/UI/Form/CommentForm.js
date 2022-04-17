@@ -5,6 +5,7 @@ const CommentForm = ({
     submitLabel,
     handleCancel,
     initialText = "",
+    setAnonymous,
     hasCancelBtn = false,
 }) => {
     const [commentText, setCommentText] = useState(initialText);
@@ -22,13 +23,21 @@ const CommentForm = ({
 
     return (
         <form onSubmit={onSubmit}>
+            <input
+                type='checkbox'
+                id='anonymous-checkbox'
+                onClick={(event) => {
+                    setAnonymous(event.target.checked);
+                }}
+            />
+            <label style={{ fontSize: 14, paddingLeft: 5, paddingBottom: 2 }}>Anonymous</label>
             <textarea
                 className='comment-form-textarea textarea'
                 value={commentText}
                 onChange={onChange}
                 style={{ width: "100%", resize: "none" }}
                 rows={4}
-                placeholder={'Add comment...'}
+                placeholder={"Add comment..."}
             />
             <button disabled={isTextareaEmpty} className='comment-form-button'>
                 {submitLabel}

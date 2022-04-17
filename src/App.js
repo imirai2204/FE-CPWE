@@ -20,7 +20,7 @@ import SubmitIdea from "./components/CreateIdea/SubmitIdea";
 import Terms from "./pages/Terms";
 import IdeaDetail from "./pages/IdeaDetail";
 import PageNotFound from "./404";
-import { Warn } from "./api/EndPoint"
+import { Warn } from "./api/EndPoint";
 
 function GlobalRoute({ children, ...props }) {
     return (
@@ -56,17 +56,11 @@ function App() {
     return (
         <Fragment>
             {isLoggedIn && (
-                <PrivateRoute
-                    openModalHandler={openModalHandler}
-                    isOpenModal={isOpenModal}>
+                <PrivateRoute openModalHandler={openModalHandler} isOpenModal={isOpenModal}>
                     <Route path='/' exact element={<Home />} />
                     <Route path='/login' exact element={<Navigate to='/' />} />
                     <Route path='/dashboard' exact element={<Dashboard />} />
-                    <Route
-                        path='/management/manage-user'
-                        exact
-                        element={<ManageUser />}
-                    />
+                    <Route path='/management/manage-user' exact element={<ManageUser />} />
                     {/* <Route
                         path='/management/perms-management'
                         exact
@@ -77,11 +71,7 @@ function App() {
                     <Route path='/category/tags' exact element={<Tags />} />
                     <Route path='/category/topic' exact element={<Topic />} />
                     <Route path='/submit-page' exact element={<SubmitPage />} />
-                    <Route
-                        path='/management/role-management'
-                        exact
-                        element={<RoleManagement />}
-                    />
+                    <Route path='/management/role-management' exact element={<RoleManagement />} />
                     <Route path='/user/user-settings' exact element={<UserDetails />} />
                     <Route path='/terms-conditions' exact element={<Terms />} />
                     <Route path='/idea-detail/:id' element={<IdeaDetail />} />
@@ -95,42 +85,14 @@ function App() {
                     <Route path='/login' exact element={<Login />} />
                     <Route path='/dashboard' exact element={<Navigate to='/login' />} />
                     <Route path='/manage-user' exact element={<Navigate to='/login' />} />
-                    <Route
-                        path='/category/semester'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
-                    <Route
-                        path='/category/department'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
-                    <Route
-                        path='/category/tags'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
-                    <Route
-                        path='/category/topic'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
+                    <Route path='/category/semester' exact element={<Navigate to='/login' />} />
+                    <Route path='/category/department' exact element={<Navigate to='/login' />} />
+                    <Route path='/category/tags' exact element={<Navigate to='/login' />} />
+                    <Route path='/category/topic' exact element={<Navigate to='/login' />} />
                     <Route path='/submit-page' exact element={<Navigate to='/login' />} />
-                    <Route
-                        path='/account-settings'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
-                    <Route
-                        path='/user/user-settings'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
-                    <Route
-                        path='/terms-conditions'
-                        exact
-                        element={<Navigate to='/login' />}
-                    />
+                    <Route path='/account-settings' exact element={<Navigate to='/login' />} />
+                    <Route path='/user/user-settings' exact element={<Navigate to='/login' />} />
+                    <Route path='/terms-conditions' exact element={<Navigate to='/login' />} />
                     <Route path='*' element={<Navigate to='/404' />} />
                     <Route path='/404' exact element={<PageNotFound warn={Warn.noExist} />} />
                 </GlobalRoute>

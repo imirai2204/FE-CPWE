@@ -8,13 +8,15 @@ export const IdeaUrl = {
     update: "idea/update/files/",
     get: "/idea/get/",
     getList: "/idea/get",
-    comment: "/idea/comment/create",
+    createcomment: "/idea/comment/create",
     fetchComment: "idea/comment/get",
+    editComment: "idea/comment/edit/",
+    deleteComment: "idea/comment/delete/",
     reaction: "/idea/reaction",
     getReaction: "/idea/get/status/",
     countView: "idea/view/create/",
     dashboard: "idea/dashboard/get",
-    export: "file/report"
+    export: "file/report",
 };
 
 export const AcademicUrl = {

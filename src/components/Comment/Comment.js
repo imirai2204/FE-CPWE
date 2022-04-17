@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 import CommentForm from "../UI/Form/CommentForm";
+import { useSelector } from "react-redux";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-const TEN_MINUTE = 60000;
+const TEN_MINUTE = 600000;
 
 const Comment = ({
     comment,
@@ -10,10 +13,13 @@ const Comment = ({
     deleteComment,
     activeComment,
     setActiveComment,
-    parent = null,
+    setAnonymous,
+    parent,
     addComment,
     updateComment,
 }) => {
+    const [isAnonymous, setIsAnonymous] = useState(comment.isAnonymous);
+    const userInfo = useSelector((state) => state.user.userInfo);
     const allowReply = Boolean(currentUserId);
     const editTimePass = new Date() - new Date(comment.createdAt) > TEN_MINUTE;
     const allowEdit = currentUserId === comment.userId && !editTimePass;
@@ -23,7 +29,15 @@ const Comment = ({
         activeComment && activeComment.type === "Reply" && activeComment.id === comment.id;
     const isEdit =
         activeComment && activeComment.type === "Edit" && activeComment.id === comment.id;
-    const replyId = parent ? parent : comment.id;
+    const replyId = parent ?? comment.id;
+    const notAllowViewAuthor = currentUserId !== comment.userId;
+    const isAdminRole = userInfo.userRole === "ADMIN";
+
+    const getSubReplies = (commentId) => {
+        return replies
+            .filter((reply) => reply.parent === commentId)
+            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    };
 
     return (
         <div className='comment'>
@@ -32,8 +46,48 @@ const Comment = ({
             </div>
             <div className='comment-right-part'>
                 <div className='comment-content'>
-                    <div className='comment-author'>{comment.userName}</div>
-                    <div className='comment-date'>{createdAt}</div>
+                    <div className='author-comment'>
+                        <div className='author-info'>
+                            <label className='author-name'>
+                                {isAdminRole && isAnonymous === true ? (
+                                    <VisibilityIcon
+                                        className='author-view'
+                                        onClick={() => setIsAnonymous(false)}
+                                    />
+                                ) : (
+                                    <Fragment />
+                                )}
+                                {isAdminRole && isAnonymous === false ? (
+                                    <VisibilityOffIcon
+                                        className='author-view'
+                                        onClick={() => setIsAnonymous(true)}
+                                    />
+                                ) : (
+                                    <Fragment />
+                                )}
+                                {isAnonymous && !notAllowViewAuthor && !isAdminRole && (
+                                    <label className='author-user-name-active'>
+                                        {comment.userName}
+                                    </label>
+                                )}
+                                {!isAnonymous && !notAllowViewAuthor && !isAdminRole && (
+                                    <label className='author-user-name-active'>
+                                        {comment.userName}
+                                    </label>
+                                )}
+                                {!isAnonymous && notAllowViewAuthor && !isAdminRole && (
+                                    <label className='author-name-user'>Anonymous</label>
+                                )}
+                                {isAnonymous && isAdminRole && (
+                                    <label className='author-name'>Anonymous</label>
+                                )}
+                                {!isAnonymous && isAdminRole && (
+                                    <label className='author-name-active'>{comment.userName}</label>
+                                )}
+                                <div className='comment-date'>{createdAt}</div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 {!isEdit && <div className='comment-text'>{comment.content}</div>}
                 {isEdit && (
@@ -41,8 +95,12 @@ const Comment = ({
                         submitLabel='Edit Comment'
                         hasCancelBtn
                         initialText={comment.content}
-                        handleSubmit={(text) => updateComment(text, comment.id)}
+                        handleSubmit={(text) => {
+                            updateComment(text, comment.id);
+                            console.log(text);
+                        }}
                         handleCancel={() => setActiveComment(null)}
+                        setAnonymous={setAnonymous}
                     />
                 )}
                 <div className='comment-actions'>
@@ -73,6 +131,7 @@ const Comment = ({
                     <CommentForm
                         submitLabel='Reply'
                         handleSubmit={(text) => addComment(text, replyId)}
+                        setAnonymous={setAnonymous}
                     />
                 )}
                 {replies.length > 0 && (
@@ -81,7 +140,7 @@ const Comment = ({
                             <Comment
                                 key={reply.id}
                                 comment={reply}
-                                replies={[]} //Provide Empty Array as we only allow comment with 2 levels.
+                                replies={getSubReplies(reply.id)} //Provide Empty Array as we only allow comment with 2 levels.
                                 currentUserId={currentUserId}
                                 deleteComment={deleteComment}
                                 activeComment={activeComment}
@@ -89,6 +148,7 @@ const Comment = ({
                                 addComment={addComment}
                                 updateComment={updateComment}
                                 parent={comment.id}
+                                setAnonymous={setAnonymous}
                             />
                         ))}
                     </div>

@@ -29,6 +29,11 @@
         &-name {
             font-size: 15px;
             word-wrap: break-word;
+
+            &-active {
+                font-size: 15px;
+                word-wrap: break-word;
+            }
         }
 
         &-info {
@@ -39,6 +44,61 @@
 
         &-view {
             margin-left: 3.2rem;
+        }
+
+        .comment-date {
+            font-size: 14px;
+        }
+    }
+
+    .author-comment {
+        display: inline-flex;
+        max-width: 35rem;
+        padding: 5px;
+        justify-content: space-between;
+
+        & .author-info {
+            align-self: center;
+            margin: 0;
+            height: 40px;
+        }
+
+        & .author-name {
+            font-size: 18px;
+            word-wrap: break-word;
+            margin-left: 1rem;
+
+            &-active {
+                font-size: 18px;
+                word-wrap: break-word;
+                margin-left: 1rem;
+                color: $color-blue-B8;
+            }
+
+            & .author-view {
+                margin: 0;
+            }
+
+            & .author-user-name-active {
+                font-size: 18px;
+                word-wrap: break-word;
+                color: $color-blue-B8;
+            }
+
+            &-user {
+                font-size: 18px;
+                word-wrap: break-word;
+            }
+        }
+
+        &-info {
+            align-self: center;
+            margin-left: 20px;
+            height: 45px;
+        }
+
+        .comment-date {
+            font-size: 14px;
         }
     }
 

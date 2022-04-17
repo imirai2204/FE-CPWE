@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
 import CommentForm from "../UI/Form/CommentForm";
-import { deleteComment as deleteCommentApi, updateComment as updateCommentApi } from "./dummy-data"; //Dummy comments data for testing
+// import { deleteComment as deleteCommentApi, updateComment as updateCommentApi } from "./dummy-data"; //Dummy comments data for testing
 
 import {
     createIdeaComment as createCommentApi,
     fetchIdeaComments as getCommentsApi,
+    editIdeaComment as updateCommentApi,
+    deleteIdeaComment as deleteCommentApi,
 } from "./CommentApi";
 
-const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
+const Comments = ({ currentUserId, currentUserName, ideaId }) => {
     const [backendComments, setBackendComments] = useState([]);
     const [activeComment, setActiveComment] = useState(null);
+    const [isAnonymous, setIsAnonymous] = useState(false);
 
     const rootComments = backendComments.filter((backendComment) => backendComment.parent === null);
 
     const getReplies = (commentId) => {
-        console.log(backendComments);
         return backendComments
             .filter((backendComment) => backendComment.parent === commentId)
             .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
@@ -23,7 +25,6 @@ const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
 
     /** Integrate with API from Backend to Create/Update/Delete/Read comments */
     const addComment = (text, parentId) => {
-        console.log("Add Comment Action", text, parentId, currentUserId, currentUserName);
         const body = {
             parentId: parentId ?? null,
             ideaId,
@@ -49,10 +50,11 @@ const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
     };
 
     const updateComment = (text, commentId) => {
-        updateCommentApi(text, commentId).then(() => {
+        const body = text;
+        updateCommentApi(body, commentId).then(() => {
             const updatedBackendComments = backendComments.map((backendComment) => {
                 if (backendComment.id === commentId) {
-                    return { ...backendComment, body: text };
+                    return { ...backendComment, content: text };
                 }
                 return backendComment;
             });
@@ -72,6 +74,7 @@ const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
             <CommentForm
                 submitLabel='Add Comment'
                 handleSubmit={addComment}
+                setAnonymous={setIsAnonymous}
                 currentUserId={currentUserId}
             />
             <div className='comments-container'>
@@ -80,12 +83,15 @@ const Comments = ({ currentUserId, currentUserName, isAnonymous, ideaId }) => {
                         key={rootComment.id}
                         comment={rootComment}
                         replies={getReplies(rootComment.id)}
+                        getReply={getReplies}
                         currentUserId={currentUserId}
+                        currentUserName={currentUserName}
                         deleteComment={deleteComment}
                         activeComment={activeComment}
                         setActiveComment={setActiveComment}
                         addComment={addComment}
                         updateComment={updateComment}
+                        setAnonymous={setIsAnonymous}
                     />
                 ))}
             </div>
