@@ -8,7 +8,7 @@ export const IdeaUrl = {
     update: "idea/update/files/",
     get: "/idea/get/",
     getList: "/idea/get",
-    createcomment: "/idea/comment/create",
+    createComment: "/idea/comment/create",
     fetchComment: "idea/comment/get",
     editComment: "idea/comment/edit/",
     deleteComment: "idea/comment/delete/",
