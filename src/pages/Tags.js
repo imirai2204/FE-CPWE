@@ -159,8 +159,9 @@ const Tags = (props) => {
     }
 
     const handleDeleteTag = () => {
-        deleteTopic(deleteCategoryId, setErrorData);
-        handleGet(null, setReturnData, setPagination);
+        deleteTopic(deleteCategoryId, setErrorData).then(() => {
+            handleGet(null, setReturnData, setPagination);
+        });
     };
 
     if (permission) {
