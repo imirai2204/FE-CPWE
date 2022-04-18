@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { saveState, getState } from "../localStorage";
-import { storage } from "../../firebase/firebase";
-import { ref } from "firebase/storage";
 
 const currentUserInfo = getState("userData");
-
-const imageRef = ref(storage, "user-avatar/");
 
 export const isEmpty = (value) => {
     return (
