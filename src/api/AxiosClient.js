@@ -4,8 +4,12 @@ import axios from "axios";
 // const BASE_URL = "http://cpwe-test.mocklab.io";
 /*************************************************************************/
 
+<<<<<<< HEAD
 HEAD
 const BASE_URL = "http://19fd-42-112-228-184.ngrok.io";
+=======
+const BASE_URL = "http://2c61-42-112-228-184.ngrok.io";
+>>>>>>> cde1f9e865aea1fc976fc714debcbbd9f95b7d82
 
 const defaultConfig = {
     baseURL: BASE_URL,

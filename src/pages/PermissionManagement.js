@@ -7,7 +7,7 @@ import { PermissionSchema } from "../validation";
 import { PermissionUrl, Flag, Warn  } from "../api/EndPoint";
 import { ColumnsPermission } from "../components/UI/Table/TableItems";
 import { AxiosInstance } from "../api/AxiosClient";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import ErrorMessagePopUp from "../components/UI/Modal/ErrorMessage";
 import AuthorizationAPI from "../api/AuthorizationAPI";
 import PageNotFound from "../404";
