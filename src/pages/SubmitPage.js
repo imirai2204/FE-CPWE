@@ -181,9 +181,11 @@ const SubmitPage = (props) => {
     const [endDate, setEndDate] = useState("");
     const [finalDate, setFinalDate] = useState("");
     const userInfo = useSelector((state) => state.user.userInfo);
-    const [departmentaValue, setDepartmentValue] = useState();
-    const [topicValue, setTopicValue] = useState();
+    const [departmentaValue, setDepartmentValue] = useState(null);
+    const [topicValue, setTopicValue] = useState(null);
     const [ideaId, setIdeaId] = useState(0);
+    const [selectDepartment, setSelectDepartment] = useState(false);
+    const [selectTopic, setSelectTopic] = useState(false);
 
     function handleSetInfo(option) {
         console.log(option);
@@ -205,7 +207,7 @@ const SubmitPage = (props) => {
     };
     useEffect(() => {
         getDepartment(dataDepartment, setDepartmentOption);
-    }, [userInfo]);
+    }, [userInfo, setDepartmentOption]);
 
     /** Fetch Topic Data */
     let dataTopic = {
@@ -217,8 +219,13 @@ const SubmitPage = (props) => {
         departmentId: departmentaValue,
     };
     useEffect(() => {
-        getTopic(dataTopic, setTopicOption);
-    }, [departmentaValue]);
+        if (departmentaValue === null || !selectDepartment) {
+            return;
+        } else {
+            getTopic(dataTopic, setTopicOption);
+        }
+        setSelectDepartment(false);
+    }, [departmentaValue, selectDepartment]);
 
     /** Fetch Category/Tag Data */
     let dataCategory = {
@@ -230,8 +237,13 @@ const SubmitPage = (props) => {
         topicId: topicValue,
     };
     useEffect(() => {
-        getCategory(dataCategory, setCategoryOption);
-    }, [topicValue]);
+        if (topicValue === null || !selectTopic) {
+            return;
+        } else {
+            getCategory(dataCategory, setCategoryOption);
+        }
+        setSelectTopic(false);
+    }, [topicValue, selectTopic]);
 
     const clickTerms = () => {
         setButtonShown(!buttonShown);
@@ -239,7 +251,7 @@ const SubmitPage = (props) => {
 
     /** Handle upload image to firebase */
     useEffect(() => {
-        if (dataUpload.length == 0) {
+        if (dataUpload.length === 0) {
             return;
         }
         let upFiles = [];
@@ -272,13 +284,14 @@ const SubmitPage = (props) => {
         const waitingFirebaseResponse = setTimeout(() => {
             updateIdeaAttachDownloadUrl(ideaId, fileUpload, clickSubmitHandler);
         }, 3500);
-        if (ideaId == 0) {
+        if (ideaId === 0) {
             clearTimeout(waitingFirebaseResponse);
         }
         return () => {
             clearTimeout(waitingFirebaseResponse);
         };
     }, [ideaId]);
+    /** Handle upload image to firebase */
 
     const handleFileUpload = (event) => {
         setDataUpload((prevState) => {
@@ -343,6 +356,7 @@ const SubmitPage = (props) => {
                                         onChange={(selectOption) => {
                                             setFieldValue("departmentId", selectOption.value);
                                             setDepartmentValue(selectOption.value);
+                                            setSelectDepartment(true);
                                         }}
                                         onBlur={() => {
                                             handleBlur({
@@ -372,6 +386,7 @@ const SubmitPage = (props) => {
                                             setTopicName(selectOption.label);
                                             handleSetInfo(selectOption);
                                             setTopicValue(selectOption.value);
+                                            setSelectTopic(true);
                                         }}
                                         onBlur={() => {
                                             handleBlur({ target: { name: "topic" } });

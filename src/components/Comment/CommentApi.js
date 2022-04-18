@@ -17,7 +17,7 @@ export const createIdeaComment = async (body) => {
         createdAt: "",
     };
 
-    await AxiosInstance.post(IdeaUrl.createcomment, body, {
+    await AxiosInstance.post(IdeaUrl.createComment, body, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
         .then((res) => {

@@ -6,7 +6,9 @@ export const SignInSchema = Yup.object().shape({
 });
 
 export const DepartmentSchema = Yup.object().shape({
-    department: Yup.string().required("Sorry, Department name is required"),
+    department: Yup.string()
+        .required("Sorry, Department name is required")
+        .max(50, "Department should have less than 50 characters"),
 });
 
 export const PermissionSchema = Yup.object().shape({
